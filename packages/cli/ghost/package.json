@@ -9,7 +9,7 @@
     "url": "https://github.com/ATQQ/tools",
     "directory": "packages/cli/ghost"
   },
-  "homepage": "https://github.com/ATQQ/tools/packages/cli/ghost",
+  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/ghost/README.md",
   "bin": {
     "ghost": "./dist/bin.js"
   },
