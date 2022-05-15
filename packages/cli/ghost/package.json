@@ -11,11 +11,12 @@
   },
   "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/ghost/README.md",
   "bin": {
-    "ghost": "./dist/bin.js"
+    "ghost": "dist/bin.js"
   },
   "scripts": {
     "dev": "tsup --watch",
-    "build": "tsup --minify"
+    "build": "tsup --minify",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "phantom dependency",
