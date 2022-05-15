@@ -90,7 +90,7 @@ export function getVueFileImportSource(fileText: string) {
 export function getCssFileImportSource(fileText: string) {
   const sources: string[] = []
   const importRegexp = /^@import\s+['"](.*)?['"]/
-  const lines = fileText.split('\n')
+  const lines = fileText.split(path.sep)
   for (const line of lines) {
     const match = line.match(importRegexp)?.[1]
     if (match) {
