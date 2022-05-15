@@ -1,6 +1,6 @@
 {
   "name": "@sugarat/ghost",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "phantom dependency scanning tool - 幽灵依赖扫描工具",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
