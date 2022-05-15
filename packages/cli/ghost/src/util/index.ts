@@ -90,9 +90,9 @@ export function getVueFileImportSource(fileText: string) {
 export function getCssFileImportSource(fileText: string) {
   const sources: string[] = []
   const importRegexp = /^@import\s+['"](.*)?['"]/
-  const lines = fileText.split(path.sep)
+  const lines = fileText.split('\n')
   for (const line of lines) {
-    const match = line.match(importRegexp)?.[1]
+    const match = line.trim().match(importRegexp)?.[1]
     if (match) {
       sources.push(match)
     }
@@ -115,8 +115,8 @@ export function getJsFileImportSource(fileText: string) {
   ast.find({ type: 'ExportNamedDeclaration' }).each(fromCallback)
 
   // 处理import('')
-  ast.find('import($_$1)').each((node) => {
-    const importPath = node.match[1][0]?.value
+  ast.find('import($_$)').each((node) => {
+    const importPath = node.match[0][0]?.value
     sources.push(importPath)
   })
   // 处理require('')
@@ -130,7 +130,7 @@ export function getJsFileImportSource(fileText: string) {
 export function scanDirFiles(
   dir: string,
   extList: string[] = [],
-  exclude: (string | RegExp)[] = ['node_modules', '.git', '.vscode']
+  exclude: Exclude | Exclude[] = ['node_modules', '.git', '.vscode']
 ) {
   const files = readdirSync(dir, { withFileTypes: true })
   const res: string[] = []
@@ -191,6 +191,9 @@ export function isValidNodeModulesSource(
 }
 
 export function getPkgNameBySourcePath(pkgPath: string) {
-  const paths = pkgPath.replace(/~/g, '').split(path.sep)
+  const paths = pkgPath
+    .replace(/~/g, '')
+    .replace(/.*node_modules\//, '')
+    .split(path.sep)
   return paths[0].startsWith('@') ? paths.slice(0, 2).join(path.sep) : paths[0]
 }

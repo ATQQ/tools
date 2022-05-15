@@ -23,8 +23,11 @@
   },
   "keywords": [
     "phantom dependency",
+    "phantom",
+    "ghost dependency",
     "CLI",
-    "幽灵依赖"
+    "幽灵依赖",
+    "幻影依赖"
   ],
   "author": "ATQQ",
   "license": "MIT",

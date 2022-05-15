@@ -47,7 +47,7 @@ const { findGhost } = require('@sugarat/ghost')
 
 #### Usage
 ```ts
-const ghost = findGhost(
+const phantomDependency = findGhost(
   path.join(__dirname, 'src'),
   path.join(process.cwd(), 'package.json')
 )
