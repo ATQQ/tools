@@ -1,0 +1,25 @@
+{
+  "name": "@sugarat/ghost",
+  "version": "0.0.0",
+  "description": "phantom dependency scanning tool - 幽灵依赖扫描工具",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "ghost": "./dist/bin.js"
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup --minify"
+  },
+  "keywords": [
+    "phantom dependency",
+    "CLI",
+    "幽灵依赖"
+  ],
+  "author": "ATQQ",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^9.2.0",
+    "gogocode": "^1.0.53"
+  }
+}
