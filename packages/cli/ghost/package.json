@@ -4,6 +4,12 @@
   "description": "phantom dependency scanning tool - 幽灵依赖扫描工具",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ATQQ/tools",
+    "directory": "packages/cli/ghost"
+  },
+  "homepage": "https://github.com/ATQQ/tools/packages/cli/ghost",
   "bin": {
     "ghost": "./dist/bin.js"
   },
