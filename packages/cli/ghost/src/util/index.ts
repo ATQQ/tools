@@ -2,13 +2,18 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'fs'
 import path, { join, parse } from 'path'
 import AST, { GoGoAST } from 'gogocode'
 import { cssExt, jsExt, vueExt } from '../constants'
+import type { GhostOptions, ExcludePattern } from '../types'
 
 /**
  * 查找幽灵依赖
  * @param paths 目标文件夹或目录
  * @param pkgJsonPath package.json文件路径
  */
-export function findGhost(paths: string | string[], pkgJsonPath: string) {
+export function findGhost(
+  paths: string | string[],
+  pkgJsonPath: string,
+  options: GhostOptions = {}
+): string[] {
   const targetPaths = [paths].flat()
   const pkgJson =
     pkgJsonPath && existsSync(pkgJsonPath)
@@ -57,7 +62,12 @@ export function findGhost(paths: string | string[], pkgJsonPath: string) {
       ghostPkgList.delete(dep)
     }
   }
+
+  const excludePkg = options.exclude ?? []
+  const excludeNodeLib = !(options.includeNodeLib ?? false)
   return [...ghostPkgList]
+    .filter((v) => !isExclude(v, excludePkg))
+    .filter((v) => !excludeNodeLib || !isNodeLib(v))
 }
 
 export function getFileImportSource(fileText: string, ext: string) {
@@ -130,7 +140,11 @@ export function getJsFileImportSource(fileText: string) {
 export function scanDirFiles(
   dir: string,
   extList: string[] = [],
-  exclude: Exclude | Exclude[] = ['node_modules', '.git', '.vscode']
+  exclude: ExcludePattern | ExcludePattern[] = [
+    'node_modules',
+    '.git',
+    '.vscode'
+  ]
 ) {
   const files = readdirSync(dir, { withFileTypes: true })
   const res: string[] = []
@@ -154,11 +168,17 @@ export function scanDirFiles(
   return res
 }
 
-type Exclude = string | RegExp
-export function isExclude(value: string, exclude: Exclude | Exclude[]) {
-  const patterns = [exclude].flat()
-  return patterns.find((v) =>
-    typeof v === 'string' ? value.includes(v) : v.test(value)
+export function isExclude(
+  value: string,
+  exclude: ExcludePattern | ExcludePattern[]
+) {
+  const patterns = [exclude].flat().filter((v) => v)
+  return (
+    patterns.findIndex((pattern) =>
+      typeof pattern === 'string'
+        ? value.includes(pattern)
+        : pattern.test(value)
+    ) !== -1
   )
 }
 
@@ -196,4 +216,10 @@ export function getPkgNameBySourcePath(pkgPath: string) {
     .replace(/.*node_modules\//, '')
     .split(path.sep)
   return paths[0].startsWith('@') ? paths.slice(0, 2).join(path.sep) : paths[0]
+}
+
+export function isNodeLib(v: string) {
+  return /^(?:assert|buffer|child_process|cluster|console|constants|crypto|dgram|dns|domain|events|fs|http|https|module|net|os|path|punycode|querystring|readline|repl|stream|string_decoder|sys|timers|tls|tty|url|util|vm|zlib)$/.test(
+    v
+  )
 }

@@ -12,6 +12,7 @@ program
   .description('Scan a directory or file for phantom dependency')
   .alias('s')
   .option('-p, --pkg <path>', 'set package.json path')
+  .option('-n, --node', 'include node lib {fs, path, etc}')
   .action(scanCommand)
 
 program.parse(process.argv)
