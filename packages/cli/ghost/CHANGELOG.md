@@ -1,5 +1,11 @@
 # @sugarat/ghost
 
+## 0.1.1
+
+### Patch Changes
+
+- docs: 完善 README 文档
+
 ## 0.1.0
 
 ### Minor Changes
