@@ -1,0 +1,39 @@
+@import './assets/styles/app.css';
+
+header {
+  display: block;
+  overflow: hidden;
+}
+
+.wish {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+  min-height: 100vh;
+  main {
+    min-height: 70vh;
+  }
+}
+
+.title {
+  color: aliceblue;
+  text-align: center;
+  font-weight: lighter;
+  font-size: 48px;
+  padding-top: 5vh;
+}
+
+.des {
+  color: aliceblue;
+  text-align: center;
+  font-weight: lighter;
+  font-size: 16px;
+  padding: 0 10px 10px 10px;
+
+  a {
+    color: aliceblue;
+  }
+}
+
+.feature-btn {
+  cursor: pointer;
+}

@@ -34,6 +34,28 @@ yarn add @sugarat/ghost
 pnpm add @sugarat/ghost
 ```
 
+#### Option
+```ts
+interface GhostOptions {
+    /**
+     * need exclude pkg pattern
+     */
+    exclude?: ExcludePattern | ExcludePattern[];
+    /**
+     * include node lib {fs, path, etc}
+     * @default false
+     */
+    includeNodeLib?: boolean;
+}
+declare type ExcludePattern = string | RegExp;
+
+/**
+ * @param paths target file or directory
+ * @param pkgJsonPath package.json path
+ */
+declare function findGhost(paths: string | string[], pkgJsonPath: string, options?: GhostOptions): string[];
+```
+
 #### ESM
 ```ts
 import { findGhost } from '@sugarat/ghost'

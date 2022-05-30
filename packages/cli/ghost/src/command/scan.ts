@@ -4,6 +4,7 @@ import { findGhost } from '../util'
 
 interface Options {
   pkg?: string
+  node?: boolean
 }
 export default function scanCommand(paths: string[], options: Options) {
   if (!paths.length) {
@@ -22,7 +23,9 @@ export default function scanCommand(paths: string[], options: Options) {
     packageJSONPath = path.resolve(packageJSONPath, 'package.json')
   }
 
-  const ghostDeps = findGhost(targetPaths, packageJSONPath)
+  const ghostDeps = findGhost(targetPaths, packageJSONPath, {
+    includeNodeLib: options.node
+  })
   console.log(ghostDeps.length, '👻')
   console.log(ghostDeps)
 }
