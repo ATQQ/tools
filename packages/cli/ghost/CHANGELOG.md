@@ -1,5 +1,11 @@
 # @sugarat/ghost
 
+## 0.1.2
+
+### Patch Changes
+
+- fix: 过滤不合法包名
+
 ## 0.1.1
 
 ### Patch Changes
