@@ -9,7 +9,8 @@ import {
   getCssFileImportSource,
   getJsFileImportSource,
   isExclude,
-  isValidNodeModulesSource
+  isValidNodeModulesSource,
+  isValidPkgName
 } from '../src/util'
 
 const testProject = path.join(__dirname, './testProject')
@@ -148,4 +149,16 @@ test('isValidNodeModulesSource', () => {
   expect(isValidNodeModulesSource(__dirname, 'vue')).toBe(true)
   expect(isValidNodeModulesSource(__dirname, 'src')).toBe(false)
   expect(isValidNodeModulesSource(__dirname, 'dayjs/plugin/utc')).toBe(true)
+})
+
+test('isValidPkgName', () => {
+  expect(isValidPkgName('vue')).toBe(true)
+  expect(isValidPkgName('some-package')).toBe(true)
+  expect(isValidPkgName('example.com')).toBe(true)
+  expect(isValidPkgName('under_score')).toBe(true)
+  expect(isValidPkgName('123numeric')).toBe(true)
+  expect(isValidPkgName('@npm/thingy')).toBe(true)
+  expect(isValidPkgName('@jane/foo.js')).toBe(true)
+  expect(isValidPkgName('r.resolve("custom-token.js")')).toBe(false)
+  expect(isValidPkgName('dayjs/dsds/abc.js')).toBe(false)
 })

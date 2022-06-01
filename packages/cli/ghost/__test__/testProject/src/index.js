@@ -9,5 +9,8 @@ const router = new VueRouter({
   mode: 'history',
   routes
 })
+require('r.resolve("custom-token.js")')
+
+require('this.resolve(t)')
 
 export default router

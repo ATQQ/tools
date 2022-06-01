@@ -33,6 +33,7 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^9.2.0",
-    "gogocode": "^1.0.53"
+    "gogocode": "^1.0.53",
+    "validate-npm-package-name": "^4.0.0"
   }
 }

@@ -1,6 +1,9 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'fs'
 import path, { join, parse } from 'path'
 import AST, { GoGoAST } from 'gogocode'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import validPkgName from 'validate-npm-package-name'
 import { cssExt, jsExt, vueExt } from '../constants'
 import type { GhostOptions, ExcludePattern } from '../types'
 
@@ -65,9 +68,16 @@ export function findGhost(
 
   const excludePkg = options.exclude ?? []
   const excludeNodeLib = !(options.includeNodeLib ?? false)
-  return [...ghostPkgList]
-    .filter((v) => !isExclude(v, excludePkg))
-    .filter((v) => !excludeNodeLib || !isNodeLib(v))
+  return (
+    [...ghostPkgList]
+      .filter((v) => !isExclude(v, excludePkg))
+      // 控制是否排除node包
+      .filter((v) => !excludeNodeLib || !isNodeLib(v))
+      // 只保留合法包名(与上面的不能冲突)
+      .filter((v) =>
+        excludeNodeLib || !isNodeLib(v) ? isValidPkgName(v) : true
+      )
+  )
 }
 
 export function getFileImportSource(fileText: string, ext: string) {
@@ -222,4 +232,9 @@ export function isNodeLib(v: string) {
   return /^(?:assert|buffer|child_process|cluster|console|constants|crypto|dgram|dns|domain|events|fs|http|https|module|net|os|path|punycode|querystring|readline|repl|stream|string_decoder|sys|timers|tls|tty|url|util|vm|zlib)$/.test(
     v
   )
+}
+
+export function isValidPkgName(pkgName: string): boolean {
+  const result = validPkgName(pkgName)
+  return result.validForNewPackages
 }
