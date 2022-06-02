@@ -1,5 +1,5 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'fs'
-import path, { join, parse } from 'path'
+import { join, parse } from 'path'
 import AST, { GoGoAST } from 'gogocode'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -224,8 +224,8 @@ export function getPkgNameBySourcePath(pkgPath: string) {
   const paths = pkgPath
     .replace(/~/g, '')
     .replace(/.*node_modules\//, '')
-    .split(path.sep)
-  return paths[0].startsWith('@') ? paths.slice(0, 2).join(path.sep) : paths[0]
+    .split('/')
+  return paths[0].startsWith('@') ? paths.slice(0, 2).join('/') : paths[0]
 }
 
 export function isNodeLib(v: string) {

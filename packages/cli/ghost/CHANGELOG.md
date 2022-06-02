@@ -1,5 +1,11 @@
 # @sugarat/ghost
 
+## 0.1.3
+
+### Patch Changes
+
+- fix: path.sep 替换/ 导致在 win 下未正常工作
+
 ## 0.1.2
 
 ### Patch Changes
