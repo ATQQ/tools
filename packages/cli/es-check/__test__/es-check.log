@@ -1,0 +1,33 @@
+ERROR:
+          Using ArrowFunction(箭头函数) is not allowed
+          at file: testProject/dist/index.js
+          at startLine: 1
+          at startColumn: 44
+          sourcemap parse file: ../js/index.js
+          sourcemap parse line: 6
+          sourcemap parse column: 15
+          
+ERROR:
+          Using const is not allowed
+          at file: testProject/js/index.js
+          at startLine: 4
+          at startColumn: 0
+          
+ERROR:
+          Using let is not allowed
+          at file: testProject/js/index.js
+          at startLine: 5
+          at startColumn: 0
+          
+ERROR:
+          Using const is not allowed
+          at file: testProject/js/index.js
+          at startLine: 6
+          at startColumn: 0
+          
+ERROR:
+          Using ArrowFunction(箭头函数) is not allowed
+          at file: testProject/js/index.js
+          at startLine: 6
+          at startColumn: 15
+          

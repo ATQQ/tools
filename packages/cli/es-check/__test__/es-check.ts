@@ -12,7 +12,7 @@ const files = fg.sync(testPattern)
 const acornOpts = {
   ecmaVersion: 5,
   silent: true
-  //   sourceType: 'module'
+  // sourceType: 'module'
   // allowHashBang:true
 }
 
