@@ -47,10 +47,12 @@ importers:
       '@babel/parser': ^7.19.1
       '@babel/traverse': ^7.19.1
       acorn: ^8.8.0
+      acorn-walk: ^8.2.0
       fast-glob: ^3.2.12
       source-map: ^0.7.4
     dependencies:
       acorn: 8.8.0
+      acorn-walk: 8.2.0
       fast-glob: 3.2.12
       source-map: 0.7.4
     devDependencies:
@@ -766,6 +768,11 @@ packages:
     dependencies:
       acorn: 8.7.1
     dev: true
+
+  /acorn-walk/8.2.0:
+    resolution: {integrity: sha512-k+iyHEuPgSw6SbuDpGQM+06HQUa04DZ3o+F6CSzXMvvI5KMvnaEqXe+YVe555R9nn6GPt404fos4wcgpw12SDA==}
+    engines: {node: '>=0.4.0'}
+    dev: false
 
   /acorn/8.7.1:
     resolution: {integrity: sha512-Xx54uLJQZ19lKygFXOWsscKUbsBZW0CPykPhVQdhIeIwrbPmJzqeASDInc8nKBnp/JT6igTs82qPXz069H8I/A==}
