@@ -1,8 +1,9 @@
 import * as acorn from 'acorn'
 import * as acornWalk from 'acorn-walk'
+import sourceMap from 'source-map'
 
 import fs from 'fs'
-import type { CodeError, ParserOptions } from '../types'
+import type { CodeError, FileError, ParserOptions } from '../types'
 
 export function checkCode(code: string, options?: ParserOptions) {
   const ast = acorn.parse(code, {
@@ -40,6 +41,12 @@ export function checkCode(code: string, options?: ParserOptions) {
         allowHashBang
       } as any)
     } catch (_err: any) {
+      const { message } = _err
+      const filterMessage = [/^The keyword /]
+      if (filterMessage.find((r) => r.test(message))) {
+        return
+      }
+
       const locStart = acorn.getLineInfo(code, node.start)
       const locEnd = acorn.getLineInfo(code, node.end)
       const isRepeat = codeErrorList.find((e) => {
@@ -54,7 +61,7 @@ export function checkCode(code: string, options?: ParserOptions) {
             end: locEnd
           },
           source: codeSnippet,
-          message: _err.message
+          message
         })
       }
     }
@@ -63,8 +70,62 @@ export function checkCode(code: string, options?: ParserOptions) {
   return codeErrorList
 }
 
-export function checkFile(file: string, options?: ParserOptions) {
+export async function checkFile(
+  file: string,
+  options?: ParserOptions
+): Promise<FileError[]> {
   const code = fs.readFileSync(file, 'utf-8')
   const codeErrorList = checkCode(code, options)
-  return codeErrorList
+  const sourceMapContent = getSourcemapFileContent(file)
+  if (sourceMapContent) {
+    const consumer = await parseSourceMap(sourceMapContent)
+    return codeErrorList.map((v) => {
+      const smStart = consumer.originalPositionFor({
+        line: v.loc.start.line,
+        column: v.loc.start.column
+      })
+      const smEnd = consumer.originalPositionFor({
+        line: v.loc.end.line,
+        column: v.loc.end.column
+      })
+      const sourceCode = consumer.sourceContentFor(smStart.source!)
+      return {
+        ...v,
+        file,
+        sourceMap: {
+          file: smStart.source,
+          source: sourceCode?.split(/\r?\n/g)[smStart.line! - 1],
+          loc: {
+            start: {
+              line: smStart.line,
+              column: smStart.column
+            },
+            end: {
+              line: smEnd.line,
+              column: smEnd.column
+            }
+          }
+        } as FileError
+      }
+    })
+  }
+  return codeErrorList.map((v) => {
+    return {
+      ...v,
+      file
+    }
+  })
+}
+
+export async function parseSourceMap(code: string) {
+  const consumer = new sourceMap.SourceMapConsumer(code)
+  return consumer
+}
+
+export function getSourcemapFileContent(file: string) {
+  const sourceMapFile = `${file}.map`
+  if (fs.existsSync(sourceMapFile)) {
+    return fs.readFileSync(sourceMapFile, 'utf-8')
+  }
+  return ''
 }
