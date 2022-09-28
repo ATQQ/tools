@@ -61,10 +61,20 @@ export default function startCommand(
     // print error info
     if (!success || ErrorList.length > 0) {
       const outFilename = options.out === true ? 'escheck.log' : options.out
+      if (ErrorList.length > 0) {
+        console.log(
+          '!!!',
+          chalk.yellowBright(`${ErrorList.length} errors`),
+          '!!!'
+        )
+      }
       // 先清空旧文件内容
       if (outFilename) {
         fs.writeFileSync(outFilename, '', 'utf-8')
-        console.log('已输出日志到文件', path.join(process.cwd(), outFilename))
+        console.log(
+          'output log to:',
+          chalk.green(path.join(process.cwd(), outFilename))
+        )
       }
       ErrorList.forEach((err, idx) => {
         // 判断输出文件还是 console.log 打印
