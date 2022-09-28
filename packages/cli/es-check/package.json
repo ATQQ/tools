@@ -17,6 +17,7 @@
   "dependencies": {
     "acorn": "^8.8.0",
     "acorn-walk": "^8.2.0",
+    "chalk": "4",
     "commander": "^9.2.0",
     "fast-glob": "^3.2.12",
     "parse5": "^7.1.1",

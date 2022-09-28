@@ -1,0 +1,34 @@
+ERROR1:
+        code: ()=>{console.log("hello world")}
+        at file: __test__/testProject/dist/index.js:1:44
+        sourcemap code: const arrFun = () => {
+        at sourcemap file: ../js/index.js:6:15
+        
+ERROR2:
+        code: const varConst = 'const'
+        at file: __test__/testProject/js/index.js:4:0
+
+ERROR3:
+        code: let varLet = 'let'
+        at file: __test__/testProject/js/index.js:5:0
+
+ERROR4:
+        code: () => {
+    console.log('hello world');
+}
+        at file: __test__/testProject/js/index.js:6:15
+
+ERROR5:
+        code: const varConst = 'const'
+        at file: __test__/testProject/index.html:17:8
+
+ERROR6:
+        code: let varLet = 'let'
+        at file: __test__/testProject/index.html:18:8
+
+ERROR7:
+        code: () => {
+            console.log('hello world');
+        }
+        at file: __test__/testProject/index.html:19:23
+

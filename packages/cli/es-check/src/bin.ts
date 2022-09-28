@@ -32,7 +32,7 @@ program
     'if the code starts with #! treat it as a comment'
   )
   .option('-E,--exit-code <code>', 'with Error set process.exit(code)')
-  .option('-O,--out [filename]', 'output error message to [filename].log file')
+  .option('-O,--out [filename]', 'output error message to [filename] file')
   .action(startCommand)
 
 program.parse(process.argv)

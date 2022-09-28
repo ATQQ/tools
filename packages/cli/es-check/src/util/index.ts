@@ -1,10 +1,21 @@
+/* eslint-disable no-param-reassign */
 import * as acorn from 'acorn'
 import * as acornWalk from 'acorn-walk'
+import * as parse5 from 'parse5'
 import sourceMap from 'source-map'
 
 import fs from 'fs'
 import type { CodeError, FileError, ParserOptions } from '../types'
 
+export function traverseHtmlAST(ast: any, traverseSchema: Record<string, any>) {
+  traverseSchema?.[ast?.nodeName]?.(ast)
+  if (ast?.nodeName !== ast?.tagName) {
+    traverseSchema?.[ast?.tagName]?.(ast)
+  }
+  ast?.childNodes?.forEach((n: any) => {
+    traverseHtmlAST(n, traverseSchema)
+  })
+}
 export function checkCode(code: string, options?: ParserOptions) {
   const ast = acorn.parse(code, {
     ecmaVersion: 'latest'
@@ -70,12 +81,44 @@ export function checkCode(code: string, options?: ParserOptions) {
   return codeErrorList
 }
 
+export function checkHtmlCode(code: string, option?: ParserOptions) {
+  const htmlAST = parse5.parse(code, {
+    sourceCodeLocationInfo: true
+  })
+  const errList: CodeError[] = []
+  traverseHtmlAST(htmlAST, {
+    script(node: any) {
+      const scriptCode = `${node.childNodes.map((n: any) => n.value)}`
+      const loc = node.sourceCodeLocation
+      if (code) {
+        const errs = checkCode(scriptCode)
+        errList.push(
+          ...errs.map((err) => {
+            // 拼接html解析出的标签位置
+            // TODO:细节待测试，补齐单侧用例
+            err.loc.start.line += loc.startLine - 1
+            err.loc.end.line += loc.startLine - 1
+            err.start += loc.startOffset
+            err.end += loc.startOffset
+            return err
+          })
+        )
+      }
+    }
+  })
+  return errList
+}
+
 export async function checkFile(
   file: string,
   options?: ParserOptions
 ): Promise<FileError[]> {
   const code = fs.readFileSync(file, 'utf-8')
-  const codeErrorList = checkCode(code, options)
+  // support html and js
+  const codeErrorList = file.endsWith('.html')
+    ? checkHtmlCode(code, options)
+    : checkCode(code, options)
+
   const sourceMapContent = getSourcemapFileContent(file)
   if (sourceMapContent) {
     const consumer = await parseSourceMap(sourceMapContent)
