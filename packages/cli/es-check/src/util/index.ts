@@ -117,7 +117,7 @@ export async function checkFile(
   })
 }
 
-export async function parseSourceMap(code: string) {
+export function parseSourceMap(code: string) {
   const consumer = new sourceMap.SourceMapConsumer(code)
   return consumer
 }
