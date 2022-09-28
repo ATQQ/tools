@@ -48,12 +48,14 @@ importers:
       '@babel/traverse': ^7.19.1
       acorn: ^8.8.0
       acorn-walk: ^8.2.0
+      commander: ^9.2.0
       fast-glob: ^3.2.12
       parse5: ^7.1.1
       source-map: ^0.7.4
     dependencies:
       acorn: 8.8.0
       acorn-walk: 8.2.0
+      commander: 9.2.0
       fast-glob: 3.2.12
       parse5: 7.1.1
       source-map: 0.7.4

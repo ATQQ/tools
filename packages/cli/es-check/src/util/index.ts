@@ -129,3 +129,13 @@ export function getSourcemapFileContent(file: string) {
   }
   return ''
 }
+
+export function getEcmaVersion(version: string) {
+  // es6 es2015
+  const reg = /es(\d{1,2}|\d{4})/
+  if (reg.test(version)) {
+    const ecmaVersion = +version.match(reg)![1]
+    return `${ecmaVersion}`
+  }
+  return ''
+}
