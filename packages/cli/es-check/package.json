@@ -1,7 +1,7 @@
 {
-  "name": "es-check",
-  "version": "0.0.0",
-  "description": "",
+  "name": "@sugarat/es-check",
+  "version": "0.1.0",
+  "description": "Check JavaScript&HTML files ES version against a specified ES version 🏆",
   "main": "dist/index.js",
   "bin": {
     "escheck": "dist/bin.js"
@@ -11,9 +11,26 @@
     "build": "tsup --minify",
     "prepublish": "pnpm build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "check for es6",
+    "check for modules",
+    "es",
+    "es check",
+    "es matching",
+    "es version",
+    "ecmascript",
+    "ecmascript check",
+    "ecmascript matching",
+    "ecmascript version",
+    "js",
+    "js version",
+    "js version check",
+    "js version matching",
+    "test js version",
+    "test ecmascript version"
+  ],
+  "author": "ATQQ",
+  "license": "MIT",
   "dependencies": {
     "acorn": "^8.8.0",
     "acorn-walk": "^8.2.0",
