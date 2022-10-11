@@ -1,6 +1,6 @@
 {
   "name": "@sugarat/es-check",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Check JavaScript&HTML files ES version against a specified ES version 🏆",
   "main": "dist/index.js",
   "bin": {
