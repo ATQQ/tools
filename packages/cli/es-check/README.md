@@ -29,7 +29,7 @@ escheck es5 testProject/**/*.js testProject/**/*.html --out
 
 ![图片](https://img.cdn.sugarat.top/mdImg/MTY2NDM3ODU2NzI1OA==664378567258)
 
-## More API
+## CLI Options
 ```sh
 escheck --help
 ```
@@ -48,10 +48,8 @@ Options:
   -O,--out [filename]    output error message to [filename] file
   -h, --help             display help for command
 ```
-## Usage Example
 
 ## Local Lib
-<!-- TODO：待完善 -->
 ```sh
 npm i @sugarat/es-check
 # or
@@ -59,11 +57,43 @@ yarn add @sugarat/es-check
 # or
 pnpm add @sugarat/es-check
 ```
+### Usage
+```ts
+// ESM
+import { checkCode, checkFile, checkHtmlCode } from '@sugarat/es-check'
 
-#### Option
+// CJS
+const { checkCode, checkFile, checkHtmlCode } = require('@sugarat/es-check')
+```
 
-#### ESM
+```ts
+checkCode(jsCode, defaultOptions)
+checkHtmlCode(htmlCode, defaultOptions)
+checkFile(filepath, defaultOptions)
+```
 
-#### CJS
+example see [__test__/util.test.ts](https://github.com/ATQQ/tools/blob/main/packages/cli/es-check/__test__/util.test.ts)
 
-#### Usage
+more utils see [src/util/index.ts](https://github.com/ATQQ/tools/blob/main/packages/cli/es-check/src/util/index.ts)
+
+### Parser Options
+```ts
+interface ParserOptions {
+  /**
+   * @default '5'
+   * 5|6|...|2015|2022|latest
+   */
+  ecmaVersion?: EcmaVersion
+  /**
+   * @default 'script'
+   */
+  sourceType?: 'module' | 'script'
+  /**
+   * @default false
+   */
+  allowHashBang?: boolean
+}
+```
+
+More detail See [es-check/src/types/index.ts](https://github.com/ATQQ/tools/blob/3a97242163039875ffb8fad60b92102cc9a426d7/packages/cli/es-check/src/types/index.ts#L1-L35)
+
