@@ -91,7 +91,7 @@ export function checkHtmlCode(code: string, option?: ParserOptions) {
       const scriptCode = `${node.childNodes.map((n: any) => n.value)}`
       const loc = node.sourceCodeLocation
       if (code) {
-        const errs = checkCode(scriptCode)
+        const errs = checkCode(scriptCode, option)
         errList.push(
           ...errs.map((err) => {
             // 拼接html解析出的标签位置
