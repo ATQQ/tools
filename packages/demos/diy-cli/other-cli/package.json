@@ -1,0 +1,19 @@
+{
+  "name": "other-cli",
+  "version": "0.0.0",
+  "description": "",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "4",
+    "commander": "^9.4.1",
+    "gradient-string": "^2.0.2",
+    "inquirer": "8"
+  }
+}

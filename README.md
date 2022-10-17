@@ -3,3 +3,6 @@
 ## CLI
 * [扫描幽灵依赖](./packages/cli/ghost/README.md)
 * [产物ES语法检测](./packages/cli/es-check/README.md)
+
+## demos
+* [NodeCLI工具原理解析相关示例代码](./packages/demos/diy-cli/README.md)
