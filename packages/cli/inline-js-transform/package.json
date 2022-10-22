@@ -1,0 +1,26 @@
+{
+  "name": "@sugarat/inline-js-transform",
+  "version": "0.0.0",
+  "description": "Transform HTML ES Code🏅",
+  "main": "dist/index.js",
+  "bin": {
+    "escheck": "dist/bin.js"
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup --minify",
+    "prepublish": "pnpm build"
+  },
+  "keywords": [
+    "transform html js code"
+  ],
+  "author": "ATQQ",
+  "license": "MIT",
+  "dependencies": {
+    "@sugarat/es-check": "workspace:*"
+  },
+  "devDependencies": {
+    "gogocode": "^1.0.53",
+    "hyntax": "^1.1.9"
+  }
+}
