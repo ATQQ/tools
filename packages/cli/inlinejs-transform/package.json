@@ -1,5 +1,5 @@
 {
-  "name": "@sugarat/inlinejs-es-transform",
+  "name": "@sugarat/inlinejs-transform",
   "version": "0.0.0",
   "description": "Transform HTML ES Code🏅",
   "main": "dist/index.js",
@@ -23,6 +23,7 @@
   "dependencies": {
     "@sugarat/es-check": "workspace:*",
     "@swc/core": "^1.3.10",
+    "commander": "^9.4.1",
     "posthtml": "^0.16.6"
   },
   "devDependencies": {
