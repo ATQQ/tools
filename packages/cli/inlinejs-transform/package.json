@@ -1,6 +1,6 @@
 {
   "name": "@sugarat/inlinejs-transform",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Transform HTML ES Code🏅",
   "main": "dist/index.js",
   "bin": {
