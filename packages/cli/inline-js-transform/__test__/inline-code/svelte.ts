@@ -1,9 +1,7 @@
-// npx esno hyntax.ts
+// npx esno svelte.ts
 import fs from 'fs'
 import path from 'path'
-import { constructTree, tokenize } from 'hyntax'
-
-import util from 'util'
+import * as svelte from 'svelte/compiler'
 
 const content = fs.readFileSync(path.join(__dirname, '../test.html'), 'utf-8')
 
@@ -12,11 +10,17 @@ function simpleConst2Var(code: string) {
 }
 
 function traverseScript(htmlCode: string, transformFn: (v: string) => string) {
-  const { tokens } = tokenize(htmlCode)
-  const { ast } = constructTree(tokens)
-  console.log(JSON.stringify(tokens, null, 2))
-  console.log(util.inspect(ast, { showHidden: false, depth: null }))
-  return htmlCode
+  // const AST = svelte.compile(htmlCode).ast
+  // const htmlAST = AST.html
+  return svelte
+    .preprocess(htmlCode, {
+      script(ops) {
+        return {
+          code: transformFn(ops.content)
+        }
+      }
+    })
+    .then((v) => v.code)
 }
 const res = traverseScript(content, simpleConst2Var)
-console.log(res)
+res.then(console.log)

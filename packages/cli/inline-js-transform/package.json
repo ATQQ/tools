@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "gogocode": "^1.0.53",
-    "hyntax": "^1.1.9"
+    "posthtml": "^0.16.6",
+    "svelte": "^3.52.0"
   }
 }
