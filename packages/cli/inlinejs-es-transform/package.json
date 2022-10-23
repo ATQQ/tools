@@ -1,10 +1,10 @@
 {
-  "name": "@sugarat/inline-js-transform",
+  "name": "@sugarat/inlinejs-es-transform",
   "version": "0.0.0",
   "description": "Transform HTML ES Code🏅",
   "main": "dist/index.js",
   "bin": {
-    "escheck": "dist/bin.js"
+    "ijs": "dist/bin.js"
   },
   "scripts": {
     "dev": "tsup --watch",
@@ -12,16 +12,21 @@
     "prepublish": "pnpm build"
   },
   "keywords": [
-    "transform html js code"
+    "transform",
+    "inline js",
+    "inline code",
+    "inline html js",
+    "transform html"
   ],
   "author": "ATQQ",
   "license": "MIT",
   "dependencies": {
-    "@sugarat/es-check": "workspace:*"
+    "@sugarat/es-check": "workspace:*",
+    "@swc/core": "^1.3.10",
+    "posthtml": "^0.16.6"
   },
   "devDependencies": {
     "gogocode": "^1.0.53",
-    "posthtml": "^0.16.6",
     "svelte": "^3.52.0"
   }
 }
