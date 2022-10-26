@@ -35,6 +35,8 @@
         "import/prefer-default-export": "off",
         "no-restricted-syntax":"off",
         "no-use-before-define":"off",
-        "no-continue":"off"
+        "no-continue":"off",
+        "import/no-extraneous-dependencies":"warn",
+        "no-param-reassign":"off"
     }
 }
