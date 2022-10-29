@@ -104,6 +104,12 @@ importers:
       gradient-string: 2.0.2
       inquirer: 8.2.4
 
+  packages/demos/template:
+    specifiers:
+      commander: ^9.2.0
+    dependencies:
+      commander: 9.4.1
+
 packages:
 
   /@babel/code-frame/7.16.7:

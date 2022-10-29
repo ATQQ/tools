@@ -1,0 +1,25 @@
+{
+  "name": "@sugarat/template-cli",
+  "version": "0.0.0",
+  "description": "@sugarat/template-cli",
+  "private":"true",
+  "main": "dist/index.js",
+  "bin": {
+    "tcli": "dist/bin.js"
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup --minify",
+    "prepublish": "pnpm build"
+  },
+  "keywords": [
+    "keywords"
+  ],
+  "author": "ATQQ",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^9.2.0"
+  },
+  "devDependencies": {
+  }
+}
