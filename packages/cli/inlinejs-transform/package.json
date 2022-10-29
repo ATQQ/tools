@@ -3,6 +3,9 @@
   "version": "0.0.2",
   "description": "Transform HTML ES Code🏅",
   "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "bin": {
     "ijs": "dist/bin.js"
   },

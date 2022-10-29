@@ -92,6 +92,14 @@ importers:
       gogocode: 1.0.53
       svelte: 3.52.0
 
+  packages/cli/source-map:
+    specifiers:
+      commander: ^9.2.0
+      source-map: ^0.7.4
+    dependencies:
+      commander: 9.4.1
+      source-map: 0.7.4
+
   packages/demos/diy-cli/other-cli:
     specifiers:
       chalk: '4'
