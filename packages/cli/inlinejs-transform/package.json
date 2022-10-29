@@ -1,6 +1,6 @@
 {
   "name": "@sugarat/inlinejs-transform",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Transform HTML ES Code🏅",
   "main": "dist/index.js",
   "bin": {
@@ -16,7 +16,8 @@
     "inline js",
     "inline code",
     "inline html js",
-    "transform html"
+    "transform html",
+    "posthtml-SWC"
   ],
   "author": "ATQQ",
   "license": "MIT",

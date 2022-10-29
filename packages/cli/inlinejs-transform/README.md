@@ -32,6 +32,39 @@ ijs minify __test__/test.html
 ```
 ![图片](https://img.cdn.sugarat.top/mdImg/MTY2NjU0MTExNzIyMw==666541117223)
 
+## In PostHTML
+```ts
+import posthtml from 'posthtml'
+
+import { posthtmlSWCMinify, posthtmlSWCTransform } from '@sugarat/inlinejs-transform'
+
+const htmlCode = `<body>
+  <div id="app"></div>
+  <script>
+    const hello = 'hello'
+  </script>
+  <script src="hello.js"></script>
+  <script>
+    const world = 'hello'
+  </script>
+  <script>
+    console.log(hello,world);
+  </script>
+</body>`
+
+// minify
+const minifyResult = posthtml()
+    .use(posthtmlSWCMinify())
+    .process(htmlCode, { sync: true }).html
+
+// transform
+const transformResult = posthtml()
+    .use(posthtmlSWCTransform('es5', true))
+    .process(htmlCode, { sync: true }).html
+```
+options detail see [SWC Declaration](https://swc.rs/docs/usage/core#transformfilesync)
+
+
 ## More Info
 ```sh
 ijs --help
