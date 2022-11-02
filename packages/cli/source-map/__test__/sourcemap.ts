@@ -1,4 +1,4 @@
-// npx sourcemap.ts
+// npx esno sourcemap.ts
 import fs from 'fs'
 import path from 'path'
 import sourceMap from 'source-map'
