@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'fs'
 import path from 'path'
+import http from 'http'
 
 export function sayHello() {
   console.log('hello world')
@@ -48,4 +49,13 @@ export function getLocalSourceMapFilePath(sourceJsPath: string) {
 
 export async function getRemoteSourceMapFilePath(sourceJsPath: string) {
   return sourceJsPath
+}
+
+function getRemoteSource(url: string) {
+  return new Promise((res, rej) => {
+    http.request({
+      method: 'GET',
+      href: url
+    })
+  })
 }
