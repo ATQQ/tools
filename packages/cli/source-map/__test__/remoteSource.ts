@@ -2,7 +2,6 @@ import http from 'http'
 import https from 'https'
 import axios from 'axios'
 import fetch from 'node-fetch'
-import { getErrorSourceResult, getRemoteSourceMapFilePath } from '../src'
 
 function getRemoteSource(
   url: string
@@ -56,15 +55,3 @@ function getRemoteSourceByFetch(url: string) {
     }
   })
 }
-
-getRemoteSourceMapFilePath(
-  'https://script.sugarat.top/js/tests/index.9bb0da5c.js'
-).then(console.log)
-
-getErrorSourceResult(
-  'https://script.sugarat.top/js/tests/index.9bb0da5c.js',
-  24,
-  17596
-).then((v) => {
-  console.log(v.source, v.line, v.column)
-})

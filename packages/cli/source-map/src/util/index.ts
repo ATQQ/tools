@@ -130,13 +130,28 @@ export async function getErrorSourceResult(
     return unknown
   }
 
+  return getErrorSourceResultBySourceMapUrl(sourceMapURL, line, column)
+}
+
+export async function getErrorSourceResultBySourceMapUrl(
+  sourceMapURL: string,
+  line: number,
+  column: number
+): Promise<SourceResult> {
   // sourceMap 内容
   const sourceMapCode = await (isHTTPSource(sourceMapURL)
     ? getRemoteSource(sourceMapURL).then((v) => v.body)
     : fs.readFile(sourceMapURL, 'utf-8'))
 
-  const consumer = await createSourceMapConsumer(sourceMapCode)
+  return getErrorSourceResultBySourceMapCode(sourceMapCode, line, column)
+}
 
+export async function getErrorSourceResultBySourceMapCode(
+  sourceMapCode: string,
+  line: number,
+  column: number
+): Promise<SourceResult> {
+  const consumer = await createSourceMapConsumer(sourceMapCode)
   const { name, ...rest } = consumer.originalPositionFor({
     line,
     column
@@ -146,4 +161,47 @@ export async function getErrorSourceResult(
     ...rest,
     sourceCode
   } as SourceResult
+}
+
+const underlineStr = (v: any) => `\x1B[4m${v}\x1B[24m`
+
+const yellowStr = (v: any) => `\x1B[33m${v}\x1B[39m`
+
+const redStr = (v: any) => `\x1B[31m${v}\x1B[39m`
+
+/**
+ * @param result
+ * @param showMaxLine 控制显示的行数
+ */
+export function printResult(result: SourceResult, showMaxLine = 5) {
+  const { sourceCode, source, line, column } = result
+  // 源码拆成数租
+  const lines = sourceCode.split('\n')
+
+  // 打印错误路径
+  console.log(`error in  ${source}:${line}:${column}`)
+  console.log()
+
+  // 计算要展示的行的起始位置，起始行号不能小于1
+  const startLine = Math.max(1, line - Math.floor(showMaxLine / 2))
+  // 结束位置不能大于总行数
+  const endLine = Math.min(lines.length, startLine + showMaxLine - 1)
+
+  const showCode = lines
+    // 截取需要展示的内容
+    .slice(startLine - 1, endLine)
+    .map(
+      (v, idx) =>
+        // 加上黄色行号
+        `${yellowStr(startLine + idx)} ${
+          // 针对错误的行进行下划线+红色展示
+          idx + startLine === line
+            ? // 从错误的列号开始展示
+              v.slice(0, column - 1) + redStr(underlineStr(v.slice(column - 1)))
+            : v
+        }`
+    )
+    .join('\n')
+
+  console.log(showCode)
 }
