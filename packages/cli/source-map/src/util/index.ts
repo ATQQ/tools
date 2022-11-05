@@ -1,11 +1,10 @@
-import { existsSync, readFileSync } from 'fs'
+import { existsSync, readFileSync, mkdirSync, writeFileSync } from 'fs'
 import path from 'path'
 import http from 'http'
 import https from 'https'
 import fs from 'fs/promises'
 import sourceMap from 'source-map'
-
-import { SourceResult } from '../types'
+import { SourceItem, SourceResult } from '../types'
 
 const NOT_FOUND = null
 
@@ -75,7 +74,7 @@ export async function getRemoteSourceMapFilePath(sourceJsPath: string) {
   return path.resolve(path.dirname(sourceJsPath), sourceMappingURL)
 }
 
-function getRemoteSource(
+export function getRemoteSource(
   url: string
 ): Promise<{ body: string; code?: number }> {
   return new Promise((resolve, reject) => {
@@ -139,11 +138,16 @@ export async function getErrorSourceResultBySourceMapUrl(
   column: number
 ): Promise<SourceResult> {
   // sourceMap 内容
-  const sourceMapCode = await (isHTTPSource(sourceMapURL)
-    ? getRemoteSource(sourceMapURL).then((v) => v.body)
-    : fs.readFile(sourceMapURL, 'utf-8'))
+  const sourceMapCode = await getSourceCode(sourceMapURL)
 
   return getErrorSourceResultBySourceMapCode(sourceMapCode, line, column)
+}
+
+export async function getSourceCode(url: string) {
+  const code = await (isHTTPSource(url)
+    ? getRemoteSource(url).then((v) => v.body)
+    : fs.readFile(url, 'utf-8'))
+  return code
 }
 
 export async function getErrorSourceResultBySourceMapCode(
@@ -163,11 +167,11 @@ export async function getErrorSourceResultBySourceMapCode(
   } as SourceResult
 }
 
-const underlineStr = (v: any) => `\x1B[4m${v}\x1B[24m`
+export const underlineStr = (v: any) => `\x1B[4m${v}\x1B[24m`
 
-const yellowStr = (v: any) => `\x1B[33m${v}\x1B[39m`
+export const yellowStr = (v: any) => `\x1B[33m${v}\x1B[39m`
 
-const redStr = (v: any) => `\x1B[31m${v}\x1B[39m`
+export const redStr = (v: any) => `\x1B[31m${v}\x1B[39m`
 
 /**
  * @param result
@@ -204,4 +208,64 @@ export function printResult(result: SourceResult, showMaxLine = 5) {
     .join('\n')
 
   console.log(showCode)
+}
+
+export function outPutResult(
+  outputDir: string,
+  logFilename: string,
+  result: SourceResult,
+  showMaxLine = 5
+) {
+  const outputFile = path.resolve(process.cwd(), outputDir, logFilename)
+  console.log(`error output in file:
+
+  ${yellowStr(outputFile)}`)
+
+  const { sourceCode, source, line, column } = result
+  const lines = sourceCode.split('\n')
+  const error = []
+  error.push(`error in  ${source}`, `line:${line} column:${column}`, '')
+  const startLine = Math.max(1, line - Math.floor(showMaxLine / 2))
+  const endLine = Math.min(lines.length, startLine + showMaxLine - 1)
+  const showCode = lines
+    .slice(startLine - 1, endLine)
+    .map(
+      (v, idx) =>
+        `${idx + startLine === line ? '❌' : ''}${startLine + idx} ${v}`
+    )
+  error.push(...showCode)
+
+  if (!existsSync(path.dirname(outputFile))) {
+    mkdirSync(path.dirname(outputFile), { recursive: true })
+  }
+
+  fs.writeFile(outputFile, error.join('\n'))
+}
+/**
+ * 通过sourceMap内容获取源文件
+ */
+export async function getSourcesBySourceMapCode(sourceMapCode: string) {
+  const consumer = await createSourceMapConsumer(sourceMapCode)
+  const { sources } = consumer
+  const result = sources.map((source) => {
+    return {
+      source,
+      code: consumer.sourceContentFor(source)!
+    }
+  })
+  return result
+}
+
+export async function outPutSources(
+  sources: SourceItem[],
+  outPutDir = 'source-map-result/project'
+) {
+  for (const sourceItem of sources) {
+    const { source, code } = sourceItem
+    const filepath = path.resolve(process.cwd(), outPutDir, source)
+    if (!existsSync(path.dirname(filepath))) {
+      mkdirSync(path.dirname(filepath), { recursive: true })
+    }
+    writeFileSync(filepath, code, 'utf-8')
+  }
 }

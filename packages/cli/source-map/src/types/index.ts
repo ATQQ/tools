@@ -16,3 +16,8 @@ export interface SourceResult {
    */
   column: number
 }
+
+export interface SourceItem {
+  source: string
+  code: string
+}

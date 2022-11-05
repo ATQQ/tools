@@ -1,1 +1,1 @@
-export { default as startCommand } from './start'
+export { default as parseCommand } from './parse'

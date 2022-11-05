@@ -7,7 +7,7 @@
     "dist"
   ],
   "bin": {
-    "smo": "dist/bin.js"
+    "smt": "dist/bin.js"
   },
   "scripts": {
     "dev": "tsup --watch",

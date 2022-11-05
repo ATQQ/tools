@@ -2,17 +2,20 @@
 
 import { Command } from 'commander'
 import pkg from '../package.json'
-import { startCommand } from './command'
+import { parseCommand } from './command'
 
 const program = new Command()
 program.version(pkg.version)
 
 program
-  .command('test [paths...]')
-  .description('command description')
-  .alias('t')
-  .option('-t, --target [version]', 'set target version', 'es5')
-  .option('-m, --minify', 'minify result')
-  .action(startCommand)
+  .command('parse <sourceUrl>')
+  .description('parse error form url source')
+  .alias('p')
+  .option('-s, --source-map', 'set url source as sourceMap type')
+  .option('-l, --line <number>', 'set line number')
+  .option('-c, --column <number>', 'set column number')
+  .option('-o, --output [string]', 'set log output dir')
+  .option('-n, --show-num <number>', 'set show error source lines', '5')
+  .action(parseCommand)
 
 program.parse(process.argv)
