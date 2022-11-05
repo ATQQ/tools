@@ -1,9 +1,11 @@
-# 一些工具包和CLI工具合集
+# @sugarat/tools monorepo
 
+language: [简体中文](./README-zh.md)
 ## CLI
-* [扫描幽灵依赖](./packages/cli/ghost/README.md)
-* [产物ES语法检测](./packages/cli/es-check/README.md)
-* [HTML中的内联脚本处理：语法降级&压缩](./packages/cli/inlinejs-transform/README.md)
+* [phantom dependency CLI](./packages/cli/ghost/README.md)
+* [esCheck CLI](./packages/cli/es-check/README.md)
+* [inline JS transform CLI](./packages/cli/inlinejs-transform/README.md)
+* [sourceMap CLI](./packages/cli/inlinejs-transform/README.md)
 
 ## demos
-* [NodeCLI工具原理解析相关示例代码](./packages/demos/diy-cli/README.md)
+* [文章：NodeCLI工具原理解析](https://juejin.cn/post/7155510469464162335) - [相关示例代码](./packages/demos/diy-cli/README.md)
