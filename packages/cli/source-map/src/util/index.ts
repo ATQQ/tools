@@ -262,7 +262,11 @@ export async function outPutSources(
 ) {
   for (const sourceItem of sources) {
     const { source, code } = sourceItem
-    const filepath = path.resolve(process.cwd(), outPutDir, source)
+    const filepath = path.resolve(
+      process.cwd(),
+      outPutDir,
+      source.replace(/^(\.\.\/)+/g, '')
+    )
     if (!existsSync(path.dirname(filepath))) {
       mkdirSync(path.dirname(filepath), { recursive: true })
     }
