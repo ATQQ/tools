@@ -1,5 +1,11 @@
 # @sugarat/es-check
 
+## 0.1.2
+
+### Patch Changes
+
+- chore: update package description
+
 ## 0.1.1
 
 ### Patch Changes

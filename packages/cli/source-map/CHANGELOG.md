@@ -1,13 +1,9 @@
-# @sugarat/template-cli
-
-## 0.1.1
-
-### Patch Changes
-
-- xxx
+# @sugarat/source-map-cli
 
 ## 0.1.0
 
 ### Minor Changes
 
-- xxxx
+- feat: init cli
+- feat: support parse error js with line and column
+- feat: support generate sources by source-map files

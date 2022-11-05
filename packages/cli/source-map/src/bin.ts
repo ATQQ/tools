@@ -23,7 +23,7 @@ program
   .description('generating source files by source-map')
   .alias('s')
   .option('-s, --source-map', 'set url source as sourceMap type')
-  .option('-o, --output [string]', 'set log output dir')
+  .option('-o, --output [string]', 'set files output dir')
   .action(sourcesCommand)
 
 program.parse(process.argv)

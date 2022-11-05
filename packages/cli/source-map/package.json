@@ -1,8 +1,15 @@
 {
   "name": "@sugarat/source-map-cli",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "CLI for source-map tool，simple but powerful",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ATQQ/tools",
+    "directory": "packages/cli/source-map"
+  },
+  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/source-map",
   "files": [
     "dist"
   ],

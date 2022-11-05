@@ -4,6 +4,15 @@
   "description": "@sugarat/template-cli",
   "private":"true",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ATQQ/tools"
+  },
+  "homepage": "https://github.com/ATQQ/tools",
+  "files": [
+    "dist"
+  ],
   "bin": {
     "tcli": "dist/bin.js"
   },
