@@ -1,11 +1,21 @@
 {
   "name": "@sugarat/es-check",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Check JavaScript&HTML files ES version against a specified ES version 🏆",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ATQQ/tools",
+    "directory": "packages/cli/es-check"
+  },
+  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/es-check",
   "bin": {
     "escheck": "dist/bin.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup --minify",
