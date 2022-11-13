@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-expressions */
 import https from 'https'
@@ -5,8 +6,7 @@ import http from 'http'
 import fs from 'fs'
 import path from 'path'
 
-const sourceUrl =
-  'https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/759e2aa805c0461b840e0f0f09ed05fa~tplv-k3u1fbpfcp-zoom-1.image'
+const HttpProxyAgent = require('http-proxy-agent')
 
 function randomName(length = 6) {
   return Math.random()
@@ -14,8 +14,20 @@ function randomName(length = 6) {
     .slice(2, 2 + length)
 }
 
-// 实现3：文件直接下载，支持自动重定向
-function downloadByUrl(url: string, filename?: string) {
+interface Options {
+  filename: string
+  maxRedirects: number
+  timeout: number
+}
+// 实现5: 支持设置超时时间
+function downloadByUrl(url: string, option?: Partial<Options>) {
+  const ops: Options = {
+    timeout: 300000,
+    filename: randomName(),
+    maxRedirects: 10,
+    ...option
+  }
+
   let receive = 0
 
   let progressFn: (cur: number, rec: number, sum: number) => void
@@ -33,19 +45,22 @@ function downloadByUrl(url: string, filename?: string) {
   }
 
   const _http = url.startsWith('https') ? https : http
-  _http.get(
+  const request = _http.get(
     url,
     {
+      agent: new HttpProxyAgent('http://127.0.0.1:7890'),
+      timeout: ops.timeout || 0,
       headers: {
         'User-Agent': 'node http module'
       }
     },
     (response) => {
       const { statusCode } = response
-      if (Math.floor(statusCode! / 100) === 3) {
+      if (Math.floor(statusCode! / 100) === 3 && ops.maxRedirects) {
+        ops.maxRedirects -= 1
         if (response.headers.location) {
           // 递归
-          downloadByUrl(response.headers.location, filename)
+          downloadByUrl(response.headers.location, ops)
             // 透传事件
             .progress(progressFn)
             .end(endFn)
@@ -57,7 +72,7 @@ function downloadByUrl(url: string, filename?: string) {
       }
 
       // 输出文件路径
-      const filepath = path.resolve(filename || randomName())
+      const filepath = path.resolve(ops.filename || randomName())
       // 创建一个可写流
       const writeStream = fs.createWriteStream(filepath)
 
@@ -72,9 +87,25 @@ function downloadByUrl(url: string, filename?: string) {
       })
     }
   )
+  request.on('timeout', () => {
+    console.timeEnd('request timeout')
+    request.destroy()
+    console.error(`http request timeout url:${url}`)
+  })
   return thisArg
 }
 
-downloadByUrl('http://mtw.so/6647Rc', 'test.image').end((filepath) => {
-  console.log('file save:', filepath)
+const sourceUrl =
+  'http://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png'
+
+console.time('request timeout')
+downloadByUrl(sourceUrl, {
+  filename: 'goggle.png',
+  timeout: 2000
 })
+  .progress((_, rec, sum) => {
+    console.log(rec, sum)
+  })
+  .end((filepath) => {
+    console.log('file save:', filepath)
+  })

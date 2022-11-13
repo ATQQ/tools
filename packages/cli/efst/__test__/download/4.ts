@@ -14,8 +14,14 @@ function randomName(length = 6) {
     .slice(2, 2 + length)
 }
 
-// 实现3：文件直接下载，支持自动重定向
-function downloadByUrl(url: string, filename?: string) {
+interface Options {
+  filename: string
+  maxRedirects: number
+}
+// 实现4：支持自动重定向，支持设置最大重定向次数
+function downloadByUrl(url: string, option?: Partial<Options>) {
+  const ops: Options = { filename: randomName(), maxRedirects: 10, ...option }
+
   let receive = 0
 
   let progressFn: (cur: number, rec: number, sum: number) => void
@@ -42,10 +48,11 @@ function downloadByUrl(url: string, filename?: string) {
     },
     (response) => {
       const { statusCode } = response
-      if (Math.floor(statusCode! / 100) === 3) {
+      if (Math.floor(statusCode! / 100) === 3 && ops.maxRedirects) {
+        ops.maxRedirects -= 1
         if (response.headers.location) {
           // 递归
-          downloadByUrl(response.headers.location, filename)
+          downloadByUrl(response.headers.location, ops)
             // 透传事件
             .progress(progressFn)
             .end(endFn)
@@ -57,7 +64,7 @@ function downloadByUrl(url: string, filename?: string) {
       }
 
       // 输出文件路径
-      const filepath = path.resolve(filename || randomName())
+      const filepath = path.resolve(ops.filename || randomName())
       // 创建一个可写流
       const writeStream = fs.createWriteStream(filepath)
 
@@ -75,6 +82,9 @@ function downloadByUrl(url: string, filename?: string) {
   return thisArg
 }
 
-downloadByUrl('http://mtw.so/6647Rc', 'test.image').end((filepath) => {
+downloadByUrl('http://mtw.so/6647Rc', {
+  filename: 'test.image',
+  maxRedirects: 10
+}).end((filepath) => {
   console.log('file save:', filepath)
 })
