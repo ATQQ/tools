@@ -18,6 +18,7 @@ interface Options {
   filename: string
   maxRedirects: number
   timeout: number
+  proxy: string
 }
 // 实现5: 支持设置超时时间
 function downloadByUrl(url: string, option?: Partial<Options>) {
@@ -25,6 +26,7 @@ function downloadByUrl(url: string, option?: Partial<Options>) {
     timeout: 300000,
     filename: randomName(),
     maxRedirects: 10,
+    proxy: '',
     ...option
   }
 
@@ -48,7 +50,7 @@ function downloadByUrl(url: string, option?: Partial<Options>) {
   const request = _http.get(
     url,
     {
-      agent: new HttpProxyAgent('http://127.0.0.1:7890'),
+      agent: ops.proxy ? new HttpProxyAgent(ops.proxy) : undefined,
       timeout: ops.timeout || 0,
       headers: {
         'User-Agent': 'node http module'
@@ -88,7 +90,6 @@ function downloadByUrl(url: string, option?: Partial<Options>) {
     }
   )
   request.on('timeout', () => {
-    console.timeEnd('request timeout')
     request.destroy()
     console.error(`http request timeout url:${url}`)
   })
@@ -98,14 +99,15 @@ function downloadByUrl(url: string, option?: Partial<Options>) {
 const sourceUrl =
   'http://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png'
 
-console.time('request timeout')
 downloadByUrl(sourceUrl, {
   filename: 'goggle.png',
-  timeout: 2000
+  timeout: 2000,
+  proxy: 'http://127.0.0.1:7890'
 })
   .progress((_, rec, sum) => {
     console.log(rec, sum)
   })
   .end((filepath) => {
+    console.log('use proxy')
     console.log('file save:', filepath)
   })
