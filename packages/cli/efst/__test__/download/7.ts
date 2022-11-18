@@ -19,14 +19,16 @@ interface Options {
   maxRedirects: number
   timeout: number
   proxy: string
+  override: boolean
 }
 // 实现5: 支持设置超时时间
 function downloadByUrl(url: string, option?: Partial<Options>) {
   const ops: Options = {
-    timeout: 300000,
-    filename: randomName(),
+    timeout: 3000,
+    filename: '',
     maxRedirects: 10,
     proxy: '',
+    override: false,
     ...option
   }
 
@@ -74,7 +76,14 @@ function downloadByUrl(url: string, option?: Partial<Options>) {
       }
 
       // 输出文件路径
-      const filepath = path.resolve(ops.filename || randomName())
+      const filename = normalizeFilename(
+        ops.filename || getValidFilenameByUrl(url) || randomName()
+      )
+
+      const filepath = ops.override
+        ? path.resolve(filename)
+        : getNoRepeatFilepath(filename)
+
       // 创建一个可写流
       const writeStream = fs.createWriteStream(filepath)
 
@@ -96,9 +105,6 @@ function downloadByUrl(url: string, option?: Partial<Options>) {
   return thisArg
 }
 
-const sourceUrl =
-  'http://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png'
-
 interface ParseResult {
   name: string
   ext: string
@@ -110,24 +116,34 @@ function nameParse(filename: string, suffix = ''): ParseResult {
   }
   return nameParse(name, ext + suffix)
 }
-console.log(nameParse('goggle.png'))
-console.log(nameParse('.gitignore'))
-console.log(nameParse('index.d.ts'))
-console.log(nameParse('.d.ts'))
-console.log(nameParse('abc.x.y.z'))
-console.log(nameParse('.abc.'))
-console.log(nameParse('abc.'))
-console.log(nameParse('.'))
-console.log(nameParse(''))
 
-// downloadByUrl(sourceUrl, {
-//   timeout: 2000,
-//   proxy: 'http://127.0.0.1:7890'
-// })
-//   .progress((_, rec, sum) => {
-//     console.log(rec, sum)
-//   })
-//   .end((filepath) => {
-//     console.log('use proxy')
-//     console.log('file save:', filepath)
-//   })
+function normalizeFilename(name: string) {
+  return name.replace(/[\\/:*?"<>|]/g, '')
+}
+
+function getValidFilenameByUrl(url: string) {
+  const urlInstance = new URL(url)
+  return decodeURIComponent(path.basename(urlInstance.pathname))
+}
+
+function getNoRepeatFilepath(filename: string, dir = process.cwd()) {
+  const { name, ext } = nameParse(filename)
+  let i = 0
+  let filepath = ''
+  do {
+    filepath = path.join(dir, `${name}${i ? ` ${i}` : ''}${ext}`)
+    i += 1
+  } while (fs.existsSync(filepath))
+  return filepath
+}
+
+downloadByUrl('https://img.cdn.sugarat.top/docs/images/test/avatar.png').end(
+  (filepath) => {
+    console.log('file save:', filepath)
+  }
+)
+downloadByUrl(
+  'https://img.cdn.sugarat.top/docs/images/test/%E5%A4%B4%E5%83%8F.png'
+).end((filepath) => {
+  console.log('file save:', filepath)
+})
