@@ -5,7 +5,6 @@ import https from 'https'
 import http from 'http'
 import fs from 'fs'
 import path from 'path'
-import { DownloadOptions } from '../types'
 
 const HttpProxyAgent = require('http-proxy-agent')
 
@@ -15,14 +14,16 @@ function randomName(length = 6) {
     .slice(2, 2 + length)
 }
 
-export const underlineStr = (v: any) => `\x1B[4m${v}\x1B[24m`
-
-export const yellowStr = (v: any) => `\x1B[33m${v}\x1B[39m`
-
-export const redStr = (v: any) => `\x1B[31m${v}\x1B[39m`
-
-export function downloadByUrl(url: string, option?: Partial<DownloadOptions>) {
-  const ops: DownloadOptions = {
+interface Options {
+  filename: string
+  maxRedirects: number
+  timeout: number
+  proxy: string
+  override: boolean
+}
+// 实现5: 支持设置超时时间
+function downloadByUrl(url: string, option?: Partial<Options>) {
+  const ops: Options = {
     timeout: 3000,
     filename: '',
     maxRedirects: 10,
@@ -114,7 +115,7 @@ export function downloadByUrl(url: string, option?: Partial<DownloadOptions>) {
       errorFn && errorFn(err, url)
     })
     request.on('timeout', () => {
-      request.emit('error', new Error(`request timeout ${ops.timeout}ms`))
+      request.emit('error', new Error('request timeout'))
     })
   } catch (error: any) {
     setTimeout(() => {
@@ -129,7 +130,7 @@ interface ParseResult {
   name: string
   ext: string
 }
-export function nameParse(filename: string, suffix = ''): ParseResult {
+function nameParse(filename: string, suffix = ''): ParseResult {
   const { name, ext } = path.parse(filename)
   if (name === filename) {
     return { name, ext: ext + suffix }
@@ -137,16 +138,16 @@ export function nameParse(filename: string, suffix = ''): ParseResult {
   return nameParse(name, ext + suffix)
 }
 
-export function normalizeFilename(name: string) {
+function normalizeFilename(name: string) {
   return name.replace(/[\\/:*?"<>|]/g, '')
 }
 
-export function getValidFilenameByUrl(url: string) {
+function getValidFilenameByUrl(url: string) {
   const urlInstance = new URL(url)
   return decodeURIComponent(path.basename(urlInstance.pathname))
 }
 
-export function getNoRepeatFilepath(filename: string, dir = process.cwd()) {
+function getNoRepeatFilepath(filename: string, dir = process.cwd()) {
   const { name, ext } = nameParse(filename)
   let i = 0
   let filepath = ''
@@ -157,97 +158,8 @@ export function getNoRepeatFilepath(filename: string, dir = process.cwd()) {
   return filepath
 }
 
-export function formatSize(
-  size: number,
-  pointLength?: number,
-  units?: string[]
-) {
-  let unit
-  units = units || ['B', 'K', 'M', 'G', 'TB']
-  // eslint-disable-next-line no-cond-assign
-  while ((unit = units.shift()) && size > 1024) {
-    size /= 1024
-  }
-  return (
-    (unit === 'B'
-      ? size
-      : size.toFixed(pointLength === undefined ? 2 : pointLength)) + unit!
-  )
-}
-
-/**
- * @param cycle 多久算一次（ms）
- */
-export function getSpeedCalculator(cycle = 500) {
-  let startTime = 0
-  let endTime = 0
-  let speed = 'N/A'
-  let sum = 0
-
-  return (chunk: number) => {
-    sum += chunk
-    if (startTime === 0) {
-      startTime = Date.now()
-    }
-    endTime = Date.now()
-    // 计算一次
-    if (endTime - startTime >= cycle) {
-      speed = `${formatSize((1000 / (endTime - startTime)) * sum)}/s`
-      startTime = Date.now()
-      sum = 0
-    }
-    return speed
-  }
-}
-
-const configPath = path.join(
-  process.env.HOME || process.env.USERPROFILE || process.cwd(),
-  '.efstrc'
+downloadByUrl(
+  'http://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png'
 )
-
-export function getCLIConfig(key = '') {
-  try {
-    const value = JSON.parse(fs.readFileSync(configPath, 'utf-8'))
-    return !key
-      ? value
-      : key.split('.').reduce((pre, k) => {
-          return pre?.[key]
-        }, value)
-  } catch {
-    return !key ? {} : ''
-  }
-}
-
-export function setCLIConfig(key: string, value: string) {
-  if (!key || !value) {
-    return
-  }
-  const nowCfg = getCLIConfig()
-  const keys = key.split('.')
-  keys.reduce((pre, k, i) => {
-    // 赋值
-    if (i === keys.length - 1) {
-      pre[k] = value
-    } else if (!(pre[k] instanceof Object)) {
-      pre[k] = {}
-    }
-    return pre[k]
-  }, nowCfg)
-  fs.writeFileSync(configPath, JSON.stringify(nowCfg, null, 2))
-}
-
-export function delCLIConfig(key: string) {
-  if (!key) {
-    return
-  }
-  const nowCfg = getCLIConfig()
-  const keys = key.split('.')
-  keys.reduce((pre, k, i) => {
-    // 移除
-    if (i === keys.length - 1) {
-      delete pre[k]
-    }
-    return pre[k] instanceof Object ? pre[k] : {}
-  }, nowCfg)
-  fs.writeFileSync(configPath, JSON.stringify(nowCfg, null, 2))
-}
+downloadByUrl('https://sugarat.top/404')
+downloadByUrl('other str')

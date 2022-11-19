@@ -1,7 +1,7 @@
 {
   "name": "efst",
   "version": "0.0.0",
-  "description": "@sugarat/template-cli",
+  "description": "a easy file download tool",
   "private": "true",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/ATQQ/tools"
   },
-  "homepage": "https://github.com/ATQQ/tools",
+  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/efst",
   "files": [
     "dist"
   ],
@@ -22,14 +22,19 @@
     "prepublish": "pnpm build"
   },
   "keywords": [
-    "keywords"
+    "download",
+    "file download",
+    "files download",
+    "download cli"
   ],
   "author": "ATQQ",
   "license": "MIT",
   "dependencies": {
+    "cli-progress": "^3.11.2",
     "commander": "^9.2.0"
   },
   "devDependencies": {
+    "@types/cli-progress": "^3.11.0",
     "axios": "^1.1.3",
     "http-proxy-agent": "^5.0.0"
   }
