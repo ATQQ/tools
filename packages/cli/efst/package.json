@@ -1,6 +1,6 @@
 {
   "name": "efst",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "an easy file download CLI tool",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,11 +30,10 @@
   "license": "MIT",
   "dependencies": {
     "cli-progress": "^3.11.2",
-    "commander": "^9.2.0"
+    "commander": "^9.2.0",
+    "http-proxy-agent": "^5.0.0"
   },
   "devDependencies": {
-    "@types/cli-progress": "^3.11.0",
-    "axios": "^1.1.3",
-    "http-proxy-agent": "^5.0.0"
+    "@types/cli-progress": "^3.11.0"
   }
 }
