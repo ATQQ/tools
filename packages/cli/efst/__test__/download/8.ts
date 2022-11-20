@@ -21,7 +21,7 @@ interface Options {
   proxy: string
   override: boolean
 }
-// 实现5: 支持设置超时时间
+// 实现8：异常状态捕获
 function downloadByUrl(url: string, option?: Partial<Options>) {
   const ops: Options = {
     timeout: 3000,

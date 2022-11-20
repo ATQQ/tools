@@ -20,7 +20,7 @@ interface Options {
   timeout: number
   proxy: string
 }
-// 实现5: 支持设置超时时间
+// 实现6: 支持使用代理（proxy）
 function downloadByUrl(url: string, option?: Partial<Options>) {
   const ops: Options = {
     timeout: 300000,
