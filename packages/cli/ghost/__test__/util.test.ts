@@ -20,13 +20,15 @@ test('findGhost', () => {
     path.join(testProject, 'src'),
     path.join(testProject, 'package.json')
   )
-  expect(ghost1.length).toBe(5)
+  expect(ghost1.length).toBe(7)
   expect(ghost1).toEqual([
     '@vue/test-utils',
     'vuex',
     'vue-router',
     'dayjs',
-    'react'
+    'react',
+    'react-dom',
+    'antd'
   ])
 
   const ghost2 = findGhost(
@@ -34,14 +36,16 @@ test('findGhost', () => {
     path.join(testProject, 'package.json'),
     { includeNodeLib: true }
   )
-  expect(ghost2.length).toBe(6)
+  expect(ghost2.length).toBe(8)
   expect(ghost2).toEqual([
     '@vue/test-utils',
     'vuex',
     'vue-router',
     'dayjs',
     'fs',
-    'react'
+    'react',
+    'react-dom',
+    'antd'
   ])
 
   const ghost3 = findGhost(
@@ -49,16 +53,16 @@ test('findGhost', () => {
     path.join(testProject, 'package.json'),
     { includeNodeLib: false, exclude: [/vue/] }
   )
-  expect(ghost3.length).toBe(2)
-  expect(ghost3).toEqual(['dayjs', 'react'])
+  expect(ghost3.length).toBe(4)
+  expect(ghost3).toEqual(['dayjs', 'react', 'react-dom', 'antd'])
 })
 
 test('scanDirFiles', () => {
-  expect(scanDirFiles(testProject).length).toBe(8)
-  expect(scanDirFiles(testProject, ['.ts']).length).toBe(1)
+  expect(scanDirFiles(testProject).length).toBe(14)
+  expect(scanDirFiles(testProject, ['.ts']).length).toBe(4)
   expect(scanDirFiles(testProject, ['.tsx']).length).toBe(1)
-  expect(scanDirFiles(testProject, []).length).toBe(8)
-  expect(scanDirFiles(testProject, [], /\.vue$/).length).toBe(6)
+  expect(scanDirFiles(testProject, []).length).toBe(14)
+  expect(scanDirFiles(testProject, [], /\.vue$/).length).toBe(12)
 })
 
 test('getPkgNameBySourcePath', () => {

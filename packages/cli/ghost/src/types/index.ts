@@ -8,6 +8,10 @@ export interface GhostOptions {
    * @default false
    */
   includeNodeLib?: boolean
+  /**
+   * need exclude scan files pattern
+   */
+  excludeFilePattern?: string | string[]
 }
 
 export type ExcludePattern = string | RegExp

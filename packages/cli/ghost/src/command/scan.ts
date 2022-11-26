@@ -1,30 +1,38 @@
-import { existsSync, statSync } from 'fs'
 import path from 'path'
+import glob from 'fast-glob'
 import { findGhost } from '../util'
+import { EXCLUDE_PATTERN } from '../constants'
 
 interface Options {
-  pkg?: string
+  pkg?: string[]
   node?: boolean
+  exclude?: string[]
+  excludePkg?: string[]
 }
 export default function scanCommand(paths: string[], options: Options) {
   if (!paths.length) {
     paths.push('src')
   }
-  const targetPaths = paths
-    .map((v) => path.resolve(process.cwd(), v))
-    .filter((v) => existsSync(v))
 
-  let packageJSONPath = path.resolve(
-    process.cwd(),
-    options.pkg || 'package.json'
-  )
+  // 多package.json 支持
+  const packageJSONPath = [
+    options.pkg ?? path.resolve(process.cwd(), 'package.json')
+  ]
+    .flat()
+    .map((pattern) => {
+      return glob
+        .sync(pattern, {
+          absolute: true,
+          ignore: EXCLUDE_PATTERN.concat(options.exclude || [])
+        })
+        .filter((v) => v.endsWith('package.json'))
+    })
+    .flat()
 
-  if (existsSync(packageJSONPath) && statSync(packageJSONPath).isDirectory()) {
-    packageJSONPath = path.resolve(packageJSONPath, 'package.json')
-  }
-
-  const ghostDeps = findGhost(targetPaths, packageJSONPath, {
-    includeNodeLib: options.node
+  const ghostDeps = findGhost(paths, packageJSONPath, {
+    includeNodeLib: options.node,
+    exclude: options.excludePkg || [],
+    excludeFilePattern: options.exclude || []
   })
   console.log(ghostDeps.length, '👻')
   console.log(ghostDeps)

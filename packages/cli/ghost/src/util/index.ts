@@ -1,48 +1,60 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'fs'
-import { join, parse } from 'path'
+import path, { join, parse } from 'path'
 import AST, { GoGoAST } from 'gogocode'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import validPkgName from 'validate-npm-package-name'
-import { cssExt, jsExt, vueExt } from '../constants'
+import glob from 'fast-glob'
+import { cssExt, EXCLUDE_PATTERN, jsExt, vueExt } from '../constants'
 import type { GhostOptions, ExcludePattern } from '../types'
 
 /**
  * 查找幽灵依赖
- * @param paths 目标文件夹或目录
+ * @param paths 目标文件夹或目录（support glob pattern）
  * @param pkgJsonPath package.json文件路径
  */
 export function findGhost(
   paths: string | string[],
-  pkgJsonPath: string,
+  pkgJsonPath: string | string[],
   options: GhostOptions = {}
 ): string[] {
-  const targetPaths = [paths].flat()
-  const pkgJson =
-    pkgJsonPath && existsSync(pkgJsonPath)
-      ? JSON.parse(readFileSync(pkgJsonPath, 'utf-8'))
-      : {}
+  // 做一层兼容适配输入相对目录，兼容之前的逻辑
+  const targetPatterns = [paths].flat().map((p) => {
+    if (!p.includes('*')) {
+      const absoluteP = path.resolve(process.cwd(), p)
+      if (existsSync(absoluteP) && statSync(absoluteP).isDirectory()) {
+        return path.join(p, '/**/**')
+      }
+    }
+    return p
+  })
+  const excludeFilePattern = [options.excludeFilePattern || []]
+    .concat(EXCLUDE_PATTERN)
+    .flat()
+
   // 已安装依赖
-  const deps = {
-    ...pkgJson.dependencies,
-    ...pkgJson.devDependencies
-  }
+  const deps = [pkgJsonPath]
+    .flat()
+    .filter((p) => existsSync(p))
+    .reduce((pre, cur) => {
+      const pkgJson = JSON.parse(readFileSync(cur, 'utf-8'))
+      return {
+        ...pre,
+        ...pkgJson.dependencies,
+        ...pkgJson.devDependencies
+      }
+    }, {})
 
   // 获取检查的目标文件
   let files: string[] = []
   const supportExt = [...cssExt, ...jsExt, ...vueExt]
-  for (const p of targetPaths) {
-    if (!existsSync(p)) {
-      continue
-    }
-    if (statSync(p).isDirectory()) {
-      files.push(...scanDirFiles(p, supportExt))
-    } else {
-      files.push(p)
-    }
-  }
-  // 去重
-  files = [...new Set(files)]
+
+  files.push(
+    ...glob.sync(targetPatterns, { absolute: true, ignore: excludeFilePattern })
+  )
+
+  // 过滤出需要的文件
+  files = [...new Set(files)].filter((f) => supportExt.includes(parse(f).ext))
 
   // 获取文件里引入的第三方包
   const pkgList: string[] = []
