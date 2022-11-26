@@ -14,7 +14,10 @@ program
   )
   .alias('s')
   .option('-e, --exclude <globPatterns...>', 'exclude scan some files')
-  .option('-p, --pkg <path>', 'set package.json path')
+  .option(
+    '-p, --pkg <paths...>',
+    'set package.json file or directory (support glob pattern)'
+  )
   .option('-n, --node', 'include node lib {fs, path, etc}')
   .option(
     '--allow-dirty',

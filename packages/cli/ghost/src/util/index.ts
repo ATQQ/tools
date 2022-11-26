@@ -5,7 +5,7 @@ import AST, { GoGoAST } from 'gogocode'
 // @ts-ignore
 import validPkgName from 'validate-npm-package-name'
 import glob from 'fast-glob'
-import { cssExt, jsExt, vueExt } from '../constants'
+import { cssExt, EXCLUDE_PATTERN, jsExt, vueExt } from '../constants'
 import type { GhostOptions, ExcludePattern } from '../types'
 
 /**
@@ -15,7 +15,7 @@ import type { GhostOptions, ExcludePattern } from '../types'
  */
 export function findGhost(
   paths: string | string[],
-  pkgJsonPath: string,
+  pkgJsonPath: string | string[],
   options: GhostOptions = {}
 ): string[] {
   // 做一层兼容适配输入相对目录，兼容之前的逻辑
@@ -28,17 +28,22 @@ export function findGhost(
     }
     return p
   })
-  const excludeFilePattern = [options.excludeFilePattern || []].flat()
+  const excludeFilePattern = [options.excludeFilePattern || []]
+    .concat(EXCLUDE_PATTERN)
+    .flat()
 
-  const pkgJson =
-    pkgJsonPath && existsSync(pkgJsonPath)
-      ? JSON.parse(readFileSync(pkgJsonPath, 'utf-8'))
-      : {}
   // 已安装依赖
-  const deps = {
-    ...pkgJson.dependencies,
-    ...pkgJson.devDependencies
-  }
+  const deps = [pkgJsonPath]
+    .flat()
+    .filter((p) => existsSync(p))
+    .reduce((pre, cur) => {
+      const pkgJson = JSON.parse(readFileSync(cur, 'utf-8'))
+      return {
+        ...pre,
+        ...pkgJson.dependencies,
+        ...pkgJson.devDependencies
+      }
+    }, {})
 
   // 获取检查的目标文件
   let files: string[] = []
