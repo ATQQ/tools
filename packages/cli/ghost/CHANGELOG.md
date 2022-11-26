@@ -1,5 +1,14 @@
 # @sugarat/ghost
 
+## 0.2.0
+
+### Minor Changes
+
+- feat: 扫描路径支持 glob 规则
+- feat: 支持指定多个 package.json 路径
+- feat: 支持 exclude 指定包
+- feat: 支持 excludeFiles(glob pattern)
+
 ## 0.1.3
 
 ### Patch Changes

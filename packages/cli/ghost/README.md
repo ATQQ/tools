@@ -34,8 +34,12 @@ set `package.json` path
 
 ```sh
 # default process.cwd()/package.json
-ghost scan src -p otherDir/package.json
+ghost scan src -p <paths...>
+
+ghost scan src -p ./package.json otherDir/package.json
 ```
+
+![图片](https://img.cdn.sugarat.top/mdImg/MTY2OTQ2NjQ2OTk3OA==669466469978)
 
 ## Advanced Usage
 ### CLI
