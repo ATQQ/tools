@@ -75,6 +75,6 @@ function downloadByUrl(url: string, filename?: string) {
   return thisArg
 }
 
-downloadByUrl('http://mtw.so/6647Rc', 'test.image').end((filepath) => {
+downloadByUrl('http://mtw.so/5YIGGb', 'test.image').end((filepath) => {
   console.log('file save:', filepath)
 })

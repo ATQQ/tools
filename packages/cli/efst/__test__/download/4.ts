@@ -82,7 +82,7 @@ function downloadByUrl(url: string, option?: Partial<Options>) {
   return thisArg
 }
 
-downloadByUrl('http://mtw.so/6647Rc', {
+downloadByUrl('http://mtw.so/5YIGGb', {
   filename: 'test.image',
   maxRedirects: 10
 }).end((filepath) => {
