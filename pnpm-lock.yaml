@@ -81,10 +81,12 @@ importers:
   packages/cli/ghost:
     specifiers:
       commander: ^9.2.0
+      fast-glob: ^3.2.12
       gogocode: ^1.0.53
       validate-npm-package-name: ^4.0.0
     dependencies:
       commander: 9.2.0
+      fast-glob: 3.2.12
       gogocode: 1.0.53
       validate-npm-package-name: 4.0.0
 

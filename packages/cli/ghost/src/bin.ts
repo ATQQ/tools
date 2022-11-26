@@ -8,11 +8,22 @@ const program = new Command()
 program.version(pkg.version)
 
 program
-  .command('scan [paths...]')
-  .description('Scan a directory or file for phantom dependency')
+  .command('scan [files...]')
+  .description(
+    'scan a glob of files for phantom dependency (default src/**/**)'
+  )
   .alias('s')
+  .option('-e, --exclude <globPatterns...>', 'exclude scan some files')
   .option('-p, --pkg <path>', 'set package.json path')
   .option('-n, --node', 'include node lib {fs, path, etc}')
+  .option(
+    '--allow-dirty',
+    'these directories are masked by default (node_modules, .git etc)，you can set allow'
+  )
+  .option(
+    '--exclude-pkg <pkgName...>',
+    'set forcibly excluded phantom dependence'
+  )
   .action(scanCommand)
 
 program.parse(process.argv)
