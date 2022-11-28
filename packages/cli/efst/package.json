@@ -1,6 +1,6 @@
 {
   "name": "efst",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "an easy file download CLI tool",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,5 +1,11 @@
 # efst
 
+## 0.1.2
+
+### Patch Changes
+
+- fix: get config undefined bug
+
 ## 0.1.1
 
 ### Patch Changes
