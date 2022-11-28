@@ -1,7 +1,7 @@
 {
-  "name": "@sugarat/template-cli",
+  "name": "@sugarat/cli-plugin-hello",
   "version": "0.0.0",
-  "description": "@sugarat/template-cli",
+  "description": "@sugarat/cli demo plugin",
   "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,9 +13,6 @@
   "files": [
     "dist"
   ],
-  "bin": {
-    "tcli": "dist/bin.js"
-  },
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup --minify",
@@ -27,8 +24,8 @@
   "author": "ATQQ",
   "license": "MIT",
   "dependencies": {
-    "commander": "^9.2.0"
   },
   "devDependencies": {
+    "@sugarat/cli":"workspace:*"
   }
 }
