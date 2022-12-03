@@ -1,19 +1,19 @@
 {
-  "name": "efst",
-  "version": "0.1.2",
-  "description": "an easy file download CLI tool",
+  "name": "@sugarat/cli",
+  "version": "0.0.1",
+  "description": "A dynamic CLI tool，Based on Commander，Support Plugin System",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/ATQQ/tools"
   },
-  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/efst",
+  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/dynamic-cli/core",
   "files": [
     "dist"
   ],
   "bin": {
-    "efst": "dist/bin.js"
+    "q": "dist/bin.js"
   },
   "scripts": {
     "dev": "tsup --watch",
@@ -21,19 +21,15 @@
     "prepublish": "pnpm build"
   },
   "keywords": [
-    "download",
-    "file download",
-    "files download",
-    "download cli"
+    "commander",
+    "dynamic CLI",
+    "plugin CLI"
   ],
   "author": "ATQQ",
   "license": "MIT",
   "dependencies": {
-    "cli-progress": "^3.11.2",
+    "@sugarat/cli-plugin-config": "workspace:*",
     "commander": "^9.2.0",
-    "http-proxy-agent": "^5.0.0"
-  },
-  "devDependencies": {
-    "@types/cli-progress": "^3.11.0"
+    "module-alias": "^2.2.2"
   }
 }

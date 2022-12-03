@@ -1,0 +1,1 @@
+export { installCommand } from './install'

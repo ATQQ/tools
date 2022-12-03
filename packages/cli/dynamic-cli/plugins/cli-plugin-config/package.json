@@ -1,34 +1,32 @@
 {
-  "name": "@sugarat/template-cli",
-  "version": "0.0.0",
-  "description": "@sugarat/template-cli",
-  "private": true,
+  "name": "@sugarat/cli-plugin-config",
+  "version": "0.0.1",
+  "description": "基于commander 拓展出config 指令",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/ATQQ/tools"
   },
-  "homepage": "https://github.com/ATQQ/tools",
+  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/dynamic-cli/plugins/cli-plugin-config",
   "files": [
     "dist"
   ],
-  "bin": {
-    "tcli": "dist/bin.js"
-  },
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup --minify",
     "prepublish": "pnpm build"
   },
   "keywords": [
-    "keywords"
+    "config command",
+    "config",
+    "commander",
+    "command",
+    "@sugarat/cli-plugin"
   ],
   "author": "ATQQ",
   "license": "MIT",
-  "dependencies": {
-    "commander": "^9.2.0"
-  },
   "devDependencies": {
+    "@sugarat/cli": "workspace:*"
   }
 }

@@ -42,6 +42,28 @@ importers:
       typescript: 4.6.4
       vitest: 0.24.1_@vitest+ui@0.12.6
 
+  packages/cli/dynamic-cli/core:
+    specifiers:
+      '@sugarat/cli-plugin-config': workspace:*
+      commander: ^9.2.0
+      module-alias: ^2.2.2
+    dependencies:
+      '@sugarat/cli-plugin-config': link:../plugins/cli-plugin-config
+      commander: 9.4.1
+      module-alias: 2.2.2
+
+  packages/cli/dynamic-cli/plugins/cli-plugin-config:
+    specifiers:
+      '@sugarat/cli': workspace:*
+    devDependencies:
+      '@sugarat/cli': link:../../core
+
+  packages/cli/dynamic-cli/plugins/cli-plugin-hello:
+    specifiers:
+      '@sugarat/cli': workspace:*
+    devDependencies:
+      '@sugarat/cli': link:../../core
+
   packages/cli/efst:
     specifiers:
       '@types/cli-progress': ^3.11.0
@@ -3239,6 +3261,10 @@ packages:
     resolution: {integrity: sha512-3KYa4m4Vlqx98GPdOHghxSdNtTvcP8E0kkaJ5Dlh+h2DRzF7zpuVVcA8B0QpKd11YJeP9QQ7ASkKzOeu195Wzw==}
     engines: {node: '>= 8.0.0'}
     dev: true
+
+  /module-alias/2.2.2:
+    resolution: {integrity: sha512-A/78XjoX2EmNvppVWEhM2oGk3x4lLxnkEA4jTbaK97QKSDjkIoOsKQlfylt/d3kKKi596Qy3NP5XrXJ6fZIC9Q==}
+    dev: false
 
   /mrmime/1.0.0:
     resolution: {integrity: sha512-a70zx7zFfVO7XpnQ2IX1Myh9yY4UYvfld/dikWRnsXxbyvMcfz+u6UfgNAtH+k2QqtJuzVpv6eLTx1G2+WKZbQ==}

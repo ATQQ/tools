@@ -1,34 +1,30 @@
 {
-  "name": "@sugarat/template-cli",
-  "version": "0.0.0",
-  "description": "@sugarat/template-cli",
-  "private": true,
+  "name": "@sugarat/cli-plugin-hello",
+  "version": "0.0.2",
+  "description": "@sugarat/cli demo plugin",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/ATQQ/tools"
   },
-  "homepage": "https://github.com/ATQQ/tools",
+  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/dynamic-cli/plugins/cli-plugin-hello",
   "files": [
     "dist"
   ],
-  "bin": {
-    "tcli": "dist/bin.js"
-  },
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup --minify",
     "prepublish": "pnpm build"
   },
   "keywords": [
-    "keywords"
+    "commander",
+    "command",
+    "@sugarat/cli-plugin"
   ],
   "author": "ATQQ",
   "license": "MIT",
-  "dependencies": {
-    "commander": "^9.2.0"
-  },
   "devDependencies": {
+    "@sugarat/cli": "workspace:*"
   }
 }

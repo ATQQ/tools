@@ -211,7 +211,7 @@ export function getCLIConfig(key = '') {
     return !key
       ? value
       : key.split('.').reduce((pre, k) => {
-          return pre?.[key]
+          return pre?.[k]
         }, value)
   } catch {
     return !key ? {} : ''
