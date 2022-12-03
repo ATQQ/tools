@@ -1,6 +1,6 @@
 {
   "name": "@sugarat/cli-plugin-config",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "基于commander 拓展出config 指令",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,6 +27,6 @@
   "author": "ATQQ",
   "license": "MIT",
   "devDependencies": {
-    "@sugarat/cli":"workspace:*"
+    "@sugarat/cli": "workspace:*"
   }
 }
