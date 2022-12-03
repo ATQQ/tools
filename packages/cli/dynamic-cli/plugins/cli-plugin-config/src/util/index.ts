@@ -57,7 +57,12 @@ export function getCRUDfn(configName: string, defaultConfig = {}) {
     keys.reduce((pre, k, i) => {
       // 移除
       if (i === keys.length - 1) {
-        delete pre[k]
+        // 数租的话移除那一项直接
+        if (Array.isArray(pre)) {
+          pre.splice(+k, 1)
+        } else {
+          delete pre[k]
+        }
       }
       return pre[k] instanceof Object ? pre[k] : {}
     }, nowCfg)
