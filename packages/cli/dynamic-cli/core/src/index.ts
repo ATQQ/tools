@@ -1,9 +1,11 @@
 import { getCRUDfn } from '@sugarat/cli-plugin-config'
 import path from 'path'
-import { globalConfigName } from './constants'
+import { globalConfigName, defaultConfig } from './constants'
 
-const { getCLIConfig, setCLIConfig, delCLIConfig, configPath } =
-  getCRUDfn(globalConfigName)
+const { getCLIConfig, setCLIConfig, delCLIConfig, configPath } = getCRUDfn(
+  globalConfigName,
+  defaultConfig
+)
 
 const pluginDir = path.join(path.parse(configPath).dir, 'plugins')
 

@@ -27,9 +27,8 @@
   "author": "ATQQ",
   "license": "MIT",
   "dependencies": {
+    "@sugarat/cli-plugin-config": "workspace:*",
     "commander": "^9.2.0",
-    "@sugarat/cli-plugin-config":"workspace:*"
-  },
-  "devDependencies": {
+    "module-alias": "^2.2.2"
   }
 }
