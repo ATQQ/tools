@@ -4,9 +4,13 @@ import { ConfigType } from './types'
 import { getCRUDfn } from './util'
 
 export default function definePlugin(
-  configName = '.sugaratrc'
+  configName = '.sugaratrc',
+  defaultConfig: Record<string, any> = {}
 ): ICommandDescription {
-  const { setCLIConfig, delCLIConfig, getCLIConfig } = getCRUDfn(configName)
+  const { setCLIConfig, delCLIConfig, getCLIConfig } = getCRUDfn(
+    configName,
+    defaultConfig
+  )
   return defineCommand({
     name: 'config',
     command(program) {

@@ -1,13 +1,21 @@
-import fs from 'fs'
-
-export function getCRUDfn(configName: string) {
+export function getCRUDfn(configName: string, defaultConfig = {}) {
   // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
   const path = require('path')
+  // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
+  const fs = require('fs')
 
   const configPath = path.join(
     process.env.HOME || process.env.USERPROFILE || process.cwd(),
     configName
   )
+
+  // 不存在配置文件，则默认生成
+  if (!fs.existsSync(path.dirname(configPath))) {
+    fs.mkdirSync(path.dirname(configPath), { recursive: true })
+  }
+  if (!fs.existsSync(configPath)) {
+    fs.writeFileSync(configPath, JSON.stringify(defaultConfig, null, 2))
+  }
 
   function getCLIConfig(key = '') {
     try {
@@ -18,7 +26,7 @@ export function getCRUDfn(configName: string) {
             return pre?.[k]
           }, value)
     } catch {
-      return !key ? {} : ''
+      return !key ? defaultConfig : ''
     }
   }
 
