@@ -1,5 +1,11 @@
 # efst
 
+## 0.1.4
+
+### Patch Changes
+
+- fix: 文件下载偶现不退出
+
 ## 0.1.3
 
 ### Patch Changes

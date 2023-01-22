@@ -59,6 +59,7 @@ export default function defaultCommand(url: string, options: CLIOptions) {
       process.exit()
     })
     .end((filepath) => {
+      progressBar.stop()
       console.log('file save:', underlineStr(yellowStr(filepath)))
     })
 }
