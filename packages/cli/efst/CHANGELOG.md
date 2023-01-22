@@ -1,5 +1,11 @@
 # efst
 
+## 0.1.5
+
+### Patch Changes
+
+- fix: 修复使用 proxy 下载时，总在最后失败的问题
+
 ## 0.1.4
 
 ### Patch Changes

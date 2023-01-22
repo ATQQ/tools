@@ -8,6 +8,7 @@ import path from 'path'
 import { DownloadOptions } from '../types'
 
 const HttpProxyAgent = require('http-proxy-agent')
+const HttpsProxyAgent = require('https-proxy-agent')
 
 function randomName(length = 6) {
   return Math.random()
@@ -56,11 +57,13 @@ export function downloadByUrl(url: string, option?: Partial<DownloadOptions>) {
     }
   }
   let request: http.ClientRequest
+  const ProxyAgent = url.startsWith('https') ? HttpsProxyAgent : HttpProxyAgent
   const reqOptions = {
-    agent: ops.proxy ? new HttpProxyAgent(ops.proxy) : undefined,
+    agent: ops.proxy ? new ProxyAgent(ops.proxy) : undefined,
     timeout: ops.timeout || 0,
     headers: {
-      'User-Agent': 'node http module'
+      'User-Agent': 'node http module',
+      Connection: 'keep-alive'
     }
   }
   const responseCallback = (response: http.IncomingMessage) => {
@@ -99,6 +102,12 @@ export function downloadByUrl(url: string, option?: Partial<DownloadOptions>) {
     response.on('data', (chunk: Buffer) => {
       receive += chunk.length
       progressFn && progressFn(chunk.length, receive, sumSize)
+    })
+
+    response.on('error', (err) => {
+      console.log()
+      console.log(redStr('response error'))
+      console.log(err)
     })
 
     response.pipe(writeStream).on('close', () => {
