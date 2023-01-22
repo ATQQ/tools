@@ -1,5 +1,11 @@
 # efst
 
+## 0.1.3
+
+### Patch Changes
+
+- chore: update readme
+
 ## 0.1.2
 
 ### Patch Changes

@@ -51,7 +51,7 @@ efst http://mtw.so/5uDwX3 -t 1000
 ### CRUD Global Config
 ```sh
 # set
-efst config set proxy http://127.0.0.1/7890
+efst config set proxy http://127.0.0.1:7890
 efst config set location 30
 efst config set timeout 1000
 
