@@ -1,6 +1,6 @@
 {
   "name": "@sugarat/cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A dynamic CLI tool，Based on Commander，Support Plugin System",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

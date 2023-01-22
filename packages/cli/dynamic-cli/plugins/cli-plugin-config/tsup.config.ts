@@ -6,6 +6,6 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   dts: true,
-  entryPoints: ['src/index.ts'],
+  entry: ['src/index.ts'],
   external:['@sugarat/cli']
 })

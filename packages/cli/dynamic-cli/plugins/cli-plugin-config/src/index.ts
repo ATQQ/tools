@@ -1,4 +1,9 @@
-import { defineCommand, ICommandDescription } from '@sugarat/cli'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { defineCommand } from '@sugarat/cli'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import type { ICommandDescription } from '@sugarat/cli'
 import { inspect } from 'util'
 import { ConfigType } from './types'
 import { getCRUDfn } from './util'
@@ -13,6 +18,8 @@ export default function definePlugin(
   )
   return defineCommand({
     name: 'config',
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     command(program) {
       program
         .command('config <type> [key] [value]')
