@@ -53,6 +53,7 @@ export const installCommand = defineCommand({
   command(program) {
     program
       .command('install <plugin> [rest...]')
+      .alias('add')
       .description('install a new command')
       .action(async (plugin: string, rest: string[] = []) => {
         const pluginDes: PluginDes = {
