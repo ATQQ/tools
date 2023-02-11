@@ -1,0 +1,33 @@
+{
+  "name": "@sugarat/cli-plugin-blog",
+  "version": "0.0.0",
+  "description": "用于博客内容分发其它平台的markdown格式转换",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ATQQ/tools"
+  },
+  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/dynamic-cli/plugins/cli-plugin-blog",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup --minify",
+    "prepublish": "pnpm build"
+  },
+  "keywords": [
+    "commander",
+    "command",
+    "@sugarat/cli-plugin"
+  ],
+  "author": "ATQQ",
+  "license": "MIT",
+  "devDependencies": {
+    "@sugarat/cli": "workspace:*"
+  },
+  "dependencies": {
+    "copy-paste": "^1.3.0"
+  }
+}
