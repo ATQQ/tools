@@ -67,6 +67,12 @@ importers:
     devDependencies:
       '@sugarat/cli': link:../../core
 
+  packages/cli/dynamic-cli/plugins/cli-plugin-ep:
+    specifiers:
+      '@sugarat/cli': workspace:*
+    devDependencies:
+      '@sugarat/cli': link:../../core
+
   packages/cli/dynamic-cli/plugins/cli-plugin-hello:
     specifiers:
       '@sugarat/cli': workspace:*
