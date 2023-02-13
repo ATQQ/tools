@@ -1,5 +1,5 @@
 import { defineCommand, ICommandDescription } from '@sugarat/cli'
-import { checkMachineEnv } from './action'
+import { checkMachineEnv, packDist, uploadPkg } from './action'
 import type { ActionType, Options } from './type'
 
 export default function definePlugin(...words: string[]): ICommandDescription {
@@ -12,6 +12,8 @@ export default function definePlugin(...words: string[]): ICommandDescription {
           `部署兼启动 EasyPicker 服务 (type in [client, server, admin])`
         )
         .option('--check', '检查环境')
+        .option('-p,--pack [mode]', '产物打包')
+        .option('-u,--upload', '上传打包的产物')
         .option('--pull [version]', '拉取服务静态资源', 'latest')
         .option('--restart [name]', '重启服务', 'ep-server')
         .option('--start [name]', '启动服务', 'ep-server')
@@ -23,6 +25,16 @@ export default function definePlugin(...words: string[]): ICommandDescription {
             checkMachineEnv()
           }
           if (!type) {
+            return
+          }
+          if (options.pack) {
+            const filename = packDist(
+              options.pack === true ? 'production' : options.pack,
+              type
+            )
+            if (options.upload) {
+              uploadPkg(filename)
+            }
             return
           }
           console.log('hello world')

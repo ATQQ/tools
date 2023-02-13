@@ -1,4 +1,6 @@
+import { readJSONFIle } from '@sugarat/cli'
 import { exec, execSync } from 'child_process'
+import path from 'path'
 
 export function isCmdExist(
   cmd: string,
@@ -60,4 +62,25 @@ export async function checkMachineEnv() {
     tip: '请执行如下指令安装: npm i -g pnpm'
   })
   checkRegistry()
+}
+
+export function packDist(mode: string, type: string) {
+  const pkgJSON = readJSONFIle(path.resolve(process.cwd(), 'package.json'))
+  const compressPkgName = `${type}_${mode}_${pkgJSON.name}_${pkgJSON.version}.tar.gz`
+  execSync(`tar -zvcf ${compressPkgName} package.json dist`, {
+    stdio: 'ignore',
+    cwd: process.cwd()
+  })
+  console.log(`✅ 产物归档完成`)
+  execSync(`du -h ${compressPkgName}`, {
+    stdio: 'inherit',
+    cwd: process.cwd()
+  })
+  return compressPkgName
+}
+
+export function uploadPkg(filename: string) {
+  // TODO:上传逻辑
+  // TODO: OSS Key的路径逻辑参考一下社区先
+  console.log('上传文件', filename)
 }
