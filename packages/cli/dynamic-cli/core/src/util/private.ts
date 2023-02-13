@@ -13,7 +13,7 @@ export function getInstalledPlugins(): ICommandDescription[] {
   return Object.entries(plugins)
     .map(([pluginName, ops]) => {
       try {
-        const module = loadCommandSync(pluginName, ops.rest)
+        const module = loadCommandSync(ops)
         return module
       } catch (error) {
         console.log('=================================')
@@ -28,15 +28,11 @@ export function getInstalledPlugins(): ICommandDescription[] {
     .filter((v) => !!v)
 }
 
-export function loadCommandSync(
-  pluginName: string,
-  rest: string[]
-): ICommandDescription {
-  const module = require(path.resolve(
-    pluginDir,
-    'node_modules',
-    pluginName
-  ))?.default
+export function loadCommandSync(plugin: PluginDes): ICommandDescription {
+  const { local, rest, name: pluginName } = plugin
+  const module = local
+    ? require(plugin.path)?.default
+    : require(path.resolve(pluginDir, 'node_modules', pluginName))?.default
 
   if (typeof module === 'function') {
     return module(...rest)
