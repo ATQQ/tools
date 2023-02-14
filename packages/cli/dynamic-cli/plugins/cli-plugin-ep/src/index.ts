@@ -12,7 +12,7 @@ export default function definePlugin(...words: string[]): ICommandDescription {
           `部署兼启动 EasyPicker 服务 (type in [client, server, admin])`
         )
         .option('--check', '检查环境')
-        .option('-p,--pack [mode]', '产物打包')
+        .option('-p,--pack', '产物打包')
         .option('-u,--upload', '上传打包的产物')
         .option('--pull [version]', '拉取服务静态资源', 'latest')
         .option('--restart [name]', '重启服务', 'ep-server')
@@ -28,12 +28,11 @@ export default function definePlugin(...words: string[]): ICommandDescription {
             return
           }
           if (options.pack) {
-            const filename = packDist(
-              options.pack === true ? 'production' : options.pack,
-              type
-            )
+            const filename = packDist(type)
             if (options.upload) {
-              uploadPkg(filename)
+              uploadPkg(filename).catch((err) => {
+                console.log(err?.message)
+              })
             }
             return
           }

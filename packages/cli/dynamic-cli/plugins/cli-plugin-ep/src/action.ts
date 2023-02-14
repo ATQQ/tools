@@ -1,6 +1,8 @@
-import { readJSONFIle } from '@sugarat/cli'
+import { readJSONFIle, getCLIConfig } from '@sugarat/cli'
 import { exec, execSync } from 'child_process'
 import path from 'path'
+import qiniu from 'qiniu'
+import fs from 'fs'
 
 export function isCmdExist(
   cmd: string,
@@ -64,9 +66,14 @@ export async function checkMachineEnv() {
   checkRegistry()
 }
 
-export function packDist(mode: string, type: string) {
+export function packDist(type: string) {
   const pkgJSON = readJSONFIle(path.resolve(process.cwd(), 'package.json'))
-  const compressPkgName = `${type}_${mode}_${pkgJSON.name}_${pkgJSON.version}.tar.gz`
+  const compressPkgName = `EasyPicker_${type}_${pkgJSON.version}.tar.gz`
+
+  if (fs.existsSync(path.join(process.cwd(), compressPkgName))) {
+    fs.rmSync(path.join(process.cwd(), compressPkgName))
+  }
+
   execSync(`tar -zvcf ${compressPkgName} package.json dist`, {
     stdio: 'ignore',
     cwd: process.cwd()
@@ -80,7 +87,57 @@ export function packDist(mode: string, type: string) {
 }
 
 export function uploadPkg(filename: string) {
-  // TODO:上传逻辑
-  // TODO: OSS Key的路径逻辑参考一下社区先
-  console.log('上传文件', filename)
+  const pkgJSON = readJSONFIle(path.resolve(process.cwd(), 'package.json'))
+
+  return new Promise((resolve, reject) => {
+    console.log('🔧 正在上传文件', filename)
+
+    const qiniuConfig = getCLIConfig('qiniu')
+    const {
+      bucket,
+      accessKey,
+      secretKey,
+      base = `dist/easypicker/`
+    } = qiniuConfig || {}
+    const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
+    const putPolicy = new qiniu.rs.PutPolicy({
+      scope: bucket
+    })
+    const uploadToken = putPolicy.uploadToken(mac)
+
+    const config = new qiniu.conf.Config({
+      // 空间对应的机房
+      zone: qiniu.zone.Zone_z0,
+      useCdnDomain: true
+    })
+    const localFile = path.resolve(process.cwd(), filename)
+
+    const formUploader = new qiniu.form_up.FormUploader(config)
+    const putExtra = new qiniu.form_up.PutExtra()
+    const key = `${base}${pkgJSON?.version || 'unknown'}/${filename}`
+    // 七牛云文件上传
+    formUploader.putFile(
+      uploadToken,
+      key,
+      localFile,
+      putExtra,
+      (respErr, respBody, respInfo) => {
+        if (respErr) {
+          console.log('❌ 文件上传出错', filename)
+          reject(respErr)
+          throw respErr
+        }
+        if (respInfo.statusCode === 200) {
+          // console.log(respBody)
+          resolve(respInfo)
+          console.log('✅ 资源上传成功', key)
+        } else {
+          console.log('❌ 文件上传失败', filename)
+          reject(respInfo)
+          // console.log(respInfo.statusCode)
+          // console.log(respBody)
+        }
+      }
+    )
+  })
 }
