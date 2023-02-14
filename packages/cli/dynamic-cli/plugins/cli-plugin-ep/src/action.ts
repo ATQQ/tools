@@ -3,6 +3,7 @@ import { exec, execSync } from 'child_process'
 import path from 'path'
 import qiniu from 'qiniu'
 import fs from 'fs'
+import axios from 'axios'
 
 export function isCmdExist(
   cmd: string,
@@ -65,10 +66,13 @@ export async function checkMachineEnv() {
   })
   checkRegistry()
 }
+export const CompressPkgName = (type: string, version: string) => {
+  return `EasyPicker_${type}_${version}.tar.gz`
+}
 
 export function packDist(type: string) {
   const pkgJSON = readJSONFIle(path.resolve(process.cwd(), 'package.json'))
-  const compressPkgName = `EasyPicker_${type}_${pkgJSON.version}.tar.gz`
+  const compressPkgName = CompressPkgName(type, pkgJSON.version)
 
   if (fs.existsSync(path.join(process.cwd(), compressPkgName))) {
     fs.rmSync(path.join(process.cwd(), compressPkgName))
@@ -91,7 +95,6 @@ export function uploadPkg(filename: string) {
 
   return new Promise((resolve, reject) => {
     console.log('🔧 正在上传文件', filename)
-
     const qiniuConfig = getCLIConfig('qiniu')
     const {
       bucket,
@@ -140,4 +143,31 @@ export function uploadPkg(filename: string) {
       }
     )
   })
+}
+
+export async function pullPkg(type: string, version: string) {
+  const { versionMapUrl, cdn } = getCLIConfig('qiniu.source')
+
+  // 取远程配置
+  const versionMap = (await axios.get(versionMapUrl)).data
+
+  // 取版本号
+  const targetVersion = versionMap[version] || version
+
+  // 生成key路径
+  const sourceUrl = `${cdn}/${getCLIConfig(
+    'qiniu.base'
+  )}${targetVersion}/${CompressPkgName(type, targetVersion)}`
+  console.log(sourceUrl)
+
+  // TODO: 判断是否存在
+  const result = await axios.get(sourceUrl, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    responseType: 'arraybuffer'
+  })
+  // console.log(result.);
+
+  // 保存资源到本地
 }

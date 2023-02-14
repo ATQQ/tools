@@ -4,7 +4,7 @@ export interface Options {
   check?: boolean
   pack?: string | boolean
   upload?: boolean
-  pull?: string
+  pull?: string | boolean
   restart?: string
   start?: string
   stop?: string
