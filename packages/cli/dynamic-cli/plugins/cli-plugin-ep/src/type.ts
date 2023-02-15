@@ -7,9 +7,11 @@ export interface Options {
   pull?: string | boolean
   unpkg?: string | boolean
   deploy?: string | boolean
-  restart?: string
-  start?: string
-  stop?: string
-  status?: string
-  log?: string
+  name?: string
+  restart?: boolean
+  start?: boolean
+  stop?: boolean
+  del?: boolean
+  status?: boolean
+  log?: boolean
 }

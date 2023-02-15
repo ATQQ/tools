@@ -29,11 +29,13 @@ export default function definePlugin(): ICommandDescription {
         .option('--pull [version]', '拉取服务静态资源')
         .option('--unpkg [version]', '解压资源包')
         .option('--deploy [version]', '一键部署资源包')
-        .option('--restart [name]', '重启服务', 'ep-server')
-        .option('--start [name]', '启动服务', 'ep-server')
-        .option('--stop [name]', '启动服务', 'ep-server')
-        .option('--status [name]', '服务状态', 'ep-server')
-        .option('--log [name]', '服务日志', 'ep-server')
+        .option('--name <serverName>', '指定服务应用的名称')
+        .option('--restart', '重启服务')
+        .option('--start', '启动服务')
+        .option('--stop', '启动服务')
+        .option('--del', '移除服务')
+        .option('--status', '服务状态')
+        .option('--log', '服务日志')
         .action((type: ActionType, options: Options) => {
           if (!getCLIConfig('qiniu.base')) {
             setCLIConfig('qiniu.base', `dist/easypicker/`)
@@ -69,11 +71,23 @@ export default function definePlugin(): ICommandDescription {
             unPkg(type, options.unpkg === true ? 'latest' : options.unpkg)
             return
           }
+
+          const serverName =
+            options.name ||
+            getCLIConfig('server.name') ||
+            `ep-server_${Date.now()}`
+
+          setCLIConfig('server.name', serverName)
+
           if (options.deploy) {
-            deployPkg(type, options.deploy === true ? 'latest' : options.deploy)
+            deployPkg(
+              type,
+              options.deploy === true ? 'latest' : options.deploy,
+              serverName
+            )
             return
           }
-          console.log('hello world')
+          console.log('🎉 hello easypicker2 🎉')
         })
     }
   })

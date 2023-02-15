@@ -214,11 +214,74 @@ export async function unPkg(type: string, version: string, existName?: string) {
   })
   console.log('✅ 资源包已解压', pkgName)
 }
+export function validServerFIle() {
+  console.log('🔍 正在检查相关文件是否完整')
+  const targetDir = path.resolve(process.cwd(), 'easypicker2-server')
+  if (
+    !fs.existsSync(path.join(targetDir, 'dist/index.js')) ||
+    !fs.existsSync(path.join(targetDir, 'package.json'))
+  ) {
+    console.log('❌ 服务端文件不存在')
+    process.exit(0)
+  }
 
-export async function deployPkg(
-  type: string,
-  version: string,
-  existName?: string
-) {
-  const pkgName = await getCompressName(type, version, existName)
+  console.log('🔧 正在进行pnpm依赖安装，请稍等')
+
+  // 切换到淘宝镜像源
+  execSync(`npm config set registry https://registry.npmmirror.com/`, {
+    stdio: 'ignore',
+    cwd: targetDir
+  })
+
+  // 安装依赖
+  execSync(`pnpm install`, {
+    stdio: 'ignore',
+    cwd: targetDir
+  })
+}
+
+export function deleteService(serverName: string) {
+  // 删除旧的
+  try {
+    execSync(`pm2 delete ${serverName}`, {
+      stdio: 'ignore',
+      cwd: process.cwd()
+    })
+  } catch (error) {
+    // TODO：更友好的处理
+    console.log()
+  }
+}
+
+export function runService(serverName: string) {
+  // 启动新的
+  try {
+    const result = execSync(
+      `cd easypicker2-server && pm2 start npm --name ${serverName} -- run start`,
+      {
+        stdio: 'inherit',
+        cwd: process.cwd()
+      }
+    )
+    console.log(result?.toString('utf-8'))
+    console.log('✅ 服务启动成功')
+    // TODO: 输出服务部署的端口号
+  } catch (error) {
+    console.log('❌ 服务启动失败')
+  }
+}
+export function deployServer(serverName: string) {
+  deleteService(serverName)
+  runService(serverName)
+}
+
+export async function deployPkg(type: string, version: string, name: string) {
+  const pkgName = await pullPkg(type, version)
+  await unPkg(type, version, pkgName)
+  if (type === 'server') {
+    // 校验目标文件和目录是否存在
+    validServerFIle()
+    // 部署服务
+    deployServer(name)
+  }
 }
