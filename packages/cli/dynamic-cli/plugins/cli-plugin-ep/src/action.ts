@@ -146,6 +146,7 @@ export function uploadPkg(filename: string) {
 }
 
 export async function pullPkg(type: string, version: string) {
+  console.log('🔧 准备拉取资源包')
   const { versionMapUrl, cdn } = getCLIConfig('qiniu.source')
 
   // 取远程配置
@@ -172,5 +173,52 @@ export async function pullPkg(type: string, version: string) {
   } catch (error: any) {
     console.log(error?.message)
     console.log('❌ 资源不存在')
+    process.exit(0)
   }
+  return pkgName
+}
+
+export async function getCompressName(
+  type: string,
+  version: string,
+  existName?: string
+) {
+  if (existName && fs.existsSync(path.resolve(process.cwd(), existName))) {
+    return existName
+  }
+  const { versionMapUrl } = getCLIConfig('qiniu.source')
+  // 取远程配置
+  const versionMap = (await axios.get(versionMapUrl)).data
+
+  // 取版本号
+  const targetVersion = versionMap[version] || version
+  const pkgName = CompressPkgName(type, targetVersion)
+  return pkgName
+}
+
+export async function unPkg(type: string, version: string, existName?: string) {
+  const pkgName = await getCompressName(type, version, existName)
+
+  const targetDir = path.resolve(
+    process.cwd(),
+    type === 'client' ? './' : 'easypicker2-server'
+  )
+
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true })
+  }
+
+  execSync(`tar -xf ${pkgName} -C ${targetDir}`, {
+    stdio: 'ignore',
+    cwd: process.cwd()
+  })
+  console.log('✅ 资源包已解压', pkgName)
+}
+
+export async function deployPkg(
+  type: string,
+  version: string,
+  existName?: string
+) {
+  const pkgName = await getCompressName(type, version, existName)
 }

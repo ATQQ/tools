@@ -5,6 +5,8 @@ export interface Options {
   pack?: string | boolean
   upload?: boolean
   pull?: string | boolean
+  unpkg?: string | boolean
+  deploy?: string | boolean
   restart?: string
   start?: string
   stop?: string

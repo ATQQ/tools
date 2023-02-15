@@ -4,7 +4,14 @@ import {
   getCLIConfig,
   setCLIConfig
 } from '@sugarat/cli'
-import { checkMachineEnv, packDist, pullPkg, uploadPkg } from './action'
+import {
+  checkMachineEnv,
+  deployPkg,
+  packDist,
+  pullPkg,
+  unPkg,
+  uploadPkg
+} from './action'
 import type { ActionType, Options } from './type'
 
 export default function definePlugin(): ICommandDescription {
@@ -20,6 +27,8 @@ export default function definePlugin(): ICommandDescription {
         .option('-p,--pack', '产物打包')
         .option('-u,--upload', '上传打包的产物')
         .option('--pull [version]', '拉取服务静态资源')
+        .option('--unpkg [version]', '解压资源包')
+        .option('--deploy [version]', '一键部署资源包')
         .option('--restart [name]', '重启服务', 'ep-server')
         .option('--start [name]', '启动服务', 'ep-server')
         .option('--stop [name]', '启动服务', 'ep-server')
@@ -54,6 +63,14 @@ export default function definePlugin(): ICommandDescription {
           }
           if (options.pull) {
             pullPkg(type, options.pull === true ? 'latest' : options.pull)
+            return
+          }
+          if (options.unpkg) {
+            unPkg(type, options.unpkg === true ? 'latest' : options.unpkg)
+            return
+          }
+          if (options.deploy) {
+            deployPkg(type, options.deploy === true ? 'latest' : options.deploy)
             return
           }
           console.log('hello world')
