@@ -153,21 +153,24 @@ export async function pullPkg(type: string, version: string) {
 
   // 取版本号
   const targetVersion = versionMap[version] || version
-
+  const pkgName = CompressPkgName(type, targetVersion)
   // 生成key路径
   const sourceUrl = `${cdn}/${getCLIConfig(
     'qiniu.base'
-  )}${targetVersion}/${CompressPkgName(type, targetVersion)}`
-  console.log(sourceUrl)
+  )}${targetVersion}/${pkgName}`
 
-  // TODO: 判断是否存在
-  const result = await axios.get(sourceUrl, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    },
-    responseType: 'arraybuffer'
-  })
-  // console.log(result.);
-
-  // 保存资源到本地
+  try {
+    const result = await axios.get(sourceUrl, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      responseType: 'arraybuffer'
+    })
+    // 保存资源到本地
+    fs.writeFileSync(pkgName, result.data, 'binary')
+    console.log('✅ 资源包已拉取到本地', pkgName)
+  } catch (error: any) {
+    console.log(error?.message)
+    console.log('❌ 资源不存在')
+  }
 }
