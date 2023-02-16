@@ -9,9 +9,9 @@ export interface Options {
   deploy?: string | boolean
   name?: string
   restart?: boolean
-  start?: boolean
   stop?: boolean
   del?: boolean
+  list?: boolean
   status?: boolean
   log?: boolean
 }

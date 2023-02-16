@@ -214,14 +214,14 @@ export async function unPkg(type: string, version: string, existName?: string) {
   })
   console.log('✅ 资源包已解压', pkgName)
 }
-export function validServerFIle() {
+export function validServerFile() {
   console.log('🔍 正在检查相关文件是否完整')
   const targetDir = path.resolve(process.cwd(), 'easypicker2-server')
   if (
     !fs.existsSync(path.join(targetDir, 'dist/index.js')) ||
     !fs.existsSync(path.join(targetDir, 'package.json'))
   ) {
-    console.log('❌ 服务端文件不存在')
+    console.log('❌ 服务端文件不存在', targetDir)
     process.exit(0)
   }
 
@@ -238,6 +238,8 @@ export function validServerFIle() {
     stdio: 'ignore',
     cwd: targetDir
   })
+
+  return targetDir
 }
 
 export function deleteService(serverName: string) {
@@ -253,35 +255,86 @@ export function deleteService(serverName: string) {
   }
 }
 
-export function runService(serverName: string) {
-  // 启动新的
+export async function runService(serverName: string) {
+  // 启动
   try {
-    const result = execSync(
+    execSync(
       `cd easypicker2-server && pm2 start npm --name ${serverName} -- run start`,
+      {
+        stdio: 'ignore',
+        cwd: process.cwd()
+      }
+    )
+    // eslint-disable-next-line no-promise-executor-return
+    await new Promise((res) => setTimeout(res, 2000))
+    execSync(
+      `tail -n8 ${path.join(
+        process.env.HOME || process.env.USERPROFILE || process.cwd(),
+        '.pm2/logs',
+        `${serverName}-out.log`
+      )}`,
       {
         stdio: 'inherit',
         cwd: process.cwd()
       }
     )
-    console.log(result?.toString('utf-8'))
     console.log('✅ 服务启动成功')
     // TODO: 输出服务部署的端口号
   } catch (error) {
     console.log('❌ 服务启动失败')
   }
 }
+
+export function restartService(serverName: string) {
+  try {
+    execSync(`pm2 restart ${serverName}`, {
+      stdio: 'ignore',
+      cwd: process.cwd()
+    })
+  } catch (error) {
+    console.log('❌ 服务重启失败')
+    return
+  }
+  console.log('✅ 服务重启成功')
+}
+
+export function stopService(serverName: string) {
+  try {
+    execSync(`pm2 stop ${serverName}`, {
+      stdio: 'ignore',
+      cwd: process.cwd()
+    })
+  } catch (error) {
+    console.log('❌ 停止服务失败')
+    return
+  }
+  console.log(`✅ 已停止服务${serverName}`)
+}
+export function checkServiceStatus(serverName: string) {
+  execSync(`pm2 monit ${serverName}`, {
+    stdio: 'inherit',
+    cwd: process.cwd()
+  })
+}
+export function checkServiceLog(serverName: string) {
+  execSync(
+    `tail -fn 10 ${path.join(
+      process.env.HOME || process.env.USERPROFILE || process.cwd(),
+      '.pm2/logs',
+      `${serverName}-out.log`
+    )}`,
+    {
+      stdio: 'inherit',
+      cwd: process.cwd()
+    }
+  )
+}
 export function deployServer(serverName: string) {
   deleteService(serverName)
   runService(serverName)
 }
 
-export async function deployPkg(type: string, version: string, name: string) {
+export async function deployPkg(type: string, version: string) {
   const pkgName = await pullPkg(type, version)
   await unPkg(type, version, pkgName)
-  if (type === 'server') {
-    // 校验目标文件和目录是否存在
-    validServerFIle()
-    // 部署服务
-    deployServer(name)
-  }
 }
