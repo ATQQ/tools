@@ -1,5 +1,12 @@
 # @sugarat/cli
 
+## 0.0.4
+
+### Patch Changes
+
+- feat: 完善 easypicker 辅助部署插件
+  - @sugarat/cli-plugin-config@0.0.2
+
 ## 0.0.3
 
 ### Patch Changes
