@@ -225,7 +225,7 @@ export function validServerFile() {
     process.exit(0)
   }
 
-  console.log('🔧 正在进行pnpm依赖安装，请稍等')
+  // console.log('🔧 正在进行pnpm依赖安装，请稍等')
 
   // 切换到淘宝镜像源
   execSync(`npm config set registry https://registry.npmmirror.com/`, {
@@ -278,8 +278,9 @@ export async function runService(serverName: string) {
         cwd: process.cwd()
       }
     )
-    console.log('✅ 服务启动成功')
-    // TODO: 输出服务部署的端口号
+    console.log('✅ 服务启动成功', serverName)
+    console.log('可以使用 q ep server --status 查看服务状态')
+    console.log('可以使用 q ep server --log 查看服务日志')
   } catch (error) {
     console.log('❌ 服务启动失败')
   }
@@ -333,7 +334,10 @@ export function deployServer(serverName: string) {
   deleteService(serverName)
   runService(serverName)
 }
-
+export function checkServiceList() {
+  const serviceList = getCLIConfig('server.list')
+  console.log(serviceList)
+}
 export async function deployPkg(type: string, version: string) {
   const pkgName = await pullPkg(type, version)
   await unPkg(type, version, pkgName)

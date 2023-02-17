@@ -17,7 +17,8 @@ import {
   uploadPkg,
   checkServiceLog,
   validServerFile,
-  deployServer
+  deployServer,
+  checkServiceList
 } from './action'
 import type { ActionType, Options } from './type'
 
@@ -42,7 +43,7 @@ export default function definePlugin(): ICommandDescription {
         .option('--del', '移除服务')
         .option('--status', '服务状态')
         .option('--log', '服务日志')
-        .option('--list', 'pm2服务列表')
+        .option('--list', '服务列表')
         .action((type: ActionType, options: Options) => {
           if (!getCLIConfig('qiniu.base')) {
             setCLIConfig('qiniu.base', `dist/easypicker/`)
@@ -85,13 +86,30 @@ export default function definePlugin(): ICommandDescription {
           if (type !== 'server') {
             return
           }
+          if (options.list) {
+            checkServiceList()
+            return
+          }
           const serverDir = validServerFile()
-          // TODO：serverName 和目录绑定
-          // TODO: 通过后获取服务名
-          const serverName =
-            options.name ||
-            getCLIConfig('server.name') ||
-            `ep-server-${Date.now()}`
+          // serverName 和目录绑定
+          const serverList = getCLIConfig('server.list') || []
+          const serverInfo =
+            serverList.find((v: any) => v.dir === serverDir) || {}
+          if (!serverInfo.name) {
+            serverInfo.dir = serverDir
+            serverInfo.name = options.name || `ep-server-${Date.now()}`
+            serverList.push(serverInfo)
+            setCLIConfig('server.list', serverList)
+          }
+          console.log('')
+          console.log('====操作服务信息====')
+          console.log('= dir:', serverInfo.dir)
+          console.log('= name:', serverInfo.name)
+          console.log('====================')
+          console.log('')
+
+          // 获取服务名
+          const serverName = serverInfo.name
 
           if (!options.name) {
             setCLIConfig('server.name', serverName)
@@ -100,6 +118,7 @@ export default function definePlugin(): ICommandDescription {
             // 校验目标文件和目录是否存在
             // 部署服务
             deployServer(serverName)
+            return
           }
           if (options.restart) {
             restartService(serverName)
