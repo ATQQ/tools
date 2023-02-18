@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-ep
 
+## 0.0.4
+
+### Patch Changes
+
+- fix: 先拉取资源在安装依赖启动服务
+
 ## 0.0.3
 
 ### Patch Changes

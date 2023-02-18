@@ -47,7 +47,7 @@ export default function definePlugin(): ICommandDescription {
         .option('--status', '服务状态')
         .option('--log', '服务日志')
         .option('--list', '服务列表')
-        .action((type: ActionType, options: Options) => {
+        .action(async (type: ActionType, options: Options) => {
           if (!getCLIConfig('qiniu.base')) {
             setCLIConfig('qiniu.base', `dist/easypicker/`)
           }
@@ -84,7 +84,10 @@ export default function definePlugin(): ICommandDescription {
           }
 
           if (options.deploy) {
-            deployPkg(type, options.deploy === true ? 'latest' : options.deploy)
+            await deployPkg(
+              type,
+              options.deploy === true ? 'latest' : options.deploy
+            )
           }
           if (type !== 'server') {
             return
