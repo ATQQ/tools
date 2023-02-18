@@ -8,11 +8,7 @@ import moduleAlias from 'module-alias'
 import path from 'path'
 import pkg from '../package.json'
 import { defaultConfig, globalConfigName } from './constants'
-import {
-  checkInstallEdPluginVersion,
-  getInstalledPlugins,
-  syncFnErrorWrapper
-} from './util/private'
+import { getInstalledPlugins, syncFnErrorWrapper } from './util/private'
 import { installCommand, removeCommand, updateCommand } from './command'
 
 // 添加 alias
