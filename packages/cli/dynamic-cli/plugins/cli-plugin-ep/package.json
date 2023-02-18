@@ -1,6 +1,6 @@
 {
   "name": "@sugarat/cli-plugin-ep",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@sugarat/cli EasyPicker plugin",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
