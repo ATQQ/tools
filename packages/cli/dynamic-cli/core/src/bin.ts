@@ -9,7 +9,7 @@ import path from 'path'
 import pkg from '../package.json'
 import { defaultConfig, globalConfigName } from './constants'
 import { getInstalledPlugins, syncFnErrorWrapper } from './util/private'
-import { installCommand } from './command'
+import { installCommand, removeCommand } from './command'
 
 // 添加 alias
 moduleAlias.addAlias('@sugarat/cli', path.join(__dirname, '../'))
@@ -19,7 +19,7 @@ programInstance.version(pkg.version)
 
 const init = (program: Command) => {
   const configPlugin = definePlugin(globalConfigName, defaultConfig)
-  const inlinePlugin = [configPlugin, installCommand]
+  const inlinePlugin = [configPlugin, installCommand, removeCommand]
   const installedPlugin = getInstalledPlugins()
   const plugins = [...inlinePlugin, ...installedPlugin]
 
