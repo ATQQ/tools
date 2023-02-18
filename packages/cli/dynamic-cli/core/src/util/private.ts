@@ -1,3 +1,4 @@
+import fs from 'fs'
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable global-require */
@@ -70,4 +71,41 @@ export function syncFnErrorWrapper(fn: any, ...rest: any[]) {
 export function getValidPkgName(installPkg: string) {
   const flag = installPkg.startsWith('@')
   return (flag ? '@' : '') + installPkg.slice(+flag).split('@')[0]
+}
+
+export const isLocal = (p: string) =>
+  fs.existsSync(path.join(p, 'package.json'))
+
+export function installLocalPlugin(localPath: string) {
+  spawnSync('npm', ['link', localPath], {
+    cwd: pluginDir
+  })
+}
+
+export function installRemotePlugin(pluginName: string, registry: string) {
+  spawnSync('npm', ['install', pluginName, `--registry=${registry}`], {
+    cwd: pluginDir
+  })
+}
+export function checkIsNpmPlugin(plugin: string) {
+  const {
+    registry = defaultConfig.npm.registry,
+    scopePrefix = defaultConfig.npm.scopePrefix
+  } = getCLIConfig('npm')
+  const maybe = [...scopePrefix.map((v: string) => `${v}${plugin}`), plugin]
+  const resPlugin = maybe.find((p) => pkgExist(p, registry))
+  return resPlugin
+}
+
+export function initPluginsDir() {
+  // 初始化目录
+  if (!fs.existsSync(pluginDir)) {
+    fs.mkdirSync(pluginDir, { recursive: true })
+  }
+  // 初始化 package.json
+  if (!fs.existsSync(path.join(pluginDir, 'package.json'))) {
+    spawnSync('npm', ['init', '-y'], {
+      cwd: pluginDir
+    })
+  }
 }
