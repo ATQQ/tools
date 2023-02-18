@@ -2,7 +2,8 @@ import {
   defineCommand,
   ICommandDescription,
   getCLIConfig,
-  setCLIConfig
+  setCLIConfig,
+  delCLIConfig
 } from '@sugarat/cli'
 import {
   checkMachineEnv,
@@ -95,14 +96,21 @@ export default function definePlugin(): ICommandDescription {
           const serverDir = validServerFile()
           // serverName 和目录绑定
           const serverList = getCLIConfig('server.list') || []
-          const serverInfo =
-            serverList.find((v: any) => v.dir === serverDir) || {}
+          const serverInfoIdx = serverList.findIndex(
+            (v: any) => v.dir === serverDir
+          )
+
+          const serverInfo = serverList[serverInfoIdx] || {}
           if (!serverInfo.name) {
             serverInfo.dir = serverDir
             serverInfo.name = options.name || `ep-server-${Date.now()}`
             serverList.push(serverInfo)
             setCLIConfig('server.list', serverList)
           }
+          if (options.name) {
+            serverInfo.name = options.name
+          }
+
           console.log('')
           console.log('====操作服务信息====')
           console.log('= dir:', serverInfo.dir)
@@ -116,9 +124,7 @@ export default function definePlugin(): ICommandDescription {
             checkConfig(options.config)
             return
           }
-          if (!options.name) {
-            setCLIConfig('server.name', serverName)
-          }
+
           if (options.deploy) {
             // 校验目标文件和目录是否存在
             // 部署服务
@@ -134,6 +140,7 @@ export default function definePlugin(): ICommandDescription {
             return
           }
           if (options.del) {
+            delCLIConfig(`server.list.${serverInfoIdx}`)
             deleteService(serverName)
             console.log('✅ 删除服务', serverName)
             return
