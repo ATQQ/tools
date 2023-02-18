@@ -8,8 +8,12 @@ import moduleAlias from 'module-alias'
 import path from 'path'
 import pkg from '../package.json'
 import { defaultConfig, globalConfigName } from './constants'
-import { getInstalledPlugins, syncFnErrorWrapper } from './util/private'
-import { installCommand, removeCommand } from './command'
+import {
+  checkInstallEdPluginVersion,
+  getInstalledPlugins,
+  syncFnErrorWrapper
+} from './util/private'
+import { installCommand, removeCommand, updateCommand } from './command'
 
 // 添加 alias
 moduleAlias.addAlias('@sugarat/cli', path.join(__dirname, '../'))
@@ -19,7 +23,12 @@ programInstance.version(pkg.version)
 
 const init = (program: Command) => {
   const configPlugin = definePlugin(globalConfigName, defaultConfig)
-  const inlinePlugin = [configPlugin, installCommand, removeCommand]
+  const inlinePlugin = [
+    configPlugin,
+    installCommand,
+    removeCommand,
+    updateCommand
+  ]
   const installedPlugin = getInstalledPlugins()
   const plugins = [...inlinePlugin, ...installedPlugin]
 
@@ -32,6 +41,8 @@ const init = (program: Command) => {
       console.log(error)
     }
   })
+
+  checkInstallEdPluginVersion(false)
 }
 
 syncFnErrorWrapper(init, programInstance)
