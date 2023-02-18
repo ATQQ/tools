@@ -44,7 +44,7 @@ export async function checkInstallEdPluginVersion(autoUpdate = true) {
       update = true
       if (autoUpdate) {
         installRemotePlugin(
-          plugin.name,
+          `${plugin.name}@latest`,
           getCLIConfig('npm.registry') || defaultConfig.npm.registry
         )
         console.log('🚀', plugin.name, v, '升级完成')

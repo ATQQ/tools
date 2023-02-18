@@ -1,12 +1,18 @@
 # @sugarat/cli
 
+## 0.0.6
+
+### Patch Changes
+
+- fix: 自动更新漏加 @latest 标志
+
 ## 0.0.5
 
 ### Patch Changes
 
 - fix: 远程插件加载失败
-- feat: 添加指令remove能力
-- feat: 添加指令update能力
+- feat: 添加指令 remove 能力
+- feat: 添加指令 update 能力
 
 ## 0.0.4
 

@@ -41,8 +41,6 @@ const init = (program: Command) => {
       console.log(error)
     }
   })
-
-  checkInstallEdPluginVersion(false)
 }
 
 syncFnErrorWrapper(init, programInstance)
