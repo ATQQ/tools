@@ -1,11 +1,12 @@
+/* eslint-disable no-await-in-loop */
 import fs from 'fs'
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable global-require */
-import { spawnSync } from 'child_process'
+import { spawnSync, spawn } from 'child_process'
 import path from 'path'
 import { CLI_PLUGIN_KEY, defaultConfig } from '../constants'
-import { delCLIConfig, getCLIConfig, pluginDir } from '../index'
+import { delCLIConfig, getCLIConfig, pluginDir, readJSONFIle } from '../index'
 import type { ICommandDescription, PluginDes } from '../types'
 
 export function getInstalledPlugins(): ICommandDescription[] {
@@ -27,6 +28,35 @@ export function getInstalledPlugins(): ICommandDescription[] {
       }
     })
     .filter((v) => !!v)
+}
+
+export async function checkInstallEdPluginVersion(autoUpdate = true) {
+  let update = false
+  const plugins: Record<string, PluginDes> = getCLIConfig(CLI_PLUGIN_KEY) || {}
+  for (const plugin of Object.values(plugins)) {
+    if (plugin.local) {
+      continue
+    }
+    const v = await pkgVersion(plugin.name)
+    const nowVersion = readJSONFIle(plugin.packageJSON).version
+    if (v !== nowVersion) {
+      console.log('🚩', plugin.name, '有新版本版本', v, '可升级')
+      update = true
+      if (autoUpdate) {
+        installRemotePlugin(
+          plugin.name,
+          getCLIConfig('npm.registry') || defaultConfig.npm.registry
+        )
+        console.log('🚀', plugin.name, v, '升级完成')
+      }
+    }
+  }
+  if (!autoUpdate && update) {
+    console.log('可执行', 'q update', '升级')
+  }
+  if (!update && autoUpdate) {
+    console.log('所有插件都是最新 🎉')
+  }
 }
 
 export function loadCommandSync(plugin: PluginDes): ICommandDescription {
@@ -54,6 +84,31 @@ export function pkgExist(
   const info = execCommand('npm', ['info', pkgName, `--registry=${registry}`])
   const exist = !(info.includes('404') && info.includes('ERR'))
   return exist && pkgName
+}
+
+export function spawnPromise(command: string, ...argv: any) {
+  return new Promise((resolve, reject) => {
+    const npmInfo = spawn(command, argv)
+    npmInfo.stdout.on('data', (data) => {
+      resolve(data.toString().trim())
+    })
+    npmInfo.stderr.on('data', (data) => {
+      reject(data.toString().trim())
+    })
+  })
+}
+
+export function pkgVersion(
+  pkgName: string,
+  registry = defaultConfig.npm.registry
+) {
+  return spawnPromise(
+    'npm',
+    'info',
+    pkgName,
+    'version',
+    `--registry=${registry}`
+  )
 }
 
 export function syncFnErrorWrapper(fn: any, ...rest: any[]) {

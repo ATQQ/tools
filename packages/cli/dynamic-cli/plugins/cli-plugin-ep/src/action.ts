@@ -342,3 +342,30 @@ export async function deployPkg(type: string, version: string) {
   const pkgName = await pullPkg(type, version)
   await unPkg(type, version, pkgName)
 }
+
+export async function checkConfig(type: string) {
+  const cyanColor = (str: string) => `[36m${str}[39m`
+  try {
+    const userData = readJSONFIle(
+      path.join(process.cwd(), 'easypicker2-server', 'user-config.json')
+    )
+    if (!type) {
+      console.log(
+        `你应该在执行脚本后添加 ${cyanColor('<type>')} 参数，支持如下值`
+      )
+      console.log([...new Set(userData.map((v: any) => v.type))])
+      console.log('例如', cyanColor('q ep --config user'))
+      process.exit(1)
+    }
+    const getTypeObj = (_type: string) =>
+      userData
+        .filter((v: any) => v.type === _type)
+        .reduce((pre: any, cur: any) => {
+          pre[cur.key] = cur.value
+          return pre
+        }, {})
+    console.table(getTypeObj(type))
+  } catch (error) {
+    console.log('❌', '目标目录下不存在 user-config.json 文件')
+  }
+}

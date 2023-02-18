@@ -18,7 +18,8 @@ import {
   checkServiceLog,
   validServerFile,
   deployServer,
-  checkServiceList
+  checkServiceList,
+  checkConfig
 } from './action'
 import type { ActionType, Options } from './type'
 
@@ -39,6 +40,7 @@ export default function definePlugin(): ICommandDescription {
         .option('--deploy [version]', '一键部署服务')
         .option('--name <serverName>', '指定服务应用的名称')
         .option('--stop', '停止服务')
+        .option('--config [name]', '获取指定配置')
         .option('--restart', '重启服务')
         .option('--del', '移除服务')
         .option('--status', '服务状态')
@@ -110,7 +112,10 @@ export default function definePlugin(): ICommandDescription {
 
           // 获取服务名
           const serverName = serverInfo.name
-
+          if (options.config) {
+            checkConfig(options.config)
+            return
+          }
           if (!options.name) {
             setCLIConfig('server.name', serverName)
           }

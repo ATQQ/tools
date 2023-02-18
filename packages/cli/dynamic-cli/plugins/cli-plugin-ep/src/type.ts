@@ -14,4 +14,5 @@ export interface Options {
   list?: boolean
   status?: boolean
   log?: boolean
+  config?: string
 }

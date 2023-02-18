@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-ep
 
+## 0.0.2
+
+### Patch Changes
+
+- feat: 支持获取配置
+
 ## 0.0.1
 
 ### Patch Changes

@@ -70,7 +70,12 @@ export const installCommand = defineCommand({
 
         const p = await syncFnErrorWrapper(loadCommandSync, pluginDes)
         // 打印安装的指令
-        console.log('完成', p.name, '指令安装')
+        console.log(
+          '完成',
+          p.name,
+          '指令安装',
+          readJSONFIle(pluginDes.packageJSON).version
+        )
         console.log('执行', 'q', p.name, '--help', '查看细节')
         // 更新配置文件记录
         setCLIConfig(`${CLI_PLUGIN_KEY}.${pluginDes.name}`, pluginDes)
