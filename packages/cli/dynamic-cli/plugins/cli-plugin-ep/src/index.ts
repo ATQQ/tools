@@ -20,7 +20,8 @@ import {
   validServerFile,
   deployServer,
   checkServiceList,
-  checkConfig
+  checkConfig,
+  initMysql
 } from './action'
 import type { ActionType, Options } from './type'
 
@@ -39,6 +40,7 @@ export default function definePlugin(): ICommandDescription {
         .option('--pull [version]', '拉取服务静态资源')
         .option('--unpkg [version]', '解压资源包')
         .option('--deploy [version]', '一键部署服务')
+        .option('--init-mysql <rest...>', '一键导入数据库表')
         .option('--name <serverName>', '指定服务应用的名称')
         .option('--stop', '停止服务')
         .option('--config [name]', '获取指定配置')
@@ -61,6 +63,16 @@ export default function definePlugin(): ICommandDescription {
 
           if (options.check) {
             checkMachineEnv()
+            return
+          }
+          if (options.initMysql) {
+            if (options.initMysql?.length !== 3) {
+              console.log('❌ 传入的数据库参数格式不正确')
+              return
+            }
+            const [dbName, dbUser, dbPassword] = options.initMysql
+            initMysql(dbName, dbUser, dbPassword)
+            return
           }
           if (!type) {
             return

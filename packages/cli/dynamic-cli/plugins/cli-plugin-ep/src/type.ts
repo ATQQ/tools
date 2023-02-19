@@ -7,6 +7,7 @@ export interface Options {
   pull?: string | boolean
   unpkg?: string | boolean
   deploy?: string | boolean
+  initMysql: string[]
   name?: string
   restart?: boolean
   stop?: boolean

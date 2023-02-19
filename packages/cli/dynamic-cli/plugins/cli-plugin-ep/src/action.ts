@@ -70,6 +70,15 @@ export async function checkMachineEnv() {
 export const CompressPkgName = (type: string, version: string) => {
   return `EasyPicker_${type}_${version}.tar.gz`
 }
+export function initMysql(dbName: string, user: string, password: string) {
+  execSync(
+    `curl https://script.sugarat.top/shell/ep/init-db.sh | bash -s ${dbName} ${user} ${password}`,
+    {
+      cwd: process.cwd(),
+      stdio: 'inherit'
+    }
+  )
+}
 
 export function packDist(type: string) {
   const pkgJSON = readJSONFIle(path.resolve(process.cwd(), 'package.json'))
