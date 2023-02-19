@@ -62,7 +62,8 @@ export async function checkMachineEnv() {
     installCommand: 'npm i -g nrm --registry=https://registry.npmmirror.com'
   })
   await isCmdExist('pnpm', {
-    tip: '请执行如下指令安装: npm i -g pnpm'
+    // tip: '请执行如下指令安装: npm i -g pnpm',
+    installCommand: 'npm i -g pnpm --registry=https://registry.npmmirror.com'
   })
   checkRegistry()
 }
