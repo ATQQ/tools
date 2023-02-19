@@ -2,7 +2,8 @@ import {
   defineCommand,
   ICommandDescription,
   getCLIConfig,
-  setCLIConfig
+  setCLIConfig,
+  delCLIConfig
 } from '@sugarat/cli'
 import {
   checkMachineEnv,
@@ -19,7 +20,8 @@ import {
   validServerFile,
   deployServer,
   checkServiceList,
-  checkConfig
+  checkConfig,
+  initMysql
 } from './action'
 import type { ActionType, Options } from './type'
 
@@ -38,6 +40,7 @@ export default function definePlugin(): ICommandDescription {
         .option('--pull [version]', '拉取服务静态资源')
         .option('--unpkg [version]', '解压资源包')
         .option('--deploy [version]', '一键部署服务')
+        .option('--init-mysql <rest...>', '一键导入数据库表')
         .option('--name <serverName>', '指定服务应用的名称')
         .option('--stop', '停止服务')
         .option('--config [name]', '获取指定配置')
@@ -46,7 +49,7 @@ export default function definePlugin(): ICommandDescription {
         .option('--status', '服务状态')
         .option('--log', '服务日志')
         .option('--list', '服务列表')
-        .action((type: ActionType, options: Options) => {
+        .action(async (type: ActionType, options: Options) => {
           if (!getCLIConfig('qiniu.base')) {
             setCLIConfig('qiniu.base', `dist/easypicker/`)
           }
@@ -60,6 +63,16 @@ export default function definePlugin(): ICommandDescription {
 
           if (options.check) {
             checkMachineEnv()
+            return
+          }
+          if (options.initMysql) {
+            if (options.initMysql?.length !== 3) {
+              console.log('❌ 传入的数据库参数格式不正确')
+              return
+            }
+            const [dbName, dbUser, dbPassword] = options.initMysql
+            initMysql(dbName, dbUser, dbPassword)
+            return
           }
           if (!type) {
             return
@@ -83,7 +96,10 @@ export default function definePlugin(): ICommandDescription {
           }
 
           if (options.deploy) {
-            deployPkg(type, options.deploy === true ? 'latest' : options.deploy)
+            await deployPkg(
+              type,
+              options.deploy === true ? 'latest' : options.deploy
+            )
           }
           if (type !== 'server') {
             return
@@ -95,14 +111,21 @@ export default function definePlugin(): ICommandDescription {
           const serverDir = validServerFile()
           // serverName 和目录绑定
           const serverList = getCLIConfig('server.list') || []
-          const serverInfo =
-            serverList.find((v: any) => v.dir === serverDir) || {}
+          const serverInfoIdx = serverList.findIndex(
+            (v: any) => v.dir === serverDir
+          )
+
+          const serverInfo = serverList[serverInfoIdx] || {}
           if (!serverInfo.name) {
             serverInfo.dir = serverDir
             serverInfo.name = options.name || `ep-server-${Date.now()}`
             serverList.push(serverInfo)
             setCLIConfig('server.list', serverList)
           }
+          if (options.name) {
+            serverInfo.name = options.name
+          }
+
           console.log('')
           console.log('====操作服务信息====')
           console.log('= dir:', serverInfo.dir)
@@ -116,9 +139,7 @@ export default function definePlugin(): ICommandDescription {
             checkConfig(options.config)
             return
           }
-          if (!options.name) {
-            setCLIConfig('server.name', serverName)
-          }
+
           if (options.deploy) {
             // 校验目标文件和目录是否存在
             // 部署服务
@@ -134,6 +155,7 @@ export default function definePlugin(): ICommandDescription {
             return
           }
           if (options.del) {
+            delCLIConfig(`server.list.${serverInfoIdx}`)
             deleteService(serverName)
             console.log('✅ 删除服务', serverName)
             return

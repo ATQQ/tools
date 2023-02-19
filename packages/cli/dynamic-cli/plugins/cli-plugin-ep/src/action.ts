@@ -62,12 +62,22 @@ export async function checkMachineEnv() {
     installCommand: 'npm i -g nrm --registry=https://registry.npmmirror.com'
   })
   await isCmdExist('pnpm', {
-    tip: '请执行如下指令安装: npm i -g pnpm'
+    // tip: '请执行如下指令安装: npm i -g pnpm',
+    installCommand: 'npm i -g pnpm --registry=https://registry.npmmirror.com'
   })
   checkRegistry()
 }
 export const CompressPkgName = (type: string, version: string) => {
   return `EasyPicker_${type}_${version}.tar.gz`
+}
+export function initMysql(dbName: string, user: string, password: string) {
+  execSync(
+    `curl https://script.sugarat.top/shell/ep/init-db.sh | bash -s ${dbName} ${user} ${password}`,
+    {
+      cwd: process.cwd(),
+      stdio: 'inherit'
+    }
+  )
 }
 
 export function packDist(type: string) {
