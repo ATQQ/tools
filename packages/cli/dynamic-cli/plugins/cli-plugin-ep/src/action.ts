@@ -88,7 +88,7 @@ export function packDist(type: string) {
     fs.rmSync(path.join(process.cwd(), compressPkgName))
   }
 
-  execSync(`tar -zvcf ${compressPkgName} package.json dist`, {
+  execSync(`tar -zvcf ${compressPkgName} package.json .env dist`, {
     stdio: 'ignore',
     cwd: process.cwd()
   })

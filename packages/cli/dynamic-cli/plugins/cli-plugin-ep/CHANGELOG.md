@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-ep
 
+## 0.0.6
+
+### Patch Changes
+
+- fix: 漏上传.env配置文件
+
 ## 0.0.5
 
 ### Patch Changes
