@@ -1,5 +1,12 @@
 # @sugarat/cli-plugin-ep
 
+## 0.0.5
+
+### Patch Changes
+
+- feat: check的时候自动安装pnpm
+- feat: 集成MySQL创建指令
+
 ## 0.0.4
 
 ### Patch Changes
