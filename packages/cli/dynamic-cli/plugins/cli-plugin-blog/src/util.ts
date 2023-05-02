@@ -111,7 +111,12 @@ export function pipeWeekly(input: string, type: PLATFORM) {
         `，预计阅读时间 ${predictReadTime(input)} 分钟`
       )
       // 底部内容替换
-      .replace(/(## ⭐️强力推荐关注[\s\S]*)/, type === 'mdnice' ? '' : '$1')
+      .replace(
+        /## ⭐️强力推荐关注([\s\S]*)/,
+        type === 'mdnice'
+          ? '## [🔗强力推荐关注](https://mp.weixin.qq.com/s?__biz=MzA4ODMyMTk5OA==&mid=2247484332&idx=1&sn=d0d26fcb72bf420ce3c8a983142f5158&chksm=902ab90da75d301b54dc68609ea01df32280d3bde48270a97f8c1be444915df5ae957d47e7db#rd)$1'
+          : '## ⭐️强力推荐关注$1'
+      )
   )
 }
 
