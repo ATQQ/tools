@@ -78,32 +78,43 @@ export function getRemoteSource(
   url: string
 ): Promise<{ body: string; code?: number }> {
   return new Promise((resolve, reject) => {
+    const httpURL = new URL(url)
     // 区别https与http资源
     const HTTP = url.startsWith('https://') ? https : http
-
     // 通过回调的形式获取
-    HTTP.get(url, (res) => {
-      // 设置可读流的字符编码
-      res.setEncoding('utf-8')
+    HTTP.get(
+      !process.argv.includes('--no-strict-ssl')
+        ? url
+        : {
+            hostname: httpURL.hostname,
+            path: httpURL.pathname,
+            port: 443,
+            method: 'GET',
+            rejectUnauthorized: false
+          },
+      (res) => {
+        // 设置可读流的字符编码
+        res.setEncoding('utf-8')
 
-      // 响应内容拼接
-      let content = ''
-      res.on('data', (chunk) => {
-        content += chunk
-      })
-
-      // 读完对外暴露内容和状态码
-      res.on('end', () => {
-        resolve({
-          body: content,
-          code: res.statusCode
+        // 响应内容拼接
+        let content = ''
+        res.on('data', (chunk) => {
+          content += chunk
         })
-      })
 
-      res.on('error', (err) => {
-        reject(err)
-      })
-    })
+        // 读完对外暴露内容和状态码
+        res.on('end', () => {
+          resolve({
+            body: content,
+            code: res.statusCode
+          })
+        })
+
+        res.on('error', (err) => {
+          reject(err)
+        })
+      }
+    )
   })
 }
 

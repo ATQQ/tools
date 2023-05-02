@@ -16,6 +16,7 @@ program
   .option('-c, --column <number>', 'set column number')
   .option('-o, --output [string]', 'set log output dir')
   .option('-n, --show-num <number>', 'set show error source lines', '5')
+  .option('--no-strict-ssl', 'disabling strict SSL certificate verification ')
   .action(parseCommand)
 
 program

@@ -11,7 +11,7 @@
     "build": "pnpm -r run build",
     "version-packages": "changeset version",
     "release": "pnpm build && pnpm release:only",
-    "release:only": "npm config set registry https://registry.npmjs.org/ && changeset publish"
+    "release:only": "changeset publish"
   },
   "author": "sugar",
   "license": "MIT",
