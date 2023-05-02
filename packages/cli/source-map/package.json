@@ -1,6 +1,6 @@
 {
   "name": "@sugarat/source-map-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CLI for source-map tool，simple but powerful",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
