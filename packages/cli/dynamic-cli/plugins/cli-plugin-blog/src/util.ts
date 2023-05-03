@@ -76,7 +76,7 @@ export function clearMatterContent(content: string) {
 export function pipeWeekly(input: string, type: PLATFORM) {
   const lines = input.split('\n')
 
-  //   提取23级别标题，过滤掉趣图和推荐板块
+  // 提取23级别标题，过滤掉趣图和推荐板块
   const titles = lines.reduce<string[]>((pre, line) => {
     const excludeWords = ['趣图', '关注']
     if (
@@ -88,7 +88,7 @@ export function pipeWeekly(input: string, type: PLATFORM) {
     return pre
   }, [])
 
-  //   生成目录
+  // 生成目录
   const toc = titles
     .reduce<string[]>((pre, title) => {
       if (/^##\s/.test(title)) {
@@ -111,7 +111,12 @@ export function pipeWeekly(input: string, type: PLATFORM) {
         `，预计阅读时间 ${predictReadTime(input)} 分钟`
       )
       // 底部内容替换
-      .replace(/(## ⭐️强力推荐关注[\s\S]*)/, type === 'mdnice' ? '' : '$1')
+      .replace(
+        /## ⭐️强力推荐关注([\s\S]*)/,
+        type === 'mdnice'
+          ? '## [🔗强力推荐关注](https://mp.weixin.qq.com/s?__biz=MzA4ODMyMTk5OA==&mid=2247484332&idx=1&sn=d0d26fcb72bf420ce3c8a983142f5158&chksm=902ab90da75d301b54dc68609ea01df32280d3bde48270a97f8c1be444915df5ae957d47e7db#rd)$1'
+          : '## ⭐️强力推荐关注$1'
+      )
   )
 }
 
@@ -151,4 +156,98 @@ export default function countWord(data: string) {
     }
   }
   return count
+}
+
+export function getCircleNumber(num: number) {
+  if (num >= 1 && num <= 20) {
+    // 数字在 1 到 20 之间，使用 Unicode 码点将数字转换为带圆圈数字形式
+    const circle: Record<string, string> = {
+      '1': '\u2460',
+      '2': '\u2461',
+      '3': '\u2462',
+      '4': '\u2463',
+      '5': '\u2464',
+      '6': '\u2465',
+      '7': '\u2466',
+      '8': '\u2467',
+      '9': '\u2468',
+      '10': '\u2469',
+      '11': '\u246A',
+      '12': '\u246B',
+      '13': '\u246C',
+      '14': '\u246D',
+      '15': '\u246E',
+      '16': '\u246F',
+      '17': '\u2470',
+      '18': '\u2471',
+      '19': '\u2472',
+      '20': '\u2473'
+    }
+    return circle[num.toString()] || num.toString()
+  }
+  // 数字大于 20，使用 Unicode 码点将数字转换为带圆圈数字形式
+  const circleCodePoint = 0x324f // 第一个圆圈数字的 Unicode 码点为 0x324F
+  const nums = num.toString().split('')
+  let result = ''
+  nums.forEach((n) => {
+    const codePoint = circleCodePoint + parseInt(n, 10)
+    result += String.fromCodePoint(codePoint)
+  })
+  return result
+}
+
+/**
+ * 自动添加三级标题
+ */
+export function autoAddH3Num(content: string) {
+  let index = 0
+  return content.replace(/^#{3} (.*)/gm, (_, $1: string) => {
+    index += 1
+    // 判断是否有正确的序号
+    const numPattern = new RegExp(`^\\[?${index}.`)
+    const isRightNum = numPattern.test($1)
+    if (isRightNum) {
+      return _
+    }
+
+    return `### ${$1
+      // 先去掉序号开头的内容
+      .replace(/^(\[?)\d\.\s?/, '$1')
+      // 再填充序号
+      .replace(/^(\[?)(.*?)/, `$1${index}. $2`)}`
+  })
+}
+
+export function autoAddDescription(content: string) {
+  const needDescription = /description:([\s]*?)$/m.test(content)
+  if (needDescription) {
+    const h3Titles = content.match(/^#{3} (.*)/gm)
+    const titleWithCircleNum = h3Titles?.map((v, idx) =>
+      pipelineString(
+        v,
+        // 去除外链
+        (pre) => {
+          return pre.replace(/\[([^\]]+)\]\((https?:\/\/[^\s]+)\)/g, '$1')
+        },
+        // 去除标题和序号
+        (pre) => {
+          return pre.replace(/^#{3}\s+\d+\.\s/, '')
+        },
+        // 添加序号,
+        (pre) => {
+          return `${getCircleNumber(idx + 1)} ${pre}`
+        }
+      )
+    )
+    return content.replace(
+      /(description:)([\s]*?)$/m,
+      `$1 ${titleWithCircleNum?.join(' ')}`
+    )
+  }
+
+  return content
+}
+
+export function formatWeeklyContent(content: string) {
+  return pipelineString(content, autoAddH3Num, autoAddDescription)
 }
