@@ -1,5 +1,12 @@
 # @sugarat/ghost
 
+## 0.2.1
+
+### Patch Changes
+
+- fix: import.meta error
+- feat: support alias
+
 ## 0.2.0
 
 ### Minor Changes

@@ -86,6 +86,10 @@ export interface GhostOptions {
    * need exclude scan files pattern
    */
   excludeFilePattern?: string | string[]
+  /**
+   * some alias config like `@components` `@apis` etc
+   */
+  alias?: Record<string, string>
 }
 declare type ExcludePattern = string | RegExp;
 
