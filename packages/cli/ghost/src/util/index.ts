@@ -134,6 +134,8 @@ export function getCssFileImportSource(fileText: string) {
 
 export function getJsFileImportSource(fileText: string) {
   const sources: string[] = []
+  // fix import.meta. gogoCode无法解析
+  fileText = fileText.replace(/import\.meta\.?/g, 'import_meta')
   const ast = AST(fileText)
   if (!ast.find) {
     return sources
