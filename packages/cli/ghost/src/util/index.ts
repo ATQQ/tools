@@ -89,6 +89,8 @@ export function findGhost(
       .filter((v) =>
         excludeNodeLib || !isNodeLib(v) ? isValidPkgName(v) : true
       )
+      // 过滤掉alias的路径
+      .filter((v) => !isAliasPath(options.alias ?? {}, v))
   )
 }
 
@@ -134,6 +136,8 @@ export function getCssFileImportSource(fileText: string) {
 
 export function getJsFileImportSource(fileText: string) {
   const sources: string[] = []
+  // fix import.meta. gogoCode无法解析
+  fileText = fileText.replace(/import\.meta\.?/g, 'import_meta')
   const ast = AST(fileText)
   if (!ast.find) {
     return sources
@@ -249,4 +253,20 @@ export function isNodeLib(v: string) {
 export function isValidPkgName(pkgName: string): boolean {
   const result = validPkgName(pkgName)
   return result.validForNewPackages
+}
+
+export function readTsconfigAlias(tsconfigPath: string) {
+  const tsconfig = readFileSync(tsconfigPath, 'utf-8')
+  const { compilerOptions } = JSON.parse(tsconfig)
+  const alias = compilerOptions?.paths ?? {}
+  const res: Record<string, string> = {}
+  for (const [key, value] of Object.entries(alias)) {
+    // @ts-ignore
+    res[key.replace(/\/\*$/, '')] = value[0].replace(/\/\*$/, '')
+  }
+  return res
+}
+
+export function isAliasPath(alias: Record<string, string>, path: string) {
+  return Object.keys(alias).some((key) => path.startsWith(key))
 }

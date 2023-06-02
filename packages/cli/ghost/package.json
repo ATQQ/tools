@@ -1,6 +1,6 @@
 {
   "name": "@sugarat/ghost",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "phantom dependency scanning tool - 幽灵依赖扫描工具",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -34,7 +34,7 @@
   "dependencies": {
     "commander": "^9.2.0",
     "fast-glob": "^3.2.12",
-    "gogocode": "^1.0.53",
+    "gogocode": "^1.0.55",
     "validate-npm-package-name": "^4.0.0"
   }
 }

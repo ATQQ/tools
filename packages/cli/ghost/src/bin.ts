@@ -18,14 +18,15 @@ program
     '-p, --pkg <paths...>',
     'set package.json file or directory (support glob pattern)'
   )
+  .option('-t, --tsconfig <paths...>','set tsconfig.json file')
   .option('-n, --node', 'include node lib {fs, path, etc}')
   .option(
     '--allow-dirty',
     'these directories are masked by default (node_modules, .git etc)，you can set allow'
   )
   .option(
-    '--exclude-pkg <pkgName...>',
-    'set forcibly excluded phantom dependence'
+    '--exclude-pkg <pkgNamePattern...>',
+    'set forcibly excluded phantom dependence pattern (exclude include string)'
   )
   .action(scanCommand)
 

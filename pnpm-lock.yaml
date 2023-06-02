@@ -165,8 +165,8 @@ importers:
         specifier: ^3.2.12
         version: 3.2.12
       gogocode:
-        specifier: ^1.0.53
-        version: 1.0.53(vue@3.2.47)
+        specifier: ^1.0.55
+        version: 1.0.55(vue@3.2.47)
       validate-npm-package-name:
         specifier: ^4.0.0
         version: 4.0.0
@@ -2966,6 +2966,20 @@ packages:
       vue3-browser-compiler-yx: 1.0.4(vue@3.2.47)
     transitivePeerDependencies:
       - vue
+    dev: true
+
+  /gogocode@1.0.55(vue@3.2.47):
+    resolution: {integrity: sha512-PhT2EnPTaXODiPsZDhRwGe03cb9Eg0nBlvjp3WyQqLAz5lfK7hFQgq/ybTA5BZBThWQnFJGTDjy/Dht7dAtlDw==}
+    dependencies:
+      '@babel/parser': 7.19.1
+      glob: 7.2.2
+      hyntax-yx: 1.0.8
+      indent-string: 4.0.0
+      recast-yx: 0.18.12
+      vue3-browser-compiler-yx: 1.0.4(vue@3.2.47)
+    transitivePeerDependencies:
+      - vue
+    dev: false
 
   /graceful-fs@4.2.10:
     resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==}
@@ -4602,6 +4616,7 @@ packages:
 
   /sourcemap-codec@1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
+    deprecated: Please use @jridgewell/sourcemap-codec instead
 
   /spawndamnit@2.0.0:
     resolution: {integrity: sha512-j4JKEcncSjFlqIwU5L/rp2N5SIPsdxaRsIv678+TZxZ0SRDJTm8JrxJMjE/XuiEZNEir3S8l0Fa3Ke339WI4qA==}
