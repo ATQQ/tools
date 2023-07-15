@@ -1,4 +1,6 @@
 /* eslint-disable no-underscore-dangle */
+import fs from 'fs/promises'
+import path from 'path'
 import { PLATFORM } from './type'
 
 export function pipelineString(
@@ -250,4 +252,31 @@ export function autoAddDescription(content: string) {
 
 export function formatWeeklyContent(content: string) {
   return pipelineString(content, autoAddH3Num, autoAddDescription)
+}
+
+export function initTemplateContent(tempStr: string, ops: Record<string, any>) {
+  return tempStr.replace(/{{([^}]+)}}/g, (_, match) => ops[match] || _)
+}
+
+export async function createTempFile(
+  type: 'weekly' | 'article',
+  ops: Record<string, any>
+) {
+  if (type === 'weekly') {
+    const tempContent = await fs.readFile(
+      path.join(__dirname, 'weekly.md'),
+      'utf-8'
+    )
+    const weeklyWiki = initTemplateContent(tempContent, ops)
+    // 获取年月是 YYYY-MM-DD
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+    const fileName = `${year}-${month}-${day}.md`
+    const filePath = path.join(process.cwd(), fileName)
+    console.log('创建成功', filePath)
+
+    await fs.writeFile(filePath, weeklyWiki)
+  }
 }

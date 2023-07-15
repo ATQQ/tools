@@ -1,6 +1,6 @@
 {
   "name": "@sugarat/cli-plugin-blog",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "用于博客内容分发其它平台的markdown格式转换",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,8 +13,8 @@
     "dist"
   ],
   "scripts": {
-    "dev": "tsup --watch",
-    "build": "tsup --minify",
+    "dev": "tsup --watch --publicDir",
+    "build": "tsup --minify --publicDir",
     "prepublish": "pnpm build"
   },
   "keywords": [

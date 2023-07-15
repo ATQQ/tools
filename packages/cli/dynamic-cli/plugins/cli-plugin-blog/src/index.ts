@@ -4,12 +4,19 @@ import fs from 'fs'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import ncp from 'copy-paste'
-import { formatWeeklyContent, pipeJueJin, pipeMdNice, pipeWeekly } from './util'
+import {
+  createTempFile,
+  formatWeeklyContent,
+  pipeJueJin,
+  pipeMdNice,
+  pipeWeekly
+} from './util'
 import { PLATFORM } from './type'
 
 interface Option {
   weekly?: boolean
   format?: boolean
+  create?: boolean
   type: PLATFORM
   output: boolean
 }
@@ -19,6 +26,7 @@ export default function definePlugin(): ICommandDescription {
     command(program) {
       program
         .command('blog <file>')
+        .option('-c,--create', '创建文章模板', false)
         .option('-w,--weekly', '周刊格式转换', false)
         .option(
           '-f,--format',
@@ -30,6 +38,11 @@ export default function definePlugin(): ICommandDescription {
         .description(`博客内容转换`)
         .action((filepath, ops: Option) => {
           const { name, ext, dir } = path.parse(filepath)
+          // 创建周刊文章模板
+          if (ops.create && ops.weekly) {
+            createTempFile('weekly', { name })
+            return
+          }
 
           const originPath = path.resolve(process.cwd(), filepath)
           const outputPath = path.resolve(
