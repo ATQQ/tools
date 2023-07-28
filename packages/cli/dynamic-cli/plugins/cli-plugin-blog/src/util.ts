@@ -80,7 +80,7 @@ export function pipeWeekly(input: string, type: PLATFORM) {
 
   // 提取23级别标题，过滤掉趣图和推荐板块
   const titles = lines.reduce<string[]>((pre, line) => {
-    const excludeWords = ['趣图', '关注']
+    const excludeWords = ['趣图', '强力推荐关注']
     if (
       !excludeWords.find((exclude) => line.includes(exclude)) &&
       /^(##|###)\s/.test(line)
@@ -273,7 +273,7 @@ export async function createTempFile(
     const year = date.getFullYear()
     const month = date.getMonth() + 1
     const day = date.getDate()
-    const fileName = `${year}-${month}-${day}.md`
+    const fileName = `${year}-${month > 9 ? month : `0${month}`}-${day}.md`
     const filePath = path.join(process.cwd(), fileName)
     console.log('创建成功', filePath)
 

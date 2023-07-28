@@ -1,6 +1,6 @@
 {
   "name": "@sugarat/cli-plugin-blog",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "用于博客内容分发其它平台的markdown格式转换",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

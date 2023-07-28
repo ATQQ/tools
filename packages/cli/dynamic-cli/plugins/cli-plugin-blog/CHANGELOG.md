@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-blog
 
+## 0.0.4
+
+### Patch Changes
+
+- fix: 自动生成周刊目录错误
+
 ## 0.0.3
 
 ### Patch Changes
