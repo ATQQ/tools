@@ -56,6 +56,12 @@ importers:
         specifier: ^0.24.5
         version: 0.24.5(@vitest/ui@0.12.10)
 
+  packages/cli/bcy:
+    dependencies:
+      copy-paste:
+        specifier: ^1.3.0
+        version: 1.3.0
+
   packages/cli/dynamic-cli/core:
     dependencies:
       '@sugarat/cli-plugin-config':
