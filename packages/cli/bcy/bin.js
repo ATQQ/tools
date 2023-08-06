@@ -8,6 +8,6 @@ const branch = execSync('git branch --show-current')
   .trim()
   .replace(/\n/g, '')
 
-console.log('当前分支：', branch)
+console.log('当前分支:', branch)
 
 ncp.copy(branch)
