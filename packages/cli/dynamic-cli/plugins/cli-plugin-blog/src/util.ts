@@ -17,7 +17,7 @@ export function pipeMdNice(input: string, type: PLATFORM) {
   return pipelineString(
     input,
     clearMatterContent,
-    (v) => v.replace(/#\s.*\n/, ''),
+    removeFirstH1,
     clearStartEndEmptyLine,
     link2footnote
   )
@@ -38,12 +38,26 @@ export function pipeJueJin(input: string, type: PLATFORM) {
   return pipelineString(
     input,
     clearMatterContent,
-    (v) => v.replace(/#\s.*\n/, ''),
+    removeFirstH1,
     clearStartEndEmptyLine,
     (v) => `---\ntheme: smartblue\n---\n${v}`
   )
 }
 
+export function pipeCnBlogs(input: string, type: PLATFORM) {
+  if (type !== 'cnblogs') return input
+
+  return pipelineString(
+    input,
+    clearMatterContent,
+    removeFirstH1,
+    clearStartEndEmptyLine
+  )
+}
+
+export function removeFirstH1(input: string) {
+  return input.replace(/#\s.*\n/, '')
+}
 export function clearStartEndEmptyLine(content: string) {
   return content.replace(/^\s+/, '').replace(/\s+$/, '')
 }
@@ -273,10 +287,16 @@ export async function createTempFile(
     const year = date.getFullYear()
     const month = date.getMonth() + 1
     const day = date.getDate()
-    const fileName = `${year}-${month > 9 ? month : `0${month}`}-${day}.md`
+    // 文件名是 YYYY-MM-DD.md
+    const fileName = `${year}-${addZero(month)}-${addZero(day)}.md`
     const filePath = path.join(process.cwd(), fileName)
     console.log('创建成功', filePath)
 
     await fs.writeFile(filePath, weeklyWiki)
   }
+}
+
+// 实现一个方法自动对一位数补零
+export function addZero(num: number) {
+  return num < 10 ? `0${num}` : num
 }

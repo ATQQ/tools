@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-blog
 
+## 0.0.5
+
+### Patch Changes
+
+- feat: 支持博客园,模板调整
+
 ## 0.0.4
 
 ### Patch Changes

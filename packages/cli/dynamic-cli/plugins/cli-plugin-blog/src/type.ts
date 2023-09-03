@@ -1,1 +1,1 @@
-export type PLATFORM = 'juejin' | 'mdnice'
+export type PLATFORM = 'juejin' | 'mdnice' | 'cnblogs'

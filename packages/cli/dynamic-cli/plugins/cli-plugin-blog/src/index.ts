@@ -7,6 +7,7 @@ import ncp from 'copy-paste'
 import {
   createTempFile,
   formatWeeklyContent,
+  pipeCnBlogs,
   pipeJueJin,
   pipeMdNice,
   pipeWeekly
@@ -33,7 +34,11 @@ export default function definePlugin(): ICommandDescription {
           '格式化周刊文章内容(自动整理序号和描述信息)',
           false
         )
-        .option('-t,--type <type>', '导出的目标平台 (mdnice,juejin)', 'mdnice')
+        .option(
+          '-t,--type <type>',
+          '导出的目标平台 (mdnice,juejin,cnblogs)',
+          'mdnice'
+        )
         .option('-o,--output', '输出的文件名')
         .description(`博客内容转换`)
         .action((filepath, ops: Option) => {
@@ -54,7 +59,8 @@ export default function definePlugin(): ICommandDescription {
 
           const pipeline: ((v: string, type: PLATFORM) => string)[] = [
             pipeMdNice,
-            pipeJueJin
+            pipeJueJin,
+            pipeCnBlogs
           ]
 
           if (ops.weekly) {
