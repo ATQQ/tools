@@ -1,0 +1,7 @@
+# sync-cnpm
+
+## 0.1.0
+
+### Minor Changes
+
+- feat: 自动扫描工作区的 npm 包,进行 cnpm 的同步

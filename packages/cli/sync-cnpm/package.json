@@ -1,6 +1,6 @@
 {
   "name": "sync-cnpm",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "bin": {
     "sync-cnpm": "./bin.js",
     "cnpm-sync": "./bin.js",
@@ -15,6 +15,7 @@
     "directory": "packages/cli/sync-cnpm"
   },
   "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/sync-cnpm",
+  "description": "auto scan workspace then sync npm packages to cnpm",
   "keywords": [
     "cnpm",
     "sync",
