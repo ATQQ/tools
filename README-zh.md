@@ -8,6 +8,7 @@
 * [文件下载 CLI](./packages/cli/efst/README.md)
 * [动态可扩展CLI](./packages/cli/dynamic-cli/core/README.md)
 * [一键复制复制的CLI](./packages/cli/bcy/README.md)
+* [自动扫描工作区的 npm 包同步到 cnpm](./packages/cli/sync-cnpm/README.md)
 
 ## 相关文章
 * [NodeCLI工具原理解析](https://juejin.cn/post/7155510469464162335) - [相关示例代码](./packages/demos/diy-cli/README.md)
