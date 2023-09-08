@@ -1,0 +1,33 @@
+{
+  "name": "sync-cnpm",
+  "version": "0.0.0",
+  "bin": {
+    "sync-cnpm": "./bin.js",
+    "cnpm-sync": "./bin.js",
+    "cs": "./bin.js"
+  },
+  "files": [
+    "bin.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ATQQ/tools",
+    "directory": "packages/cli/sync-cnpm"
+  },
+  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/sync-cnpm",
+  "keywords": [
+    "cnpm",
+    "sync",
+    "npm",
+    "sync npm",
+    "cnpm sync"
+  ],
+  "author": "ATQQ",
+  "license": "MIT",
+  "dependencies": {
+    "cnpm": "^9.2.0",
+    "fast-glob": "^3.2.12",
+    "p-limit": "^3.1.0",
+    "validate-npm-package-name": "^4.0.0"
+  }
+}
