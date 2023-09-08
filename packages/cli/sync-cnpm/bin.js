@@ -41,7 +41,7 @@ CnpmSync(...pkgNames)
 
 function CnpmSync(...names) {
   // 使用child_process执行cnpm sync
-  return promisify(spawn)('cnpm', ['sync', ...names], {
+  return promisify(spawn)('npx', ['cnpm', 'sync', ...names], {
     cwd: __dirname,
     stdio: 'inherit'
   })

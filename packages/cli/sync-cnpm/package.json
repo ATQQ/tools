@@ -27,7 +27,6 @@
   "dependencies": {
     "cnpm": "^9.2.0",
     "fast-glob": "^3.2.12",
-    "p-limit": "^3.1.0",
     "validate-npm-package-name": "^4.0.0"
   }
 }
