@@ -1,4 +1,4 @@
-# sync-cnpm
+# cnpmsync
 
 自动递归扫描当前目录下所有的 package.json 文件，将非 `"private" : true` 的包同步到 cnpm
 

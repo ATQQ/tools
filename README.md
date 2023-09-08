@@ -9,7 +9,7 @@ language: [简体中文](./README-zh.md)
 * [efst CLI](./packages/cli/efst/README.md)
 * [A dynamic CLI tool](./packages/cli/dynamic-cli/core/README.md)
 * [fast copy branch tool](./packages/cli/bcy/README.md)
-* [sync-cnpm](./packages/cli/sync-cnpm/README.md)
+* [cnpmsync](./packages/cli/sync-cnpm/README.md)
 
 ## Related Articles
 * [NodeCLI工具原理解析](https://juejin.cn/post/7155510469464162335) - [相关示例代码](./packages/demos/diy-cli/README.md)
