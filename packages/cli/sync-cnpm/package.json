@@ -1,9 +1,8 @@
 {
-  "name": "cnpmsync",
+  "name": "cnnc",
   "version": "0.1.0",
   "bin": {
-    "synccnpm": "./bin.js",
-    "cnpmsync": "./bin.js",
+    "cnnc": "./bin.js",
     "cs": "./bin.js"
   },
   "files": [
