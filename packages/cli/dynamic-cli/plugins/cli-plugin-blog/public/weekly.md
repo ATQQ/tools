@@ -33,7 +33,7 @@ recommend: -{{name}}
 
 ## ⭐️强力推荐关注
 * [阮一峰: 科技爱好者周刊](https://www.ruanyifeng.com/blog/archives.html) - 记录每周值得分享的科技内容，周五发布
-* [云谦：MDH 前端周刊](https://www.yuque.com/chencheng/mdh-weekly) - 前端资讯和分享
+* [云谦：MDH 前端周刊](https://mdhweekly.com/) - 前端资讯和分享
 * [童欧巴：前端食堂](https://github.com/Geekhyt/weekly) - 你的前端食堂，吃好每一顿饭
 * [前端RSS](https://fed.chanceyu.com/) - 根据 RSS 订阅源抓取最新前端技术文章
 * [值得一读技术博客](https://daily-blog.chlinlearn.top/) - 每天进步一点点，每天分享有料的技术文章！
