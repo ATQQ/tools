@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-blog
 
+## 0.0.8
+
+### Patch Changes
+
+- feat: 优化周刊的创建和输出
+
 ## 0.0.7
 
 ### Patch Changes

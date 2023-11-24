@@ -1,8 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 import fs from 'fs/promises'
 import path from 'path'
+import { setCLIConfig } from '@sugarat/cli'
 import { PLATFORM } from './type'
 
+export function isIncludeTargetPlatform(platform: string) {
+  const platformList: PLATFORM[] = ['juejin', 'mdnice', 'cnblogs']
+  return platformList.includes(platform as unknown as PLATFORM)
+}
 export function pipelineString(
   input: string,
   ...fns: ((v: string) => string)[]
@@ -272,6 +277,7 @@ export function initTemplateContent(tempStr: string, ops: Record<string, any>) {
   return tempStr.replace(/{{([^}]+)}}/g, (_, match) => ops[match] || _)
 }
 
+export const currentWikiKey = 'blog.current'
 export async function createTempFile(
   type: 'weekly' | 'article',
   ops: Record<string, any>
@@ -291,7 +297,8 @@ export async function createTempFile(
     const fileName = `${year}-${addZero(month)}-${addZero(day)}.md`
     const filePath = path.join(process.cwd(), fileName)
     console.log('创建成功', filePath)
-
+    // 存配置,用于简化配置
+    setCLIConfig(currentWikiKey, filePath)
     await fs.writeFile(filePath, weeklyWiki)
   }
 }
@@ -299,4 +306,24 @@ export async function createTempFile(
 // 实现一个方法自动对一位数补零
 export function addZero(num: number) {
   return num < 10 ? `0${num}` : num
+}
+
+export async function getWeeklyTitle(filepath: string, platform: PLATFORM) {
+  const content = clearMatterContent(await fs.readFile(filepath, 'utf-8'))
+  // 获取一级标题
+  const title = content.match(/^#\s(.*)/m)?.[1]
+  console.log('title', title)
+  // 获取标题中的数字
+  const num = title?.match(/\d+/)?.[0]
+  let template = ''
+  if (platform === 'juejin') {
+    template = '视野修炼-技术周刊第{{num}}期'
+  }
+  if (platform === 'mdnice') {
+    template = '视野修炼-技术周刊第{{num}}期'
+  }
+  if (platform === 'cnblogs') {
+    template = '视野修炼-技术周刊第{{num}}期 '
+  }
+  return initTemplateContent(template, { num })
 }
