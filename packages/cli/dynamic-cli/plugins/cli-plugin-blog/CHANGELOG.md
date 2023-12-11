@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-blog
 
+## 0.0.9
+
+### Patch Changes
+
+- chore: update weekyly temp
+
 ## 0.0.8
 
 ### Patch Changes
