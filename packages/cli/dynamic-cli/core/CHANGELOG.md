@@ -1,5 +1,12 @@
 # @sugarat/cli
 
+## 0.0.7
+
+### Patch Changes
+
+- feat: add version command
+  - @sugarat/cli-plugin-config@0.0.2
+
 ## 0.0.6
 
 ### Patch Changes

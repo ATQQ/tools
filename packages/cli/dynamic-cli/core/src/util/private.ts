@@ -88,7 +88,7 @@ export function pkgExist(
 
 export function spawnPromise(command: string, ...argv: any) {
   return new Promise((resolve, reject) => {
-    const npmInfo = spawn(command, argv)
+    const npmInfo = spawn(command, argv, { cwd: process.cwd() })
     npmInfo.stdout.on('data', (data) => {
       resolve(data.toString().trim())
     })
