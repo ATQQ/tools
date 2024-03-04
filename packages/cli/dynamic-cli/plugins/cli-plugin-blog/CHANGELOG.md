@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-blog
 
+## 0.0.10
+
+### Patch Changes
+
+- feat: 周刊模板迭代,cli 创建周刊优化
+
 ## 0.0.9
 
 ### Patch Changes

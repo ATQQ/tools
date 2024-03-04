@@ -1,8 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import fs from 'fs/promises'
 import path from 'path'
-import { setCLIConfig } from '@sugarat/cli'
+import { getCLIConfig, setCLIConfig } from '@sugarat/cli'
+import { existsSync } from 'fs'
 import { PLATFORM } from './type'
+
+export const weeklyDirectoryKey = 'blog.weeklyDirectory'
 
 export function isIncludeTargetPlatform(platform: string) {
   const platformList: PLATFORM[] = ['juejin', 'mdnice', 'cnblogs']
@@ -278,6 +281,7 @@ export function initTemplateContent(tempStr: string, ops: Record<string, any>) {
 }
 
 export const currentWikiKey = 'blog.current'
+export const currentWikiNum = 'blog.currentNum'
 export async function createTempFile(
   type: 'weekly' | 'article',
   ops: Record<string, any>
@@ -287,7 +291,6 @@ export async function createTempFile(
       path.join(__dirname, 'weekly.md'),
       'utf-8'
     )
-    const weeklyWiki = initTemplateContent(tempContent, ops)
     // 获取年月是 YYYY-MM-DD
     const date = new Date()
     const year = date.getFullYear()
@@ -295,10 +298,16 @@ export async function createTempFile(
     const day = date.getDate()
     // 文件名是 YYYY-MM-DD.md
     const fileName = `${year}-${addZero(month)}-${addZero(day)}.md`
-    const filePath = path.join(process.cwd(), fileName)
+    const weeklyDirectory = getCLIConfig(weeklyDirectoryKey)
+    const filePath = path.join(
+      existsSync(weeklyDirectory) ? weeklyDirectory : process.cwd(),
+      fileName
+    )
     console.log('创建成功', filePath)
     // 存配置,用于简化配置
     setCLIConfig(currentWikiKey, filePath)
+    ops.createTime = `${year}-${addZero(month)}-${addZero(day)}`
+    const weeklyWiki = initTemplateContent(tempContent, ops)
     await fs.writeFile(filePath, weeklyWiki)
   }
 }
