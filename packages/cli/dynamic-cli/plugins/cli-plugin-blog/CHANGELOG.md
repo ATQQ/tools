@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-blog
 
+## 0.0.11
+
+### Patch Changes
+
+- fix: 指定序号的情况下周刊序号自动加 1
+
 ## 0.0.10
 
 ### Patch Changes

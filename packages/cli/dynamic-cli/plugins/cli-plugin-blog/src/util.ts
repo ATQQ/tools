@@ -303,6 +303,7 @@ export async function createTempFile(
       existsSync(weeklyDirectory) ? weeklyDirectory : process.cwd(),
       fileName
     )
+    console.log('title:', `视野修炼第${ops.name}期`)
     console.log('创建成功', filePath)
     // 存配置,用于简化配置
     setCLIConfig(currentWikiKey, filePath)

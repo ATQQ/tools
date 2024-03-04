@@ -70,13 +70,13 @@ export default function definePlugin(): ICommandDescription {
           // 创建周刊文章模板
           if (ops.create && ops.weekly) {
             // 判断不是数字
-            const currentNum = name || getCLIConfig(currentWikiNum)
+            const currentNum = name || +getCLIConfig(currentWikiNum) + 1
             if (Number.isNaN(Number(currentNum))) {
               console.log('请输入数字作为周刊序号')
               return
             }
-            setCLIConfig(currentWikiNum, Number(currentNum) + 1)
-            createTempFile('weekly', { name: +currentNum + 1 })
+            setCLIConfig(currentWikiNum, Number(currentNum))
+            createTempFile('weekly', { name: +currentNum })
             return
           }
 
