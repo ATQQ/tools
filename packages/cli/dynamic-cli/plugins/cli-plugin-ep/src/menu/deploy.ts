@@ -54,6 +54,7 @@ export async function deployMenu() {
     message: '选择部署端',
     options: [
       { value: 'client', label: '客户端 - client' },
+      { value: 'database', label: '数据库 - mysql' },
       { value: 'server', label: '服务端 - server' }
     ],
     initialValue: 'latest'
@@ -62,6 +63,11 @@ export async function deployMenu() {
   if (isCancel(projectType)) {
     cancel('取消部署')
     return process.exit(0)
+  }
+
+  if (projectType === 'database') {
+    // TODO: 部署数据库
+    return
   }
 
   // 稳定版 latest / 预览版本 beta

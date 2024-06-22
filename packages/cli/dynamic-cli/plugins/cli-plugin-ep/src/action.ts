@@ -328,17 +328,10 @@ export function checkServiceStatus(serverName: string) {
   })
 }
 export function checkServiceLog(serverName: string) {
-  execSync(
-    `tail -fn 10 ${path.join(
-      process.env.HOME || process.env.USERPROFILE || process.cwd(),
-      '.pm2/logs',
-      `${serverName}-out.log`
-    )}`,
-    {
-      stdio: 'inherit',
-      cwd: process.cwd()
-    }
-  )
+  execSync(`pm2 logs ${serverName} --out`, {
+    stdio: 'inherit',
+    cwd: process.cwd()
+  })
 }
 export function deployServer(serverName: string) {
   deleteService(serverName)

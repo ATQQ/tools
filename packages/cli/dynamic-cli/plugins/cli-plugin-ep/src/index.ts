@@ -9,13 +9,12 @@ import {
   checkMachineEnv,
   checkServiceStatus,
   deleteService,
-  deployPkg,
-  packDist,
-  pullPkg,
+  // packDist,
+  // pullPkg,
   restartService,
   stopService,
-  unPkg,
-  uploadPkg,
+  // unPkg,
+  // uploadPkg,
   checkServiceLog,
   validServerFile,
   deployServer,
@@ -35,15 +34,15 @@ export default function definePlugin(): ICommandDescription {
         .description(
           `部署兼启动 EasyPicker 服务 (type in [client, server, admin])`
         )
-        .option('--check', '检查环境')
-        .option('-p,--pack', '产物打包')
-        .option('-u,--upload', '上传打包的产物')
-        .option('--pull [version]', '拉取服务静态资源')
-        .option('--unpkg [version]', '解压资源包')
-        .option('--deploy [version]', '一键部署服务')
-        .option('--init-mysql <rest...>', '一键导入数据库表')
-        .option('--name <serverName>', '指定服务应用的名称')
-        .option('--stop', '停止服务')
+        // .option('--check', '检查环境')
+        // .option('-p,--pack', '产物打包')
+        // .option('-u,--upload', '上传打包的产物')
+        // .option('--pull [version]', '拉取服务静态资源')
+        // .option('--unpkg [version]', '解压资源包')
+        // .option('--deploy', '一键部署服务')
+        // .option('--init-mysql <rest...>', '一键导入数据库表')
+        // .option('--name <serverName>', '指定服务应用的名称')
+        // .option('--stop', '停止服务')
         .option('--config [name]', '获取指定配置')
         .option('--restart', '重启服务')
         .option('--del', '移除服务')
@@ -51,21 +50,29 @@ export default function definePlugin(): ICommandDescription {
         .option('--log', '服务日志')
         .option('--list', '服务列表')
         .action(async (type: ActionType, options: Options) => {
-          if (!getCLIConfig('qiniu.base')) {
-            setCLIConfig('qiniu.base', `dist/easypicker/`)
-          }
-
-          if (!getCLIConfig('qiniu.source')) {
-            setCLIConfig('qiniu.source', {
-              versionMapUrl: 'https://script.sugarat.top/json/ep-version.json',
-              cdn: 'https://img.cdn.sugarat.top'
-            })
-          }
-
-          if (options.check) {
-            checkMachineEnv()
+          if (type === 'deploy') {
+            await deployMenu()
             return
           }
+          if (type === 'check') {
+            await checkMachineEnv()
+            return
+          }
+          // if (!getCLIConfig('qiniu.base')) {
+          //   setCLIConfig('qiniu.base', `dist/easypicker/`)
+          // }
+
+          // if (!getCLIConfig('qiniu.source')) {
+          //   setCLIConfig('qiniu.source', {
+          //     versionMapUrl: 'https://script.sugarat.top/json/ep-version.json',
+          //     cdn: 'https://img.cdn.sugarat.top'
+          //   })
+          // }
+
+          // if (options.check) {
+          //   checkMachineEnv()
+          //   return
+          // }
           if (options.initMysql) {
             if (options.initMysql?.length !== 3) {
               console.log('❌ 传入的数据库参数格式不正确')
@@ -76,35 +83,34 @@ export default function definePlugin(): ICommandDescription {
             return
           }
           if (!type) {
-            if (options.deploy) {
-              await deployMenu()
-            }
             return
           }
-          if (options.pack) {
-            const filename = packDist(type)
-            if (options.upload) {
-              uploadPkg(filename).catch((err) => {
-                console.log(err?.message)
-              })
-            }
-            return
-          }
-          if (options.pull) {
-            pullPkg(type, options.pull === true ? 'latest' : options.pull)
-            return
-          }
-          if (options.unpkg) {
-            unPkg(type, options.unpkg === true ? 'latest' : options.unpkg)
-            return
-          }
+          // if (options.pack) {
+          //   const filename = packDist(type)
+          //   if (options.upload) {
+          //     uploadPkg(filename).catch((err) => {
+          //       console.log(err?.message)
+          //     })
+          //   }
+          //   return
+          // }
+          // if (options.pull) {
+          //   pullPkg(type, options.pull === true ? 'latest' : options.pull)
+          //   return
+          // }
+          // if (options.unpkg) {
+          //   unPkg(type, options.unpkg === true ? 'latest' : options.unpkg)
+          //   return
+          // }
 
-          if (options.deploy) {
-            await deployPkg(
-              type,
-              options.deploy === true ? 'latest' : options.deploy
-            )
-          }
+          // if (options.deploy) {
+          //   console.log('请使用 q ep --deploy 交互式命令部署')
+          //   return
+          //   // await deployPkg(
+          //   //   type,
+          //   //   options.deploy === true ? 'latest' : options.deploy
+          //   // )
+          // }
           if (type !== 'server') {
             return
           }

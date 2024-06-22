@@ -1,4 +1,4 @@
-export type ActionType = 'client' | 'server' | 'admin'
+export type ActionType = 'server' | 'deploy' | 'check'
 
 export interface Options {
   check?: boolean
