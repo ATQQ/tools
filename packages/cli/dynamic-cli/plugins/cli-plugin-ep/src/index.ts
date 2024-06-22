@@ -24,6 +24,7 @@ import {
   initMysql
 } from './action'
 import type { ActionType, Options } from './type'
+import { deployMenu } from './menu/deploy'
 
 export default function definePlugin(): ICommandDescription {
   return defineCommand({
@@ -75,6 +76,9 @@ export default function definePlugin(): ICommandDescription {
             return
           }
           if (!type) {
+            if (options.deploy) {
+              await deployMenu()
+            }
             return
           }
           if (options.pack) {

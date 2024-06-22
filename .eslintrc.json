@@ -15,7 +15,10 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "todo-ddl"],
+  "plugins": [
+    "@typescript-eslint",
+    "todo-ddl"
+  ],
   "rules": {
     "todo-ddl/diy": "warn",
     "import/extensions": [
@@ -25,7 +28,9 @@
         "json": "always"
       }
     ],
-    "import/no-unresolved": ["off"],
+    "import/no-unresolved": [
+      "off"
+    ],
     "no-console": "off",
     "import/prefer-default-export": "off",
     "no-restricted-syntax": "off",
@@ -34,8 +39,10 @@
     "import/no-extraneous-dependencies": "off",
     "no-param-reassign": "off",
     "@typescript-eslint/no-var-requires": "off",
-    "import/no-dynamic-require":"off",
-    "global-require":"off",
-    "no-await-in-loop":"off"
+    "import/no-dynamic-require": "off",
+    "global-require": "off",
+    "no-await-in-loop": "off",
+    "consistent-return": "off",
+    "no-empty": "off"
   }
 }

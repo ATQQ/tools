@@ -1,17 +1,23 @@
 # @sugarat/cli-plugin-ep
 
+## 0.1.0
+
+### Minor Changes
+
+- feat: add new deploy ep command
+
 ## 0.0.6
 
 ### Patch Changes
 
-- fix: 漏上传.env配置文件
+- fix: 漏上传.env 配置文件
 
 ## 0.0.5
 
 ### Patch Changes
 
-- feat: check的时候自动安装pnpm
-- feat: 集成MySQL创建指令
+- feat: check 的时候自动安装 pnpm
+- feat: 集成 MySQL 创建指令
 
 ## 0.0.4
 
