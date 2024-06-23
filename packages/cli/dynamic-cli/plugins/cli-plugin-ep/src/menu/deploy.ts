@@ -18,6 +18,7 @@ import { getCLIConfig, setCLIConfig } from '@sugarat/cli'
 import portfinder from 'portfinder'
 import { promisify } from 'util'
 import { RegistryInfo, Version } from '../type'
+import { sleep } from '../util'
 
 const execAsync = promisify(exec)
 
@@ -421,10 +422,4 @@ async function deleteService(serverName: string) {
       cwd: `${process.cwd()}/easypicker2-server`
     })
   } catch {}
-}
-
-function sleep(ms: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms)
-  })
 }

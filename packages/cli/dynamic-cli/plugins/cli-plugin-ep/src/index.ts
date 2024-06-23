@@ -21,7 +21,6 @@ export default function definePlugin(): ICommandDescription {
             await checkMachineEnv()
             return
           }
-
           if (type === 'server') {
             await checkService()
           }
