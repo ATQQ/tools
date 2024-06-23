@@ -45,6 +45,89 @@ async function getNpmVersions(
   return versions
 }
 
+async function setupMySqlDatabase() {
+  // 输入数据库名称
+  const dbName = await text({
+    message: '请输入数据库名称',
+    placeholder: '已存在的空数据库名称（如没有，请先创建一个空数据库）',
+    validate: (value) => {
+      if (value.trim() === '') {
+        return '数据库名称不能为空'
+      }
+    }
+  })
+  if (isCancel(dbName)) {
+    cancel('取消')
+    return process.exit(0)
+  }
+
+  // 输入数据库用户名
+  const dbUser = await text({
+    message: '请输入数据库用户名',
+    placeholder: '数据库用户名',
+    validate: (value) => {
+      if (value.trim() === '') {
+        return '数据库用户名不能为空'
+      }
+    }
+  })
+  if (isCancel(dbUser)) {
+    cancel('取消')
+    return process.exit(0)
+  }
+
+  // 输入数据库密码
+  const dbPassword = await text({
+    message: '请输入数据库密码',
+    placeholder: '数据库密码',
+    validate: (value) => {
+      if (value.trim() === '') {
+        return '数据库密码不能为空'
+      }
+    }
+  })
+
+  if (isCancel(dbPassword)) {
+    cancel('取消')
+    return process.exit(0)
+  }
+
+  // 确认信息
+  const confirmInfo = await confirm({
+    message: `再次确认上述录入的数据库信息是否正确？`,
+    initialValue: true
+  })
+
+  if (isCancel(confirmInfo)) {
+    cancel('取消')
+    return process.exit(0)
+  }
+
+  // 初始化数据库
+  await initMysql(dbName, dbUser, dbPassword)
+  outro(`mysql 数据表初始化完成！🎉`)
+}
+
+export async function initMysql(
+  dbName: string,
+  user: string,
+  password: string
+) {
+  const mysqlSpinner = spinner()
+  const sqlFile = path.resolve(__dirname, 'auto_create.sql')
+  mysqlSpinner.start('初始化数据库表')
+  try {
+    const { stdout, stderr } = await execAsync(
+      `mysql -u${user} -p${password} -e "use ${dbName};source ${sqlFile};show tables;"`
+    )
+    mysqlSpinner.stop(`表导入完成 \n${stdout}\n${stderr}`)
+  } catch (error: any) {
+    mysqlSpinner.stop(error?.message)
+    cancel('表导入失败')
+    return process.exit(0)
+  }
+}
+
 export async function deployMenu() {
   // 菜单提示
   console.log()
@@ -66,7 +149,7 @@ export async function deployMenu() {
   }
 
   if (projectType === 'database') {
-    // TODO: 部署数据库
+    await setupMySqlDatabase()
     return
   }
 

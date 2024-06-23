@@ -4,7 +4,12 @@ import path from 'path'
 import qiniu from 'qiniu'
 import fs from 'fs'
 import axios from 'axios'
+import { intro, outro, spinner, cancel } from '@clack/prompts'
+import chalk from 'chalk'
+import { promisify } from 'util'
+import semver from 'semver'
 
+const execAsync = promisify(exec)
 export function isCmdExist(
   cmd: string,
   ops?: {
@@ -40,32 +45,56 @@ export function isCmdExist(
   })
 }
 
-export function checkRegistry() {
-  const res = execSync('npm get registry', { encoding: 'utf-8' }).trim()
-  const taobaoRegistry = 'https://registry.npmmirror.com/'
-  if (res !== taobaoRegistry) {
-    console.log('❌ taobao registry')
-    console.log('🔧 切换淘宝镜像源')
-    execSync('nrm use taobao')
+function checkNodeVersion() {
+  const nodeVersionSpinner = spinner()
+  nodeVersionSpinner.start('🔍 检查Node版本')
+  const nodeVersion = process.version.replace('v', '')
+  if (semver.cmp(nodeVersion, '>=', '16.0.0')) {
+    nodeVersionSpinner.stop(`✅ Node版本 ${nodeVersion}`)
+  } else {
+    cancel('Node 版本需要 >= 16')
+    return process.exit(0)
   }
-  console.log('✅ taobao registry')
 }
 
+async function checkRegistry() {
+  const registrySpinner = spinner()
+  registrySpinner.start('🔍 检查 npm 镜像源')
+  await execAsync('npm config set registry https://registry.npmmirror.com/', {
+    cwd: process.cwd()
+  })
+  registrySpinner.stop('✅ 设置 npm 镜像源 : https://registry.npmmirror.com/')
+}
+
+async function checkPNPM() {
+  const pnpmSpinner = spinner()
+  pnpmSpinner.start('🔍 检查pnpm是否安装')
+  const { stderr } = await execAsync('pnpm -v', {
+    cwd: process.cwd()
+  })
+
+  if (stderr) {
+    pnpmSpinner.stop('❌ pnpm未安装')
+    cancel(
+      `请执行 ${chalk.green(
+        'npm i -g pnpm --registry=https://registry.npmmirror.com'
+      )} 安装pnpm`
+    )
+    return process.exit(0)
+  }
+  pnpmSpinner.stop('✅ pnpm已安装')
+}
 export async function checkMachineEnv() {
-  await isCmdExist('zx', {
-    installCommand: 'npm i -g zx --registry=https://registry.npmmirror.com'
-  })
-  await isCmdExist('node', {
-    tip: '请安装Node 且版本需要大于 14.19（宝塔面板推荐使用 PM2进行安装）'
-  })
-  await isCmdExist('nrm', {
-    installCommand: 'npm i -g nrm --registry=https://registry.npmmirror.com'
-  })
-  await isCmdExist('pnpm', {
-    // tip: '请执行如下指令安装: npm i -g pnpm',
-    installCommand: 'npm i -g pnpm --registry=https://registry.npmmirror.com'
-  })
-  checkRegistry()
+  console.log()
+  intro(chalk.inverse(' 检查环境配置情况 '))
+
+  await checkNodeVersion()
+
+  await checkRegistry()
+
+  await checkPNPM()
+
+  outro(`完成检查`)
 }
 export const CompressPkgName = (type: string, version: string) => {
   return `EasyPicker_${type}_${version}.tar.gz`
