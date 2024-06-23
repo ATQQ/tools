@@ -74,7 +74,7 @@ export async function checkMachineEnv() {
 
   outro(`完成检查`)
 }
-async function checkUserConfig() {
+export async function checkUserConfig() {
   const userConfigPath = path.resolve(
     process.cwd(),
     'easypicker2-server/user-config.json'

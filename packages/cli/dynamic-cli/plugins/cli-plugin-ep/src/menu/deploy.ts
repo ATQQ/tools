@@ -14,11 +14,12 @@ import semver from 'semver'
 import path from 'path'
 import fs from 'fs'
 import { execSync, exec } from 'child_process'
-import { getCLIConfig, setCLIConfig } from '@sugarat/cli'
+import { getCLIConfig, readJSONFIle, setCLIConfig } from '@sugarat/cli'
 import portfinder from 'portfinder'
 import { promisify } from 'util'
 import { RegistryInfo, Version } from '../type'
 import { sleep } from '../util'
+import { checkUserConfig } from '../action'
 
 const execAsync = promisify(exec)
 
@@ -106,7 +107,41 @@ async function setupMySqlDatabase() {
 
   // 初始化数据库
   await initMysql(dbName, dbUser, dbPassword)
+
+  // 修改 user-config.json
+  await checkUserConfig()
+
+  await rewriteMySqlConfig({
+    database: dbName,
+    user: dbUser,
+    password: dbPassword
+  })
+
   outro(`mysql 数据表初始化完成！🎉`)
+}
+
+function rewriteMySqlConfig(ops: {
+  database: string
+  user: string
+  password: string
+}) {
+  const userConfigPath = path.resolve(
+    process.cwd(),
+    'easypicker2-server/user-config.json'
+  )
+  const userCfgSpinner = spinner()
+  userCfgSpinner.start('🔍 正在修改 user-config.json 文件...')
+  const userCfg = readJSONFIle(userConfigPath)
+  userCfg.forEach((cfg: any) => {
+    const { type, key } = cfg
+    if (type === 'mysql') {
+      if (['database', 'user', 'password'].includes(key)) {
+        cfg.value = ops[key as 'database' | 'user' | 'password']
+      }
+    }
+  })
+  fs.writeFileSync(userConfigPath, JSON.stringify(userCfg, null, 2))
+  userCfgSpinner.stop('✅ 数据库配置完成写入')
 }
 
 export async function initMysql(

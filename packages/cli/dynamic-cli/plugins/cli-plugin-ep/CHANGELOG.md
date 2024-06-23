@@ -1,5 +1,14 @@
 # @sugarat/cli-plugin-ep
 
+## 0.1.1
+
+### Patch Changes
+
+- feat: 支持修改服务端配置
+- feat: 配置数据库时自动完成相关配置写入
+- feat: 支持数据库表的导入
+- chore: 移除不常用的 options
+
 ## 0.1.0
 
 ### Minor Changes
