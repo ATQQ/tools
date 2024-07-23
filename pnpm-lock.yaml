@@ -111,9 +111,6 @@ importers:
       portfinder:
         specifier: ^1.0.32
         version: 1.0.32
-      qiniu:
-        specifier: ^7.8.0
-        version: 7.8.0
       semver:
         specifier: ^7.6.2
         version: 7.6.2
@@ -1089,9 +1086,6 @@ packages:
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
-  before@0.0.1:
-    resolution: {integrity: sha512-1J5SWbkoVJH9DTALN8igB4p+nPKZzPrJ/HomqBDLpfUvDXCdjdBmBUcH5McZfur0lftVssVU6BZug5NYh87zTw==}
-
   better-path-resolve@1.0.0:
     resolution: {integrity: sha512-pbnl5XzGBdrFU/wT4jqmJVPn2B6UHPBOhzMQkY/SPUPB6QtUXtmBHBIwCbXJol93mOpGMnQyP/+BB19q04xj7g==}
     engines: {node: '>=4'}
@@ -1113,9 +1107,6 @@ packages:
 
   binary-mirror-config@1.41.0:
     resolution: {integrity: sha512-ZiIhR1s6Sv1Fv6qCQqfPjx0Cj86BgFlhqNxZgHkQOWcxJcMbO3mj1iqsuVjowYqJqeZL8e52+IEv7IRnSX6T6w==}
-
-  block-stream2@2.1.0:
-    resolution: {integrity: sha512-suhjmLI57Ewpmq00qaygS8UgEq2ly2PCItenIyhMqVjo4t4pGzqMvfgJuX8iWTeSDdfSSqS6j38fL4ToNL7Pfg==}
 
   brace-expansion@1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
@@ -1339,11 +1330,6 @@ packages:
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
 
-  crc32@0.2.2:
-    resolution: {integrity: sha512-PFZEGbDUeoNbL2GHIEpJRQGheXReDody/9axKTxhXtQqIL443wnNigtVZO9iuCIMPApKZRv7k2xr8euXHqNxQQ==}
-    engines: {node: '>= 0.4.0'}
-    hasBin: true
-
   cross-spawn@0.2.9:
     resolution: {integrity: sha512-jUNffe+x93R0/940d+JrdIl8SROZdUuvlw0HxjR/0GUKGvJEWiTK5rxtKNtP1lgMnoR8383q0orSA6k3eJ+y4A==}
 
@@ -1521,10 +1507,6 @@ packages:
   emojis-list@3.0.0:
     resolution: {integrity: sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==}
     engines: {node: '>= 4'}
-
-  encodeurl@1.0.2:
-    resolution: {integrity: sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==}
-    engines: {node: '>= 0.8'}
 
   encoding@0.1.13:
     resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
@@ -2674,9 +2656,6 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  mockdate@3.0.5:
-    resolution: {integrity: sha512-iniQP4rj1FhBdBYS/+eQv7j1tadJ9lJtdzgOpvsOHng/GbcDh2Fhdeq+ZRldrPYdXvCyfFUmFeEwEGXZB5I/AQ==}
-
   module-alias@2.2.2:
     resolution: {integrity: sha512-A/78XjoX2EmNvppVWEhM2oGk3x4lLxnkEA4jTbaK97QKSDjkIoOsKQlfylt/d3kKKi596Qy3NP5XrXJ6fZIC9Q==}
 
@@ -3208,10 +3187,6 @@ packages:
     resolution: {integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==}
     engines: {node: '>=6'}
 
-  qiniu@7.8.0:
-    resolution: {integrity: sha512-StJ2+E2gnr9BOfUcOLLBSWicc4ItpI3BK+O76ebHKdWrcdNnFfIfHK6dzJY5Fu0k3od2QyuWoNMTZ77SD6emMA==}
-    engines: {node: '>= 6'}
-
   qs@6.11.0:
     resolution: {integrity: sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q==}
     engines: {node: '>=0.6'}
@@ -3708,9 +3683,6 @@ packages:
   tuf-js@1.1.7:
     resolution: {integrity: sha512-i3P9Kgw3ytjELUfpuKVDNBJvk4u5bXL6gskv572mcevPbSKCV3zt3djhmlEQ65yERjIbOSncy7U4cQJaB1CBCg==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
-
-  tunnel-agent@0.6.0:
-    resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}
 
   type-check@0.3.2:
     resolution: {integrity: sha512-ZCmOJdvOWDBYJlzAoFkC+Q0+bUyEOS1ltgp1MGU03fqHG+dbi9tBFU2Rd9QKiDZFAYrhPh2JUf7rZRIuHRKtOg==}
@@ -5013,8 +4985,6 @@ snapshots:
 
   base64-js@1.5.1: {}
 
-  before@0.0.1: {}
-
   better-path-resolve@1.0.0:
     dependencies:
       is-windows: 1.0.2
@@ -5040,10 +5010,6 @@ snapshots:
   binary-extensions@2.2.0: {}
 
   binary-mirror-config@1.41.0: {}
-
-  block-stream2@2.1.0:
-    dependencies:
-      readable-stream: 3.6.0
 
   brace-expansion@1.1.11:
     dependencies:
@@ -5294,8 +5260,6 @@ snapshots:
 
   core-util-is@1.0.3: {}
 
-  crc32@0.2.2: {}
-
   cross-spawn@0.2.9:
     dependencies:
       lru-cache: 2.7.3
@@ -5444,8 +5408,6 @@ snapshots:
   emoji-regex@9.2.2: {}
 
   emojis-list@3.0.0: {}
-
-  encodeurl@1.0.2: {}
 
   encoding@0.1.13:
     dependencies:
@@ -6694,8 +6656,6 @@ snapshots:
 
   mkdirp@1.0.4: {}
 
-  mockdate@3.0.5: {}
-
   module-alias@2.2.2: {}
 
   moment@2.29.4: {}
@@ -7246,22 +7206,6 @@ snapshots:
 
   punycode@2.1.1: {}
 
-  qiniu@7.8.0:
-    dependencies:
-      agentkeepalive: 4.2.1
-      before: 0.0.1
-      block-stream2: 2.1.0
-      crc32: 0.2.2
-      destroy: 1.2.0
-      encodeurl: 1.0.2
-      formstream: 1.1.1
-      mime: 2.6.0
-      mockdate: 3.0.5
-      tunnel-agent: 0.6.0
-      urllib: 2.40.0
-    transitivePeerDependencies:
-      - supports-color
-
   qs@6.11.0:
     dependencies:
       side-channel: 1.0.4
@@ -7790,10 +7734,6 @@ snapshots:
       make-fetch-happen: 11.1.1
     transitivePeerDependencies:
       - supports-color
-
-  tunnel-agent@0.6.0:
-    dependencies:
-      safe-buffer: 5.1.2
 
   type-check@0.3.2:
     dependencies:
