@@ -1,4 +1,0 @@
-dist
-build
-tsup.config.ts
-packages/cli/es-check/__test__/testProject/js

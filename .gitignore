@@ -8,7 +8,6 @@ build
 
 # Editor directories and files
 .idea
-.vscode
 __tmp__
 .cache
 coverage
