@@ -15,6 +15,7 @@ import {
   currentWikiKey,
   currentWikiNum,
   formatWeeklyContent,
+  getArticleDescription,
   getWeeklyTitle,
   isIncludeTargetPlatform,
   pipeCnBlogs,
@@ -144,6 +145,7 @@ export default function definePlugin(): ICommandDescription {
               `【周刊标题】`,
               await getWeeklyTitle(originPath, targetPlatform)
             )
+            console.log(`【描述信息】`, getArticleDescription(content))
           }
           // 写入剪贴板
           ncp.copy(result, () => {

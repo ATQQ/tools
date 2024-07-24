@@ -13,6 +13,12 @@ recommend: -{{name}}
 
 [[toc]]
 
+<center>
+
+下面开始本期内容的介绍ღ( ´･ᴗ･` )比心。
+
+</center>
+
 ## 🔥强烈推荐
 
 ## 🔧开源工具&技术资讯
@@ -24,7 +30,7 @@ recommend: -{{name}}
 ## 😛趣图
 
 ## ⭐️强力推荐关注
->周刊部分内容来源如下渠道。
+>周刊部分内容来源如下渠道，推荐大家关注。
 
 * [阮一峰: 科技爱好者周刊](https://www.ruanyifeng.com/blog/archives.html) - 记录每周值得分享的科技内容，周五发布
 * [云谦：MDH 前端周刊](https://sorrycc.com/mdh/) - 前端资讯和分享

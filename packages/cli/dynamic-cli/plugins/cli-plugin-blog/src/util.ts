@@ -323,6 +323,7 @@ export async function getWeeklyTitle(filepath: string, platform: PLATFORM) {
   // 获取一级标题
   const title = content.match(/^#\s(.*)/m)?.[1]
   console.log('title', title)
+  const [_, suffix] = title?.split('|') || []
   // 获取标题中的数字
   const num = title?.match(/\d+/)?.[0]
   let template = ''
@@ -335,5 +336,13 @@ export async function getWeeklyTitle(filepath: string, platform: PLATFORM) {
   if (platform === 'cnblogs') {
     template = '视野修炼-技术周刊第{{num}}期 '
   }
-  return initTemplateContent(template, { num })
+  return (
+    initTemplateContent(template, { num }) +
+    (suffix ? ` | ${suffix.trim()}` : '')
+  )
+}
+
+export function getArticleDescription(content: string) {
+  const description = content.match(/description:(.*)/)?.[1]
+  return description
 }
