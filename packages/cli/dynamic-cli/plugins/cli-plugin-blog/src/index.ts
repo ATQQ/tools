@@ -1,12 +1,14 @@
+import path from 'path'
+import fs from 'fs'
+import process from 'process'
+import type {
+  ICommandDescription,
+} from '@sugarat/cli'
 import {
   defineCommand,
   getCLIConfig,
-  ICommandDescription,
-  setCLIConfig
+  setCLIConfig,
 } from '@sugarat/cli'
-import path from 'path'
-import fs from 'fs'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import ncp from 'copy-paste'
 import { select } from '@clack/prompts'
@@ -22,9 +24,9 @@ import {
   pipeJueJin,
   pipeMdNice,
   pipeWeekly,
-  weeklyDirectoryKey
+  weeklyDirectoryKey,
 } from './util'
-import { PLATFORM } from './type'
+import type { PLATFORM } from './type'
 
 interface Option {
   weekly?: boolean
@@ -46,15 +48,15 @@ export default function definePlugin(): ICommandDescription {
         .option(
           '-f,--format',
           '格式化周刊文章内容(自动整理序号和描述信息)',
-          false
+          false,
         )
         .option(
           '-t,--type [type]',
           '导出的目标平台 (mdnice,juejin,cnblogs)',
-          'mdnice'
+          'mdnice',
         )
         .option('-o,--output', '输出的文件名')
-        .description(`博客内容转换`)
+        .description('博客内容转换')
         .action(async (filepath, ops: Option) => {
           if (!filepath && !(ops.create && ops.weekly)) {
             // 复用最近操作的文章
@@ -88,8 +90,8 @@ export default function definePlugin(): ICommandDescription {
               options: [
                 { value: 'mdnice', label: '墨滴' },
                 { value: 'juejin', label: '掘金' },
-                { value: 'cnblogs', label: '博客园' }
-              ]
+                { value: 'cnblogs', label: '博客园' },
+              ],
             })
             if (!isIncludeTargetPlatform(targetPlatform as string)) {
               return
@@ -100,7 +102,7 @@ export default function definePlugin(): ICommandDescription {
           const originPath = path.resolve(process.cwd(), filepath)
           const outputPath = path.resolve(
             process.cwd(),
-            `${dir}/${name}_${ops.type}${ext}`
+            `${dir}/${name}_${ops.type}${ext}`,
           )
           console.log('【pick】', originPath)
 
@@ -113,12 +115,11 @@ export default function definePlugin(): ICommandDescription {
           const pipeline: ((v: string, type: PLATFORM) => string)[] = [
             pipeMdNice,
             pipeJueJin,
-            pipeCnBlogs
+            pipeCnBlogs,
           ]
 
           if (ops.weekly) {
             pipeline.unshift(pipeWeekly)
-
             if (ops.format) {
               // 自动修改源文件添加序号，描述等信息
               const newContent = formatWeeklyContent(content)
@@ -142,10 +143,10 @@ export default function definePlugin(): ICommandDescription {
 
           if (ops.weekly) {
             console.log(
-              `【周刊标题】`,
-              await getWeeklyTitle(originPath, targetPlatform)
+              '【周刊标题】',
+              await getWeeklyTitle(originPath, targetPlatform),
             )
-            console.log(`【描述信息】`, getArticleDescription(content))
+            console.log('【描述信息】', getArticleDescription(content))
           }
           // 写入剪贴板
           ncp.copy(result, () => {
@@ -154,6 +155,6 @@ export default function definePlugin(): ICommandDescription {
           // 更新配置
           setCLIConfig(currentWikiKey, originPath)
         })
-    }
+    },
   })
 }

@@ -1,9 +1,10 @@
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable regexp/no-unused-capturing-group */
 import fs from 'fs/promises'
 import path from 'path'
-import { getCLIConfig, setCLIConfig } from '@sugarat/cli'
+import process from 'process'
 import { existsSync } from 'fs'
-import { PLATFORM } from './type'
+import { getCLIConfig, setCLIConfig } from '@sugarat/cli'
+import type { PLATFORM } from './type'
 
 export const weeklyDirectoryKey = 'blog.weeklyDirectory'
 
@@ -21,19 +22,20 @@ export function pipelineString(
 }
 
 export function pipeMdNice(input: string, type: PLATFORM) {
-  if (type !== 'mdnice') return input
+  if (type !== 'mdnice')
+    return input
   return pipelineString(
     input,
     clearMatterContent,
     removeFirstH1,
     clearStartEndEmptyLine,
-    link2footnote
+    link2footnote,
   )
 }
 export function link2footnote(md: string) {
   const white = ['mp.weixin.qq.com']
   return md.replace(/([^!])\[(.*?)\]\((.*?)\)/g, (all, $1: string, $2, $3) => {
-    if (white.find((v) => $3.includes(v))) {
+    if (white.find(v => $3.includes(v))) {
       return all
     }
     return `${$1}[${$2}](${$3} "${$2}")`
@@ -41,25 +43,27 @@ export function link2footnote(md: string) {
 }
 
 export function pipeJueJin(input: string, type: PLATFORM) {
-  if (type !== 'juejin') return input
+  if (type !== 'juejin')
+    return input
 
   return pipelineString(
     input,
     clearMatterContent,
     removeFirstH1,
     clearStartEndEmptyLine,
-    (v) => `---\ntheme: smartblue\n---\n${v}`
+    v => `---\ntheme: smartblue\n---\n${v}`,
   )
 }
 
 export function pipeCnBlogs(input: string, type: PLATFORM) {
-  if (type !== 'cnblogs') return input
+  if (type !== 'cnblogs')
+    return input
 
   return pipelineString(
     input,
     clearMatterContent,
     removeFirstH1,
-    clearStartEndEmptyLine
+    clearStartEndEmptyLine,
   )
 }
 
@@ -82,7 +86,8 @@ export function clearMatterContent(content: string) {
     if (line.trim() === '---') {
       if (first___ === undefined) {
         first___ = pre.length
-      } else if (second___ === undefined) {
+      }
+      else if (second___ === undefined) {
         second___ = pre.length
       }
     }
@@ -104,8 +109,8 @@ export function pipeWeekly(input: string, type: PLATFORM) {
   const titles = lines.reduce<string[]>((pre, line) => {
     const excludeWords = ['趣图', '强力推荐关注']
     if (
-      !excludeWords.find((exclude) => line.includes(exclude)) &&
-      /^(##|###)\s/.test(line)
+      !excludeWords.find(exclude => line.includes(exclude))
+      && /^(##|###)\s/.test(line)
     ) {
       pre.push(line)
     }
@@ -117,12 +122,13 @@ export function pipeWeekly(input: string, type: PLATFORM) {
     .reduce<string[]>((pre, title) => {
       if (/^##\s/.test(title)) {
         pre.push('', title, '')
-      } else {
+      }
+      else {
         pre.push(title.replace(/\[(.*?)\]\(.*\)/, '$1'))
       }
       return pre
     }, [])
-    .map((v) => v.replace(/^#+\s/, ''))
+    .map(v => v.replace(/^#+\s/, ''))
     .join('\n')
 
   return (
@@ -132,14 +138,14 @@ export function pipeWeekly(input: string, type: PLATFORM) {
       // 替换引导文案
       .replace(
         '**ღ( ´･ᴗ･` )比心**',
-        `，预计阅读时间 ${predictReadTime(input)} 分钟`
+        `，预计阅读时间 ${predictReadTime(input)} 分钟`,
       )
       // 底部内容替换
       .replace(
         /## ⭐️强力推荐关注([\s\S]*)/,
         type === 'mdnice'
           ? '## [🔗强力推荐关注](https://mp.weixin.qq.com/s?__biz=MzA4ODMyMTk5OA==&mid=2247484332&idx=1&sn=d0d26fcb72bf420ce3c8a983142f5158&chksm=902ab90da75d301b54dc68609ea01df32280d3bde48270a97f8c1be444915df5ae957d47e7db#rd)$1'
-          : '## ⭐️强力推荐关注$1'
+          : '## ⭐️强力推荐关注$1',
       )
   )
 }
@@ -159,11 +165,10 @@ export function imageTime(n: number) {
 }
 
 export function wordTime(n: number) {
-  // eslint-disable-next-line no-bitwise
   return ~~((n / 275) * 60)
 }
-const pattern =
-  /[a-zA-Z0-9_\u0392-\u03c9\u00c0-\u00ff\u0600-\u06ff\u0400-\u04ff]+|[\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff\u3040-\u309f\uac00-\ud7af]+/g
+const pattern
+  = /[\w\u0392-\u03C9\u00C0-\u00FF\u0600-\u06FF\u0400-\u04FF]+|[\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFF\u3040-\u309F\uAC00-\uD7AF]+/g
 
 // copy from https://github.com/youngjuning/vscode-juejin-wordcount/blob/main/count-word.ts
 export default function countWord(data: string) {
@@ -173,9 +178,10 @@ export default function countWord(data: string) {
     return 0
   }
   for (let i = 0; i < m.length; i += 1) {
-    if (m[i].charCodeAt(0) >= 0x4e00) {
+    if (m[i].charCodeAt(0) >= 0x4E00) {
       count += m[i].length
-    } else {
+    }
+    else {
       count += 1
     }
   }
@@ -186,35 +192,35 @@ export function getCircleNumber(num: number) {
   if (num >= 1 && num <= 20) {
     // 数字在 1 到 20 之间，使用 Unicode 码点将数字转换为带圆圈数字形式
     const circle: Record<string, string> = {
-      '1': '\u2460',
-      '2': '\u2461',
-      '3': '\u2462',
-      '4': '\u2463',
-      '5': '\u2464',
-      '6': '\u2465',
-      '7': '\u2466',
-      '8': '\u2467',
-      '9': '\u2468',
-      '10': '\u2469',
-      '11': '\u246A',
-      '12': '\u246B',
-      '13': '\u246C',
-      '14': '\u246D',
-      '15': '\u246E',
-      '16': '\u246F',
-      '17': '\u2470',
-      '18': '\u2471',
-      '19': '\u2472',
-      '20': '\u2473'
+      1: '\u2460',
+      2: '\u2461',
+      3: '\u2462',
+      4: '\u2463',
+      5: '\u2464',
+      6: '\u2465',
+      7: '\u2466',
+      8: '\u2467',
+      9: '\u2468',
+      10: '\u2469',
+      11: '\u246A',
+      12: '\u246B',
+      13: '\u246C',
+      14: '\u246D',
+      15: '\u246E',
+      16: '\u246F',
+      17: '\u2470',
+      18: '\u2471',
+      19: '\u2472',
+      20: '\u2473',
     }
     return circle[num.toString()] || num.toString()
   }
   // 数字大于 20，使用 Unicode 码点将数字转换为带圆圈数字形式
-  const circleCodePoint = 0x324f // 第一个圆圈数字的 Unicode 码点为 0x324F
+  const circleCodePoint = 0x324F // 第一个圆圈数字的 Unicode 码点为 0x324F
   const nums = num.toString().split('')
   let result = ''
   nums.forEach((n) => {
-    const codePoint = circleCodePoint + parseInt(n, 10)
+    const codePoint = circleCodePoint + Number.parseInt(n, 10)
     result += String.fromCodePoint(codePoint)
   })
   return result
@@ -243,7 +249,7 @@ export function autoAddH3Num(content: string) {
 }
 
 export function autoAddDescription(content: string) {
-  const needDescription = /description:([\s]*?)$/m.test(content)
+  const needDescription = /description:(\s*?)$/m.test(content)
   if (needDescription) {
     const h3Titles = content.match(/^#{3} (.*)/gm)
     const titleWithCircleNum = h3Titles?.map((v, idx) =>
@@ -251,7 +257,7 @@ export function autoAddDescription(content: string) {
         v,
         // 去除外链
         (pre) => {
-          return pre.replace(/\[([^\]]+)\]\((https?:\/\/[^\s]+)\)/g, '$1')
+          return pre.replace(/\[([^\]]+)\]\((https?:\/\/\S+)\)/g, '$1')
         },
         // 去除标题和序号
         (pre) => {
@@ -260,12 +266,12 @@ export function autoAddDescription(content: string) {
         // 添加序号,
         (pre) => {
           return `${getCircleNumber(idx + 1)} ${pre}`
-        }
-      )
+        },
+      ),
     )
     return content.replace(
-      /(description:)([\s]*?)$/m,
-      `$1 ${titleWithCircleNum?.join(' ')}`
+      /(description:)(\s*?)$/m,
+      `$1 ${titleWithCircleNum?.join(' ') || ''}`,
     )
   }
 
@@ -277,19 +283,19 @@ export function formatWeeklyContent(content: string) {
 }
 
 export function initTemplateContent(tempStr: string, ops: Record<string, any>) {
-  return tempStr.replace(/{{([^}]+)}}/g, (_, match) => ops[match] || _)
+  return tempStr.replace(/\{\{([^}]+)\}\}/g, (_, match) => ops[match] || _)
 }
 
 export const currentWikiKey = 'blog.current'
 export const currentWikiNum = 'blog.currentNum'
 export async function createTempFile(
   type: 'weekly' | 'article',
-  ops: Record<string, any>
+  ops: Record<string, any>,
 ) {
   if (type === 'weekly') {
     const tempContent = await fs.readFile(
       path.join(__dirname, 'weekly.md'),
-      'utf-8'
+      'utf-8',
     )
     // 获取年月是 YYYY-MM-DD
     const date = new Date()
@@ -301,7 +307,7 @@ export async function createTempFile(
     const weeklyDirectory = getCLIConfig(weeklyDirectoryKey)
     const filePath = path.join(
       existsSync(weeklyDirectory) ? weeklyDirectory : process.cwd(),
-      fileName
+      fileName,
     )
     console.log('title:', `视野修炼第${ops.name}期`)
     console.log('创建成功', filePath)
@@ -337,8 +343,8 @@ export async function getWeeklyTitle(filepath: string, platform: PLATFORM) {
     template = '视野修炼-技术周刊第{{num}}期 '
   }
   return (
-    initTemplateContent(template, { num }) +
-    (suffix ? ` | ${suffix.trim()}` : '')
+    initTemplateContent(template, { num })
+    + (suffix ? ` | ${suffix.trim()}` : '')
   )
 }
 

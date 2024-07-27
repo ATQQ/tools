@@ -1,5 +1,12 @@
 # @sugarat/cli-plugin-blog
 
+## 0.0.12
+
+### Patch Changes
+
+- chore: 模板调优
+- feat: CLI 展示描述信息和周刊标题
+
 ## 0.0.11
 
 ### Patch Changes
