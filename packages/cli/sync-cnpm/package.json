@@ -1,20 +1,15 @@
 {
   "name": "cnnc",
-  "version": "0.1.1",
-  "bin": {
-    "cnnc": "./bin.js",
-    "cs": "./bin.js"
-  },
-  "files": [
-    "bin.js"
-  ],
+  "version": "0.1.2",
+  "description": "auto scan workspace then sync npm packages to cnpm",
+  "author": "ATQQ",
+  "license": "MIT",
+  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/sync-cnpm",
   "repository": {
     "type": "git",
     "url": "https://github.com/ATQQ/tools",
     "directory": "packages/cli/sync-cnpm"
   },
-  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/sync-cnpm",
-  "description": "auto scan workspace then sync npm packages to cnpm",
   "keywords": [
     "cnpm",
     "sync",
@@ -22,9 +17,15 @@
     "sync npm",
     "cnpm sync"
   ],
-  "author": "ATQQ",
-  "license": "MIT",
+  "bin": {
+    "cnnc": "./bin.js",
+    "cs": "./bin.js"
+  },
+  "files": [
+    "bin.js"
+  ],
   "dependencies": {
+    "@clack/prompts": "^0.7.0",
     "cnpm": "^9.2.0",
     "fast-glob": "^3.2.12",
     "validate-npm-package-name": "^4.0.0"

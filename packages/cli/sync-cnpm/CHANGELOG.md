@@ -1,5 +1,11 @@
 # sync-cnpm
 
+## 0.1.2
+
+### Patch Changes
+
+* feat: 多个包支持手动选择要同步的包
+
 ## 0.1.1
 
 ### Patch Changes
