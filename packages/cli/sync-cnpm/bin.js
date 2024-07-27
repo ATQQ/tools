@@ -4,7 +4,7 @@ const { promisify } = require('util')
 const process = require('process')
 const validatePkgName = require('validate-npm-package-name')
 const fg = require('fast-glob')
-const { multiselect } = require('@clack/prompts')
+const { multiselect, isCancel, cancel } = require('@clack/prompts')
 // 对输入的进行校验
 const pkgNames = process.argv.slice(2).filter(validatePkgName)
 
@@ -41,6 +41,10 @@ if (pkgNames.length === 0) {
       message: '请选择需要同步的包',
       options: pkgNames.map(name => ({ label: name, value: name })),
     })
+    if (isCancel(selected)) {
+      cancel('取消')
+      return process.exit(0)
+    }
     CnpmSync(...selected)
   })()
 }
