@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-ep
 
+## 0.1.4
+
+### Patch Changes
+
+- chore: 修改引导文案
+
 ## 0.1.3
 
 ### Patch Changes

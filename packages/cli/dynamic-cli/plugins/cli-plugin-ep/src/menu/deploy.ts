@@ -365,7 +365,7 @@ async function setServerConfig(): Promise<[string, number]> {
   const serverInfo = serverList.find((v: any) => v.dir === serverDir) || {}
 
   const name = await text({
-    message: '设置服务名 (如重新部署已存在服务，请不要修改直接确认)',
+    message: '设置服务名 (如重新部署已存在服务，可运行命令 pm2 ls 查看要重启的服务名)',
     placeholder: '设置服务名字',
     initialValue: serverInfo?.name || 'ep-server',
     validate: (value) => {
