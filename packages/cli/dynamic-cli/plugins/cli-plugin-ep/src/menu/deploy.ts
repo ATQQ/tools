@@ -361,7 +361,7 @@ async function installDeps() {
 
 async function setServerConfig(): Promise<[string, number]> {
   const serverDir = `${process.cwd()}/easypicker2-server`
-  const serverList = getCLIConfig('server.list')
+  const serverList = getCLIConfig('server.list') || []
   const serverInfo = serverList.find((v: any) => v.dir === serverDir) || {}
 
   const name = await text({

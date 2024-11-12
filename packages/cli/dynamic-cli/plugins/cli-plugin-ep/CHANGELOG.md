@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-ep
 
+## 0.1.3
+
+### Patch Changes
+
+- fix: server.list empty
+
 ## 0.1.2
 
 ### Patch Changes
