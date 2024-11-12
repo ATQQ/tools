@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-ep
 
+## 0.1.2
+
+### Patch Changes
+
+- fix: 资源包二次解压部署失败
+
 ## 0.1.1
 
 ### Patch Changes
