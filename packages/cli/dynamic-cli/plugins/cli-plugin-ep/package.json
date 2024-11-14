@@ -1,14 +1,21 @@
 {
   "name": "@sugarat/cli-plugin-ep",
-  "version": "0.1.1",
+  "version": "0.1.4",
   "description": "@sugarat/cli EasyPicker plugin",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "author": "ATQQ",
+  "license": "MIT",
+  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/dynamic-cli/plugins/cli-plugin-ep",
   "repository": {
     "type": "git",
     "url": "https://github.com/ATQQ/tools"
   },
-  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/dynamic-cli/plugins/cli-plugin-ep",
+  "keywords": [
+    "commander",
+    "command",
+    "@sugarat/cli-plugin"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -17,22 +24,15 @@
     "build": "tsup --minify --publicDir",
     "prepublish": "pnpm build"
   },
-  "keywords": [
-    "commander",
-    "command",
-    "@sugarat/cli-plugin"
-  ],
-  "author": "ATQQ",
-  "license": "MIT",
-  "devDependencies": {
-    "@sugarat/cli": "workspace:*",
-    "@types/semver": "^7.5.8"
-  },
   "dependencies": {
     "@clack/prompts": "^0.7.0",
     "axios": "^1.1.3",
     "chalk": "4",
     "portfinder": "^1.0.32",
     "semver": "^7.6.2"
+  },
+  "devDependencies": {
+    "@sugarat/cli": "workspace:*",
+    "@types/semver": "^7.5.8"
   }
 }
