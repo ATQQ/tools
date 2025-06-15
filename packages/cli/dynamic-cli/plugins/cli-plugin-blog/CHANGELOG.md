@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-blog
 
+## 0.0.13
+
+### Patch Changes
+
+- feat: 更新周刊模板
+
 ## 0.0.12
 
 ### Patch Changes
