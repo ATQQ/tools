@@ -1,6 +1,6 @@
 import path from 'path'
 import { defineCommand, readJSONFIle } from '../util'
-import { getCLIConfig, setCLIConfig, pluginDir } from '../index'
+import { getCLIConfig, pluginDir, setCLIConfig } from '../index'
 import type { PluginDes } from '../types/index'
 import { CLI_PLUGIN_KEY, defaultConfig } from '../constants'
 import {
@@ -11,7 +11,7 @@ import {
   installRemotePlugin,
   isLocal,
   loadCommandSync,
-  syncFnErrorWrapper
+  syncFnErrorWrapper,
 } from '../util/private'
 
 export const installCommand = defineCommand({
@@ -27,7 +27,7 @@ export const installCommand = defineCommand({
           rest,
           packageJSON: '',
           path: '',
-          name: ''
+          name: '',
         }
         // 初始化一些东西
         initPluginsDir()
@@ -37,18 +37,18 @@ export const installCommand = defineCommand({
           // 记录目标插件的信息
           pluginDes.packageJSON = path.join(plugin, 'package.json')
           pluginDes.path = plugin
-          // eslint-disable-next-line no-cond-assign
-        } else if ((pluginDes.name = checkIsNpmPlugin(plugin))) {
+        }
+        else if ((pluginDes.name === checkIsNpmPlugin(plugin))) {
           console.log('🌩 正在安装插件', pluginDes.name, '，请稍等')
           installRemotePlugin(
             pluginDes.name,
-            getCLIConfig('npm.registry') || defaultConfig.npm.registry
+            getCLIConfig('npm.registry') || defaultConfig.npm.registry,
           )
           pluginDes.packageJSON = path.join(
             pluginDir,
             'node_modules',
             getValidPkgName(pluginDes.name),
-            'package.json'
+            'package.json',
           )
           pluginDes.path = path.dirname(pluginDes.packageJSON)
         }
@@ -56,8 +56,9 @@ export const installCommand = defineCommand({
         if (pluginDes.packageJSON) {
           try {
             pluginDes.name = readJSONFIle(pluginDes.packageJSON).name || ''
-          } catch (error) {
-            console.log('无效 npm 插件')
+          }
+          catch (error) {
+            console.log('无效 npm 插件', pluginDes.name, error)
             return
           }
         }
@@ -74,11 +75,11 @@ export const installCommand = defineCommand({
           '完成',
           p.name,
           '指令安装',
-          readJSONFIle(pluginDes.packageJSON).version
+          readJSONFIle(pluginDes.packageJSON).version,
         )
-        console.log('执行', 'q', p.name, '--help', '查看细节')
+        console.log('执行', 'q/sug', p.name, '--help', '查看细节')
         // 更新配置文件记录
         setCLIConfig(`${CLI_PLUGIN_KEY}.${pluginDes.name}`, pluginDes)
       })
-  }
+  },
 })

@@ -35,6 +35,7 @@ interface Option {
   type: PLATFORM
   output: boolean
   weeklyDir?: string
+  resetNum?: string
 }
 export default function definePlugin(): ICommandDescription {
   return defineCommand({
@@ -45,6 +46,7 @@ export default function definePlugin(): ICommandDescription {
         .option('-c,--create', '创建文章模板', false)
         .option('-w,--weekly', '周刊格式转换', false)
         .option('--weekly-dir [dir]', '周刊目录')
+        .option('--reset-num [num]', '重置当前周刊期数')
         .option(
           '-f,--format',
           '格式化周刊文章内容(自动整理序号和描述信息)',
@@ -58,6 +60,17 @@ export default function definePlugin(): ICommandDescription {
         .option('-o,--output', '输出的文件名')
         .description('博客内容转换')
         .action(async (filepath, ops: Option) => {
+          if (ops.resetNum) {
+            const resetNum = Number(ops.resetNum)
+            if (Number.isNaN(resetNum)) {
+              console.log('请输入数字作为周刊序号')
+              return
+            }
+            setCLIConfig(currentWikiNum, resetNum)
+            console.log(`周刊期数已重置为: ${resetNum}`)
+            return
+          }
+
           if (!filepath && !(ops.create && ops.weekly)) {
             // 复用最近操作的文章
             filepath = getCLIConfig(currentWikiKey)

@@ -1,32 +1,33 @@
 {
   "name": "@sugarat/cli",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A dynamic CLI tool，Based on Commander，Support Plugin System",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "author": "ATQQ",
+  "license": "MIT",
+  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/dynamic-cli/core",
   "repository": {
     "type": "git",
     "url": "https://github.com/ATQQ/tools"
-  },
-  "homepage": "https://github.com/ATQQ/tools/blob/main/packages/cli/dynamic-cli/core",
-  "files": [
-    "dist"
-  ],
-  "bin": {
-    "q": "dist/bin.js"
-  },
-  "scripts": {
-    "dev": "tsup --watch",
-    "build": "tsup --minify",
-    "prepublish": "pnpm build"
   },
   "keywords": [
     "commander",
     "dynamic CLI",
     "plugin CLI"
   ],
-  "author": "ATQQ",
-  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "q": "dist/bin.js",
+    "sug": "dist/bin.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup --minify",
+    "prepublish": "pnpm build"
+  },
   "dependencies": {
     "@sugarat/cli-plugin-config": "workspace:*",
     "commander": "^9.2.0",

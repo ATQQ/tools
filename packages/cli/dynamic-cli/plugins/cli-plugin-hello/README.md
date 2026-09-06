@@ -14,20 +14,20 @@ You need to install `@sugarat/cli` first
 npm i -g @sugarat/cli
 ```
 
-then you will get `q` command
+then you will get `q` and `sug` command
 
 install cli plugin
 
 ```sh
-q install hello [words...]
-q install hello
-q install hello 真不戳
+sug install hello [words...]
+sug install hello
+sug install hello 真不戳
 
 # equal
-q install @sugarat/cli-plugin-hello@latest
+sug install @sugarat/cli-plugin-hello@latest
 ```
 
-then you `q` have hello command
+then you `sug` have hello command
 ```sh
-q hello
+sug hello
 ```

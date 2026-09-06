@@ -11,18 +11,18 @@ You need to install `@sugarat/cli` first
 npm i -g @sugarat/cli
 ```
 
-then you will get `q` command
+then you will get `q` and `sug` command
 
 install cli plugin
 
 ```sh
-q install ep
+sug install ep
 
 # equal
-q install @sugarat/cli-plugin-ep@latest
+sug install @sugarat/cli-plugin-ep@latest
 ```
 
-then you `q` have ep command
+then you `sug` have ep command
 ```sh
-q ep
+sug ep
 ```

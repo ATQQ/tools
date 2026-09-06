@@ -10,18 +10,18 @@ You need to install `@sugarat/cli` first
 npm i -g @sugarat/cli
 ```
 
-then you will get `q` command
+then you will get `q` and `sug` command
 
 install cli plugin
 
 ```sh
-q add blog
+sug add blog
 
 # equal
-q install @sugarat/cli-plugin-blog@latest
+sug install @sugarat/cli-plugin-blog@latest
 ```
 
-then you `q` have blog command
+then you `sug` have blog command
 ```sh
-q blog
+sug blog
 ```

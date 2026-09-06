@@ -1,5 +1,11 @@
 # @sugarat/cli-plugin-blog
 
+## 0.0.14
+
+### Patch Changes
+
+- feat: support `--reset-num` option to reset weekly issue number
+
 ## 0.0.13
 
 ### Patch Changes

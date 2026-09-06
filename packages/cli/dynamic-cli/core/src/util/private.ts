@@ -1,9 +1,5 @@
-/* eslint-disable no-await-in-loop */
 import fs from 'fs'
-/* eslint-disable import/no-dynamic-require */
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable global-require */
-import { spawnSync, spawn } from 'child_process'
+import { spawn, spawnSync } from 'child_process'
 import path from 'path'
 import { CLI_PLUGIN_KEY, defaultConfig } from '../constants'
 import { delCLIConfig, getCLIConfig, pluginDir, readJSONFIle } from '../index'
@@ -17,7 +13,9 @@ export function getInstalledPlugins(): ICommandDescription[] {
       try {
         const module = loadCommandSync(ops)
         return module
-      } catch (error) {
+      }
+      catch (error) {
+        console.log(error)
         console.log('=================================')
         console.log(pluginName, '加载失败')
         console.log(ops)
@@ -27,7 +25,7 @@ export function getInstalledPlugins(): ICommandDescription[] {
         return null as unknown as ICommandDescription
       }
     })
-    .filter((v) => !!v)
+    .filter(v => !!v)
 }
 
 export async function checkInstallEdPluginVersion(autoUpdate = true) {
@@ -45,14 +43,14 @@ export async function checkInstallEdPluginVersion(autoUpdate = true) {
       if (autoUpdate) {
         installRemotePlugin(
           `${plugin.name}@latest`,
-          getCLIConfig('npm.registry') || defaultConfig.npm.registry
+          getCLIConfig('npm.registry') || defaultConfig.npm.registry,
         )
         console.log('🚀', plugin.name, v, '升级完成')
       }
     }
   }
   if (!autoUpdate && update) {
-    console.log('可执行', 'q update', '升级')
+    console.log('可执行', 'q/sug update', '升级')
   }
   if (!update && autoUpdate) {
     console.log('所有插件都是最新 🎉')
@@ -73,13 +71,13 @@ export function loadCommandSync(plugin: PluginDes): ICommandDescription {
 
 export function execCommand(command: string, rest: string[], cwd?: string) {
   return spawnSync(command, rest, {
-    cwd: cwd || process.cwd()
+    cwd: cwd || process.cwd(),
   }).output.toString()
 }
 
 export function pkgExist(
   pkgName: string,
-  registry = defaultConfig.npm.registry
+  registry = defaultConfig.npm.registry,
 ) {
   const info = execCommand('npm', ['info', pkgName, `--registry=${registry}`])
   const exist = !(info.includes('404') && info.includes('ERR'))
@@ -100,14 +98,14 @@ export function spawnPromise(command: string, ...argv: any) {
 
 export function pkgVersion(
   pkgName: string,
-  registry = defaultConfig.npm.registry
+  registry = defaultConfig.npm.registry,
 ) {
   return spawnPromise(
     'npm',
     'info',
     pkgName,
     'version',
-    `--registry=${registry}`
+    `--registry=${registry}`,
   )
 }
 
@@ -115,11 +113,11 @@ export function syncFnErrorWrapper(fn: any, ...rest: any[]) {
   try {
     const res = fn(...rest)
     return res
-  } catch (error: any) {
+  }
+  catch (error: any) {
     console.log('===运行出现错误===')
     console.log(error.message)
     process.exit()
-    return false
   }
 }
 
@@ -128,27 +126,28 @@ export function getValidPkgName(installPkg: string) {
   return (flag ? '@' : '') + installPkg.slice(+flag).split('@')[0]
 }
 
-export const isLocal = (p: string) =>
-  fs.existsSync(path.join(p, 'package.json'))
+export function isLocal(p: string) {
+  return fs.existsSync(path.join(p, 'package.json'))
+}
 
 export function installLocalPlugin(localPath: string) {
   spawnSync('npm', ['link', localPath], {
-    cwd: pluginDir
+    cwd: pluginDir,
   })
 }
 
 export function installRemotePlugin(pluginName: string, registry: string) {
   spawnSync('npm', ['install', pluginName, `--registry=${registry}`], {
-    cwd: pluginDir
+    cwd: pluginDir,
   })
 }
 export function checkIsNpmPlugin(plugin: string) {
   const {
     registry = defaultConfig.npm.registry,
-    scopePrefix = defaultConfig.npm.scopePrefix
+    scopePrefix = defaultConfig.npm.scopePrefix,
   } = getCLIConfig('npm')
   const maybe = [...scopePrefix.map((v: string) => `${v}${plugin}`), plugin]
-  const resPlugin = maybe.find((p) => pkgExist(p, registry))
+  const resPlugin = maybe.find(p => pkgExist(p, registry))
   return resPlugin
 }
 
@@ -160,7 +159,7 @@ export function initPluginsDir() {
   // 初始化 package.json
   if (!fs.existsSync(path.join(pluginDir, 'package.json'))) {
     spawnSync('npm', ['init', '-y'], {
-      cwd: pluginDir
+      cwd: pluginDir,
     })
   }
 }
